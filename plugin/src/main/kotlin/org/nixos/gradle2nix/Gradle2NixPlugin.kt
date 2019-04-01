@@ -45,6 +45,22 @@ open class Gradle2NixPlugin : Plugin<Gradle> {
                 outputDir.set(extension.outputDir)
             }
 
+            val buildSrcDir = rootProject.projectDir.resolve("buildSrc")
+            if (buildSrcDir.exists() && buildSrcDir.isDirectory) {
+                val buildSrcEnv =
+                    rootProject.tasks.register("nixBuildSrcEnv", NixBuildSrcEnv::class) {
+                        dir = buildSrcDir
+                        val buildFile = buildSrcDir.listFiles().let { files ->
+                            files.find { it.name == "build.gradle.kts" } ?:
+                                files.find { it.name == "build.gradle" }
+                        }
+                        if (buildFile != null) this.buildFile = buildFile
+                    }
+                gradleEnv.configure {
+                    dependsOn(buildSrcEnv)
+                }
+            }
+
             val pluginEnv =
                 rootProject.tasks.register("nixPluginEnv", NixPluginEnv::class, pluginRequests)
             gradleEnv.configure {
@@ -113,6 +129,10 @@ open class Gradle2NixPlugin : Plugin<Gradle> {
             }
         }
     }
+}
+
+internal val pluginJar by lazy {
+    File(Gradle2NixPlugin::class.java.protectionDomain.codeSource.location.toURI()).absoluteFile
 }
 
 internal val moshi by lazy { Moshi.Builder().build() }

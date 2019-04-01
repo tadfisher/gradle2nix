@@ -13,7 +13,9 @@ application {
     applicationName = "gradle2nix"
     applicationDefaultJvmArgs += "-Dorg.nixos.gradle2nix.initScript=@APP_HOME@/gradle/init.gradle"
     applicationDistribution
-        .from(tasks.getByPath(":plugin:shadowJar"))
+        .from(
+            tasks.getByPath(":plugin:shadowJar"),
+            project(":plugin").file("src/main/resources/init.gradle"))
         .into("gradle")
         .rename("plugin.*\\.jar", "plugin.jar")
 }

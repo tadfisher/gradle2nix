@@ -1,5 +1,6 @@
 package org.nixos.gradle2nix
 
+import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFile
@@ -65,5 +66,23 @@ internal fun RegularFileProperty.conventionCompat(
         convention(valueProvider)
     } else {
         apply { set(valueProvider) }
+    }
+}
+
+@Suppress("DEPRECATION")
+internal fun Project.directoryPropertyCompat(): DirectoryProperty {
+    return if (versionAtLeast("5.0")) {
+        objects.directoryProperty()
+    } else {
+        layout.directoryProperty()
+    }
+}
+
+@Suppress("DEPRECATION")
+internal fun Project.filePropertyCompat(): RegularFileProperty {
+    return if (versionAtLeast("5.0")) {
+        objects.fileProperty()
+    } else {
+        layout.fileProperty()
     }
 }
