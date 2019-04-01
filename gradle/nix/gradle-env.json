@@ -1,0 +1,1732 @@
+{
+  ":": {
+    "plugins": {
+      "path": ":",
+      "env": "plugins",
+      "repositories": [
+        "https://plugins.gradle.org/m2"
+      ],
+      "artifacts": [
+        {
+          "groupId": "com.github.jengelman.gradle.plugins",
+          "artifactId": "shadow",
+          "version": "4.0.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "cXwxDqo6FVM7Xq6mfLe4AdpE9yIv94v8+ez151VOHnc="
+        },
+        {
+          "groupId": "com.github.jengelman.gradle.plugins",
+          "artifactId": "shadow",
+          "version": "4.0.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "BX4poPG89L1LDAAiJP806YtZMsulREwz4ieYr2ILzuQ="
+        },
+        {
+          "groupId": "com.github.johnrengelman.shadow",
+          "artifactId": "com.github.johnrengelman.shadow.gradle.plugin",
+          "version": "4.0.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "nm10H2Q75H9lAIKNT2P4vN8tYyLUnYA0G+K56SC63Kg="
+        },
+        {
+          "groupId": "commons-io",
+          "artifactId": "commons-io",
+          "version": "2.6",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "+HfTBGYKwqFC84ZbrfyXHex+1zx0fH+NXS9ROcpzZRM="
+        },
+        {
+          "groupId": "commons-io",
+          "artifactId": "commons-io",
+          "version": "2.6",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "DCOGOJOiKR9aev29jRWSOzlIr9h+Vj+jQc3Pbq4zimA="
+        },
+        {
+          "groupId": "org.apache.ant",
+          "artifactId": "ant-launcher",
+          "version": "1.9.7",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "vDdvbWy1hiKfRRrEWfrxRDsUTCbWZHYY7Jy6YOVMK3k="
+        },
+        {
+          "groupId": "org.apache.ant",
+          "artifactId": "ant-launcher",
+          "version": "1.9.7",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "17zdOrD/Ve2+G5bQbwbawhNexjtafDLO86Q2tJye7ic="
+        },
+        {
+          "groupId": "org.apache.ant",
+          "artifactId": "ant-parent",
+          "version": "1.9.7",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "ddLO9kxlzL3S+vcmHlO0RHeNVtM4djFU4w+tpKQdEhU="
+        },
+        {
+          "groupId": "org.apache.ant",
+          "artifactId": "ant",
+          "version": "1.9.7",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "ml2+P18suRhUyGgsq4AXivpBKrNaWrcYvznOAbNDXZM="
+        },
+        {
+          "groupId": "org.apache.ant",
+          "artifactId": "ant",
+          "version": "1.9.7",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "G5+9TzJacembJ5CA1jCE8S2ITUIIGvKY+eVT4f4M10o="
+        },
+        {
+          "groupId": "org.apache.commons",
+          "artifactId": "commons-parent",
+          "version": "42",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "zTE0lMZwtIPsJWlyrxaYszDlmPgHACNU63ZUefYEsJw="
+        },
+        {
+          "groupId": "org.apache.logging.log4j",
+          "artifactId": "log4j-api",
+          "version": "2.11.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "+lgolQJpsK5CXJbYifGPQLM26fqIaEGuBruSJVEfEhc="
+        },
+        {
+          "groupId": "org.apache.logging.log4j",
+          "artifactId": "log4j-api",
+          "version": "2.11.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "Bcwtp3otDyS0gDy/641kog9UlNCTobzXhy/iiqOQadk="
+        },
+        {
+          "groupId": "org.apache.logging.log4j",
+          "artifactId": "log4j-core",
+          "version": "2.11.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "wyApsy2j2M8v7KB5CkvCMx6n62KrNoqJgLkMfYyBAeA="
+        },
+        {
+          "groupId": "org.apache.logging.log4j",
+          "artifactId": "log4j-core",
+          "version": "2.11.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "1WKcz1cr6lcZLPjHXXTn6gWmk8Qu1xJkf67Zrp+/OIA="
+        },
+        {
+          "groupId": "org.apache.logging.log4j",
+          "artifactId": "log4j",
+          "version": "2.11.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "x4aYPHv6lQoCMbnPwrwrU3ATTALBHg9X2FZggqiDhvM="
+        },
+        {
+          "groupId": "org.apache.logging",
+          "artifactId": "logging-parent",
+          "version": "1",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "NLK/T1MagJFolhZy/0GdGr+WcluN/lKYDwDIxOsTS9Y="
+        },
+        {
+          "groupId": "org.apache",
+          "artifactId": "apache",
+          "version": "18",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "eDEwcoX9R1u8NrIK4454gvEcMVOx1ZMPhS1E7ajzPBc="
+        },
+        {
+          "groupId": "org.codehaus.plexus",
+          "artifactId": "plexus-utils",
+          "version": "3.0.24",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "g+50ixLQavsK1AUKWREys+gCX7sZkPHtAC6Lcyk+abQ="
+        },
+        {
+          "groupId": "org.codehaus.plexus",
+          "artifactId": "plexus-utils",
+          "version": "3.0.24",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "EQZ/anX97RK83I2vembd2ULOKJw9r4ij/g+LEoWKLuY="
+        },
+        {
+          "groupId": "org.codehaus.plexus",
+          "artifactId": "plexus",
+          "version": "4.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "ChtpLX/MkNakXa4uUPRmDUj3pEUE8XSqYO80++Eyf2o="
+        },
+        {
+          "groupId": "org.gradle.kotlin.kotlin-dsl",
+          "artifactId": "org.gradle.kotlin.kotlin-dsl.gradle.plugin",
+          "version": "1.2.5",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "/GETYUcM9nxmg0F/yZVoeaSWprC5j11s+zDG7OC1U4c="
+        },
+        {
+          "groupId": "org.gradle.kotlin",
+          "artifactId": "plugins",
+          "version": "1.2.5",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "hpQRbr0r/B1RZSpG75KTzxO+cX45Br5+5oKg+NZjIiw="
+        },
+        {
+          "groupId": "org.gradle.kotlin",
+          "artifactId": "plugins",
+          "version": "1.2.5",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "kEkRngpBhZfla6pdjhwTC0oTukscJuf8flnlt47lSuM="
+        },
+        {
+          "groupId": "org.jdom",
+          "artifactId": "jdom2",
+          "version": "2.0.6",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "E0XxG6YG0VYD1nQFUajCGUfAIVZAdw7GcnH+eL6pfPU="
+        },
+        {
+          "groupId": "org.jdom",
+          "artifactId": "jdom2",
+          "version": "2.0.6",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "R7I6ef4za3QbgkNMbgSdaBZSVuQF51wQkh/XL6imXY0="
+        },
+        {
+          "groupId": "org.jetbrains.intellij.deps",
+          "artifactId": "trove4j",
+          "version": "1.0.20181211",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "r/t8haPIe9z2n/HbuE3hH2PckxKTk0vAjNerGN4INgE="
+        },
+        {
+          "groupId": "org.jetbrains.intellij.deps",
+          "artifactId": "trove4j",
+          "version": "1.0.20181211",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "MQpqotkFNMMrj0bx/JjNDtrpXc38oj4oR+Xvqa4MAZo="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin.jvm",
+          "artifactId": "org.jetbrains.kotlin.jvm.gradle.plugin",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "8VCZqLaNedv5VVciEMDiCYt8iQEVKcPC5bln4VO9LEQ="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin.kapt",
+          "artifactId": "org.jetbrains.kotlin.kapt.gradle.plugin",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "TSKA8Hh+kGwH5V7vznjf+QM8rgX3GMGbZcYz5ntr2fw="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-android-extensions",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "KwRirD5LNt/9s7+mFzy0Gw4k4lp9fu4QEkcfHSeuot0="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-android-extensions",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "9jEKsCDHAlW7h+XUsHXCn67+ODhWtgQctTQ79ChdwVo="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-annotation-processing-gradle",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "+viAMV1P1qZmzBeqXpYIx0aMcKJ5tJzMpn26KlSt9pI="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-annotation-processing-gradle",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "9X3OxdUN+KLeVw86yJcYidSUPyuqyogUACoudn0L6Mk="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-build-common",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "9NjQjG9ZZtnVF87WDFIkx+3KLYEeoKcCvXGZoA3U+iU="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-build-common",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "wmwuwUIkyn+halRUOik6ll74dzTLc2TF6MEennnJjS4="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-compiler-embeddable",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "r6rtwyT79jlNnzlUTvzJPPxZ+KWqGhpccdYeJINmbGo="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-compiler-embeddable",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "Uyu5QViDU4ZwPnZUMH56w2ccCUfZZWGs2quaC3Lp30Q="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-compiler-runner",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "c+cIigdPnFF81LsqhhGDQWhFlmHIMhNs82KMzVmUzDs="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-compiler-runner",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "KB9vwpwuA5E5mJrjZBv4aDS3URFJ/e5l2NkICOwn4oM="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-daemon-client",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "s+zOEex7MR7g0czGXoEfN0jzKAEHZehsvbKbK3D3Pxw="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-daemon-client",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "itMzMl3sJgv3wlG4l9bZlAatonHFHSE8fFQX4f9DX7Q="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-gradle-plugin-api",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "7QqxFDcxDNQJZXxeX4pr9YmvCoNIV3zWAPVGAfyXw2k="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-gradle-plugin-api",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "RhrUeSzPSgDhyR+JBIHL688FQdTsbWrEyiTqcFols5U="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-gradle-plugin-model",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "+63meio/sjTi1MG48Hsq9sCWmT807XMv5vra9pa8IIo="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-gradle-plugin-model",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "vMX1stCbzYkO35paf1ugyMDAMQrBjmGFJOq2OHCVDjs="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-gradle-plugin",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "eFjFj0xnioQWUg9MCUKCpIGYHP5wLSMSERjJx+mtIyY="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-gradle-plugin",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "uABbgVT1VnJ6aviVPC6AuOWrspGXMZRXYU06zvIIe9g="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-native-utils",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "QGAQo59MjN0jUcwRELmO2ATAqoEMthBue59PK8whzUc="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-native-utils",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "AG/oxlzaUE9MrkwrMlR/Hx+7nG+99YAuk0fgt7J+Xes="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-reflect",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "owZcgiYzGR4KPj7hKim+wjT8SyhkpruH70jM4+ngwmo="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-reflect",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "QtTq+ZQiO5Yet71owWo7tK775B8vdL1wJ0Lv+QkXC8w="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-sam-with-receiver",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "DYASsAOo2O/p+0ADrkyyuOtJvfH6FNmPW9oKIy+BZ3I="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-sam-with-receiver",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "wdYGy0qD/mrV8VugwzRbVH/Si9DJXqqWGIO+G+BhDd4="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-script-runtime",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "LiW6vI3NIkucR54sFs57TFBAfSXxjWDR/SYveMK0dMs="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-script-runtime",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "65n/mMkw7B9deLEt5j+o0aqEnLp+ZjyNuYz/F83HV0c="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-scripting-compiler-embeddable",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "9Ob5/ThNQhZ+m4n5he5KSKBna/5wWy4vnRPhWR1LfAs="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-scripting-compiler-embeddable",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "zogfIC+Za2bxr3XBK3JgBI+Zy6IqDyqNXVquIGI1g1Y="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-common",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "zqYfe2EYleZPWFaal1f8CrDVgvEHIR4ZMODOKgrdUqc="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-common",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "HkQzMKGrEIPdEjMesYI7zaGM06YWLtxTagNeTeHXhz0="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-jdk7",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "qHh1YE/UIUDaaTiuTTXuYQgfRIJTbvxtJhW4tiahmK8="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-jdk7",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "Jke6QWznPfilAYm2gN2TuHn7031z4xEIt5+9tVAAWnY="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-jdk8",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "WCPtZqwSKhxVRC68paIJqEPM2H9WLtwxp4fz0uR/dNQ="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-jdk8",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "Vy3BzP3Nbd1GkYKm1Ty8eAKIsyXaUvJ8J/pc+mv5mYc="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "OLojcNnwb1BDPgayyndblEc8LieF9BCSYHmreTxysDQ="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "nOHqMzlsW/5I7IQSoM1WHsyQnXHI+TZZZ6FPnyT9uaU="
+        },
+        {
+          "groupId": "org.jetbrains",
+          "artifactId": "annotations",
+          "version": "13.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "rOKhDcji1f00kl7KwD5JiLLA+FFlDJS4zvSbob0RFHg="
+        },
+        {
+          "groupId": "org.jetbrains",
+          "artifactId": "annotations",
+          "version": "13.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "llrrK+3/NpgZvd4b96CzuJuCR91pyIuGN112Fju4w5c="
+        },
+        {
+          "groupId": "org.ow2.asm",
+          "artifactId": "asm-analysis",
+          "version": "6.2.1",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "TJNCyY50bpwtfyzcaJb3NIMX6bHlpsWRBH/Ilp3vSyM="
+        },
+        {
+          "groupId": "org.ow2.asm",
+          "artifactId": "asm-analysis",
+          "version": "6.2.1",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "jq++RQVJv6RBWjjRM6qg1CrzTTELxaZJ4LtMeBa5wxI="
+        },
+        {
+          "groupId": "org.ow2.asm",
+          "artifactId": "asm-commons",
+          "version": "6.2.1",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "P1eNMe8w+UttH0SBL0H+T5inzUKvNTNfXUhmqzuQGGU="
+        },
+        {
+          "groupId": "org.ow2.asm",
+          "artifactId": "asm-commons",
+          "version": "6.2.1",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "Xv6KkF/PEsDrWd/JLazN17lP1DZiK1MAWX8vXjjFtWk="
+        },
+        {
+          "groupId": "org.ow2.asm",
+          "artifactId": "asm-parent",
+          "version": "6.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "eR0GS7nsyaRtQ7ye/s10yRRk38RR8yG4AtImHizNfRQ="
+        },
+        {
+          "groupId": "org.ow2.asm",
+          "artifactId": "asm-tree",
+          "version": "6.2.1",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "pSC1THvk4H5TPbhCDd+Tb+g0H/VqXfJVurWER43ZCqs="
+        },
+        {
+          "groupId": "org.ow2.asm",
+          "artifactId": "asm-tree",
+          "version": "6.2.1",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "9HsK0Kct4wRIb9PsWQDqghtgSQBwApCW1kdIaKPdMQM="
+        },
+        {
+          "groupId": "org.ow2.asm",
+          "artifactId": "asm-util",
+          "version": "6.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "NWr+vbD4cBdSYuUYj4cJo7F6oqWmpLA0CwTUtEm8pfY="
+        },
+        {
+          "groupId": "org.ow2.asm",
+          "artifactId": "asm-util",
+          "version": "6.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "PN/GH5iNFnuXUDQZ2oKlgIsg9CBa60bDlObn/9MhHxI="
+        },
+        {
+          "groupId": "org.ow2.asm",
+          "artifactId": "asm",
+          "version": "6.2.1",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "FGDbbDPMmchOXLMORrAX5NHMmn+8F0EB1vhIKbtkwIU="
+        },
+        {
+          "groupId": "org.ow2.asm",
+          "artifactId": "asm",
+          "version": "6.2.1",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "rCBe+QYK3x8qssJLyUKcd7zkih+0lv37WTjq9ZD046M="
+        },
+        {
+          "groupId": "org.ow2",
+          "artifactId": "ow2",
+          "version": "1.3",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "USFcZ9LAaNi30vb4D1E3KgmAdd7MxEjUvde5h7qDKPs="
+        },
+        {
+          "groupId": "org.ow2",
+          "artifactId": "ow2",
+          "version": "1.5",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "D4obEW52C4/mOJxRuE5LB6cPwRCC1Pk25FO1g91QtDs="
+        },
+        {
+          "groupId": "org.sonatype.forge",
+          "artifactId": "forge-parent",
+          "version": "10",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "wU+5wytZzAMlH2CUFtt8DP8B+BHtzMtPaoZdbnBGvQs="
+        },
+        {
+          "groupId": "org.vafer",
+          "artifactId": "jdependency",
+          "version": "1.3",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "DRE1VU9pho+SfUauQV5BnqFVlZJcVW5VohuO+bfJ8rE="
+        },
+        {
+          "groupId": "org.vafer",
+          "artifactId": "jdependency",
+          "version": "1.3",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "1L6Tzna2f9ir8rCYa5rBB7VeIo+PGgb4lkDAzxlBFFU="
+        }
+      ]
+    },
+    "buildscript": {
+      "path": ":",
+      "env": "buildscript",
+      "repositories": [],
+      "artifacts": []
+    },
+    "project": {
+      "path": ":",
+      "env": "project",
+      "repositories": [],
+      "artifacts": []
+    }
+  },
+  ":app": {
+    "buildscript": {
+      "path": ":app",
+      "env": "buildscript",
+      "repositories": [],
+      "artifacts": []
+    },
+    "project": {
+      "path": ":app",
+      "env": "project",
+      "repositories": [
+        "https://jcenter.bintray.com/",
+        "https://repo.gradle.org/gradle/libs-releases"
+      ],
+      "artifacts": [
+        {
+          "groupId": "com.github.ajalt",
+          "artifactId": "clikt",
+          "version": "1.7.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "BvUGcF+n7UlzPQFz7treWWKKPZxcoj30apGDBq2Y8X8="
+        },
+        {
+          "groupId": "com.github.ajalt",
+          "artifactId": "clikt",
+          "version": "1.7.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "D6xVOlI5cEVPsyl04UrY+jUqfinPs5K2VZtqNbrkmG0="
+        },
+        {
+          "groupId": "org.gradle",
+          "artifactId": "gradle-tooling-api",
+          "version": "5.3",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "3AflRCc5b3i/wZFbTJ9Tbp8Vqi95mxaVSg1G+L3QKvo="
+        },
+        {
+          "groupId": "org.gradle",
+          "artifactId": "gradle-tooling-api",
+          "version": "5.3",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "yIh7MGQj1zfYLXbGfkcRddqSUn9Css56Kv+tDB8oPcM="
+        },
+        {
+          "groupId": "org.jetbrains.intellij.deps",
+          "artifactId": "trove4j",
+          "version": "1.0.20181211",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "r/t8haPIe9z2n/HbuE3hH2PckxKTk0vAjNerGN4INgE="
+        },
+        {
+          "groupId": "org.jetbrains.intellij.deps",
+          "artifactId": "trove4j",
+          "version": "1.0.20181211",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "MQpqotkFNMMrj0bx/JjNDtrpXc38oj4oR+Xvqa4MAZo="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-compiler-embeddable",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "r6rtwyT79jlNnzlUTvzJPPxZ+KWqGhpccdYeJINmbGo="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-compiler-embeddable",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "Uyu5QViDU4ZwPnZUMH56w2ccCUfZZWGs2quaC3Lp30Q="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-reflect",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "owZcgiYzGR4KPj7hKim+wjT8SyhkpruH70jM4+ngwmo="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-reflect",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "QtTq+ZQiO5Yet71owWo7tK775B8vdL1wJ0Lv+QkXC8w="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-script-runtime",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "LiW6vI3NIkucR54sFs57TFBAfSXxjWDR/SYveMK0dMs="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-script-runtime",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "65n/mMkw7B9deLEt5j+o0aqEnLp+ZjyNuYz/F83HV0c="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-scripting-compiler-embeddable",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "9Ob5/ThNQhZ+m4n5he5KSKBna/5wWy4vnRPhWR1LfAs="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-scripting-compiler-embeddable",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "zogfIC+Za2bxr3XBK3JgBI+Zy6IqDyqNXVquIGI1g1Y="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-common",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "zqYfe2EYleZPWFaal1f8CrDVgvEHIR4ZMODOKgrdUqc="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-common",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "HkQzMKGrEIPdEjMesYI7zaGM06YWLtxTagNeTeHXhz0="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-jdk7",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "qHh1YE/UIUDaaTiuTTXuYQgfRIJTbvxtJhW4tiahmK8="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-jdk7",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "Jke6QWznPfilAYm2gN2TuHn7031z4xEIt5+9tVAAWnY="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-jdk8",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "WCPtZqwSKhxVRC68paIJqEPM2H9WLtwxp4fz0uR/dNQ="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-jdk8",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "Vy3BzP3Nbd1GkYKm1Ty8eAKIsyXaUvJ8J/pc+mv5mYc="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "OLojcNnwb1BDPgayyndblEc8LieF9BCSYHmreTxysDQ="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "nOHqMzlsW/5I7IQSoM1WHsyQnXHI+TZZZ6FPnyT9uaU="
+        },
+        {
+          "groupId": "org.jetbrains",
+          "artifactId": "annotations",
+          "version": "13.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "rOKhDcji1f00kl7KwD5JiLLA+FFlDJS4zvSbob0RFHg="
+        },
+        {
+          "groupId": "org.jetbrains",
+          "artifactId": "annotations",
+          "version": "13.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "llrrK+3/NpgZvd4b96CzuJuCR91pyIuGN112Fju4w5c="
+        },
+        {
+          "groupId": "org.slf4j",
+          "artifactId": "slf4j-api",
+          "version": "1.7.25",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "GMSgCV1cHaa4F1kudnuyPSndL1YK1033X/OWHb3iW3k="
+        },
+        {
+          "groupId": "org.slf4j",
+          "artifactId": "slf4j-api",
+          "version": "1.7.25",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "fNnXoLXZPf1GGhSIkbQ1Cc9AOpx/n7SQYNNVTfHIHh4="
+        },
+        {
+          "groupId": "org.slf4j",
+          "artifactId": "slf4j-parent",
+          "version": "1.7.25",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "GPXFISDbA26I1hNviDnIMtB0vdqVx1bG9CkknS21SsY="
+        }
+      ]
+    }
+  },
+  ":plugin": {
+    "buildscript": {
+      "path": ":plugin",
+      "env": "buildscript",
+      "repositories": [],
+      "artifacts": []
+    },
+    "project": {
+      "path": ":plugin",
+      "env": "project",
+      "repositories": [
+        "https://repo.maven.apache.org/maven2/"
+      ],
+      "artifacts": [
+        {
+          "groupId": "com.google.auto",
+          "artifactId": "auto-common",
+          "version": "0.10",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "uHa1/drO66fTWWZ/bE+4xvhljaGrkC/7eeyaQV3u3l8="
+        },
+        {
+          "groupId": "com.google.auto",
+          "artifactId": "auto-common",
+          "version": "0.10",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "RnreF6BwnXsdXEYeZ/NZ5O/8UjD8Yr0L4oDs4aCPAzI="
+        },
+        {
+          "groupId": "com.google.auto",
+          "artifactId": "auto-parent",
+          "version": "6",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "BfdAxmSBZdsAz2GN1WwgDEcl41jm1U9YU+C+wVc06go="
+        },
+        {
+          "groupId": "com.google.code.findbugs",
+          "artifactId": "jsr305",
+          "version": "1.3.9",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "kFchoO6pCoFTSrt+5u9OouXmRfod7wpc2IQC3xtGye0="
+        },
+        {
+          "groupId": "com.google.code.findbugs",
+          "artifactId": "jsr305",
+          "version": "1.3.9",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "/quRkTEcPXru8rZtYGSvyA09HVLZgPsHrkPHjJh7qTo="
+        },
+        {
+          "groupId": "com.google.errorprone",
+          "artifactId": "error_prone_annotations",
+          "version": "2.0.18",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "y0z62HC/VjoHGZ8+vqV2Pw3sRA/NoLMYZAsf6qeIZWs="
+        },
+        {
+          "groupId": "com.google.errorprone",
+          "artifactId": "error_prone_annotations",
+          "version": "2.0.18",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "kUQScZLW9hLCNmgl3OrrI7DVMTC4Pgvx/+EH0UcKhIc="
+        },
+        {
+          "groupId": "com.google.errorprone",
+          "artifactId": "error_prone_parent",
+          "version": "2.0.18",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "zxSZVSebB9TxHoF5hcEWSmnpMNc9t0QbQ6bvU7vShsQ="
+        },
+        {
+          "groupId": "com.google.guava",
+          "artifactId": "guava-parent",
+          "version": "20.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "8SJv0H/HKvjWIyvfpwvzHYg6GgHLxUfyOnTpBmxpLfE="
+        },
+        {
+          "groupId": "com.google.guava",
+          "artifactId": "guava-parent",
+          "version": "23.5-jre",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "1pr4WZD3fvVLSqjnRMAU3oEcrYpi55Cxd8IZtZx12Rg="
+        },
+        {
+          "groupId": "com.google.guava",
+          "artifactId": "guava",
+          "version": "20.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "NqZm47ca5/Dw3KI2VLZ+CG5sk9GS9gul39VRnbbCiMg="
+        },
+        {
+          "groupId": "com.google.guava",
+          "artifactId": "guava",
+          "version": "20.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "NjzIN2e3YNelZNUwHglGfm1I/BwcFmSx4YxQgVzhkHY="
+        },
+        {
+          "groupId": "com.google.guava",
+          "artifactId": "guava",
+          "version": "23.5-jre",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "yUZ3iO/7x+awZUo/18fgRE1wRmSjItIY6oxydrFkIrs="
+        },
+        {
+          "groupId": "com.google.guava",
+          "artifactId": "guava",
+          "version": "23.5-jre",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "TLEZ2NT4pf4purQgSDvVSOHfHffnOm9oe1ZqgoO6I9k="
+        },
+        {
+          "groupId": "com.google.j2objc",
+          "artifactId": "j2objc-annotations",
+          "version": "1.1",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "KZSn63jycQvT07+2ObLJTiGc7awNTQhNUW54wW3d7PY="
+        },
+        {
+          "groupId": "com.google.j2objc",
+          "artifactId": "j2objc-annotations",
+          "version": "1.1",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "8MmMVx6Tp8tN0Y3w+jCPCWPnoGIKwtQkTmHnCdA61r4="
+        },
+        {
+          "groupId": "com.squareup.moshi",
+          "artifactId": "moshi-kotlin-codegen",
+          "version": "1.8.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "9ntaKPRwWpgqs5WTBBT0WDUprk9CeQ4kZ1fbSm9MsmU="
+        },
+        {
+          "groupId": "com.squareup.moshi",
+          "artifactId": "moshi-kotlin-codegen",
+          "version": "1.8.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "W5vWOvAMhcIsn0grubfVz7B4mYQEHkFoegr3Vd0KNg8="
+        },
+        {
+          "groupId": "com.squareup.moshi",
+          "artifactId": "moshi-parent",
+          "version": "1.8.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "2t8UzX/uSexrgqkORdccwax1imVTFwGtlNy+98xgP7c="
+        },
+        {
+          "groupId": "com.squareup.moshi",
+          "artifactId": "moshi",
+          "version": "1.8.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "Qv50bSaU6hH+agK+zZ2iyj2v6Xye/VCg+a9cRZbnSmo="
+        },
+        {
+          "groupId": "com.squareup.moshi",
+          "artifactId": "moshi",
+          "version": "1.8.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "FLuAWbnddiACWSkN+IfjfmaaB0qsnImUAePIEC/lII8="
+        },
+        {
+          "groupId": "com.squareup.okio",
+          "artifactId": "okio-parent",
+          "version": "1.16.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "C3Qkw/qrO7UzMJbjmVf4j41QzgyYv7pxo/z6oKrwVSw="
+        },
+        {
+          "groupId": "com.squareup.okio",
+          "artifactId": "okio",
+          "version": "1.16.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "7ASE/xkDZA44RcKxCruZ7/LTIwj/40WeX5IwmkUbnH4="
+        },
+        {
+          "groupId": "com.squareup.okio",
+          "artifactId": "okio",
+          "version": "1.16.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "HSUhYhwIdRI6qRMRsv6O3v0O2T9mvm3+oYzGG8XJnjY="
+        },
+        {
+          "groupId": "com.squareup.okio",
+          "artifactId": "okio",
+          "version": "2.2.2",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "5YyXQGprsROIk3UCmaxjxqoEs4trSerhv8rRpj75uhs="
+        },
+        {
+          "groupId": "com.squareup.okio",
+          "artifactId": "okio",
+          "version": "2.2.2",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "/WIZiPf2lXAlc13G3QkLAKIPOju413ynkDYHf2KbFAs="
+        },
+        {
+          "groupId": "me.eugeniomarletti.kotlin.metadata",
+          "artifactId": "kotlin-compiler-lite",
+          "version": "1.0.3-k-1.2.40",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "fQ4eR9yYT/wPS8QoXmKY+FFaaNKmzsKPEHr5WRa0L0A="
+        },
+        {
+          "groupId": "me.eugeniomarletti.kotlin.metadata",
+          "artifactId": "kotlin-compiler-lite",
+          "version": "1.0.3-k-1.2.40",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "RZzOYInqbcmuceVUuqxR0WN1Em/otGAACBV5MhVt6LY="
+        },
+        {
+          "groupId": "me.eugeniomarletti.kotlin.metadata",
+          "artifactId": "kotlin-metadata",
+          "version": "1.4.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "gucO7w0UgtrgWelR3s4ShtYDIZYxaoFD6yxtLSlZ5I0="
+        },
+        {
+          "groupId": "me.eugeniomarletti.kotlin.metadata",
+          "artifactId": "kotlin-metadata",
+          "version": "1.4.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "1JJVW7TRHs4dBFbSfRif/vtYi+GG9BdDC0SFx/Qf+OY="
+        },
+        {
+          "groupId": "org.apache.commons",
+          "artifactId": "commons-lang3",
+          "version": "3.5",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "islvxoZRLXd/yoXhRPGWzXz+DArsIxJyKUl9Gjj/ZRw="
+        },
+        {
+          "groupId": "org.apache.commons",
+          "artifactId": "commons-lang3",
+          "version": "3.5",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "Ref7ssIx25A6XVqtr8Y2oXOk1UVg94oR/0mAKO+eNF4="
+        },
+        {
+          "groupId": "org.apache.commons",
+          "artifactId": "commons-parent",
+          "version": "41",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "sod8gBb4sokkyOkN1a5AzRHzKNAqHemNgN4iV0qzbsc="
+        },
+        {
+          "groupId": "org.apache.maven",
+          "artifactId": "maven-artifact",
+          "version": "3.5.4",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "b78l3obM46+69cUC3/V99tfJDPm+wK4P/lqyRnJDw1s="
+        },
+        {
+          "groupId": "org.apache.maven",
+          "artifactId": "maven-artifact",
+          "version": "3.5.4",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "TlRXCRfQUZHbgztcTku6Q3NeXePzf6043VoHe1lJgXo="
+        },
+        {
+          "groupId": "org.apache.maven",
+          "artifactId": "maven-builder-support",
+          "version": "3.5.4",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "Q4Vc4p/IAB72Y6W7K7BHNIGx+PgM6ns8wdQmr5lpYLI="
+        },
+        {
+          "groupId": "org.apache.maven",
+          "artifactId": "maven-builder-support",
+          "version": "3.5.4",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "uQVYL/SmxiEWLL2MdCykLe0G6mmh9IoFAE5Tj/o8nbM="
+        },
+        {
+          "groupId": "org.apache.maven",
+          "artifactId": "maven-model-builder",
+          "version": "3.5.4",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "XcENaf0KbjjzrDeIvx5j79Zorx/COgii/c/9hZIdb1Y="
+        },
+        {
+          "groupId": "org.apache.maven",
+          "artifactId": "maven-model-builder",
+          "version": "3.5.4",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "t/YeBFhitMjFKMXa5itKq7oyppzRmps4BoVwcsMPBp8="
+        },
+        {
+          "groupId": "org.apache.maven",
+          "artifactId": "maven-model",
+          "version": "3.5.4",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "XsG5TpJUwlSAVIYzpIt66Kmtp1J+KPXFdZQ/4MKrc1A="
+        },
+        {
+          "groupId": "org.apache.maven",
+          "artifactId": "maven-model",
+          "version": "3.5.4",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "6vlL7ccg1cKihoSCJU2g9xQTpo7ATxez+ENUnjnUMUE="
+        },
+        {
+          "groupId": "org.apache.maven",
+          "artifactId": "maven-parent",
+          "version": "31",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "Qv3nY6bm/oSAsWCK3/LDXQJhLieeyc5y+rtP2PtcV1M="
+        },
+        {
+          "groupId": "org.apache.maven",
+          "artifactId": "maven",
+          "version": "3.5.4",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "55XO8tL4cloZoALAkl2W+w6GrudCK1GdjyERBSopr2c="
+        },
+        {
+          "groupId": "org.apache",
+          "artifactId": "apache",
+          "version": "18",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "eDEwcoX9R1u8NrIK4454gvEcMVOx1ZMPhS1E7ajzPBc="
+        },
+        {
+          "groupId": "org.apache",
+          "artifactId": "apache",
+          "version": "19",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "kfejMJbqabrCy69tAf65NMrAAsSNjIz6nCQLQPHsId8="
+        },
+        {
+          "groupId": "org.checkerframework",
+          "artifactId": "checker-qual",
+          "version": "2.0.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "/IRBYy9fpVN0ksnwJtHIsa22p3lvRgMbBLTMBiJCeZU="
+        },
+        {
+          "groupId": "org.checkerframework",
+          "artifactId": "checker-qual",
+          "version": "2.0.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "3rEDU90rG+4OVIt0AU2AoReaj6r40NiGwBtNbKkwAGg="
+        },
+        {
+          "groupId": "org.codehaus.mojo",
+          "artifactId": "animal-sniffer-annotations",
+          "version": "1.14",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "IGgyC9a610TDZzqwSPZ+ML749RiZb6OAAzVWYAZpkF0="
+        },
+        {
+          "groupId": "org.codehaus.mojo",
+          "artifactId": "animal-sniffer-annotations",
+          "version": "1.14",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "GHnxmgWZHj7ZWRC5ZokzM5awxGeiFdxNH5ABhAS3KiY="
+        },
+        {
+          "groupId": "org.codehaus.mojo",
+          "artifactId": "animal-sniffer-parent",
+          "version": "1.14",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "9RVQoGsUEL1JYssOcd8Lkhpgp+9Hv6nEgloUvnIxbuo="
+        },
+        {
+          "groupId": "org.codehaus.mojo",
+          "artifactId": "mojo-parent",
+          "version": "34",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "Pjldb7xDwJo3dMrIaUzlJzmDBeo/1UktgOJa8n04Kpw="
+        },
+        {
+          "groupId": "org.codehaus.plexus",
+          "artifactId": "plexus-component-annotations",
+          "version": "1.7.1",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "p/7pQ123Fr/1k+n7ViK8+fJeUnGWSFkpsM1AZcQ+Yd8="
+        },
+        {
+          "groupId": "org.codehaus.plexus",
+          "artifactId": "plexus-component-annotations",
+          "version": "1.7.1",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "qQmgy+KS5UEitreF9pJKsvCbFjC3iJyADgmeJif5Gng="
+        },
+        {
+          "groupId": "org.codehaus.plexus",
+          "artifactId": "plexus-containers",
+          "version": "1.7.1",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "VWagu1HcmUwDUCBmCMe0zcybZogUl7q1ajLELtylPnk="
+        },
+        {
+          "groupId": "org.codehaus.plexus",
+          "artifactId": "plexus-interpolation",
+          "version": "1.24",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "j+K+BLBnp10C+4oanK9sHIYV8NVXfM7QLpC1IHY9L3c="
+        },
+        {
+          "groupId": "org.codehaus.plexus",
+          "artifactId": "plexus-interpolation",
+          "version": "1.24",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "tdi6wu9/0RNimCI+U0iZgK16B30cnlTAayiEZwdxgZ8="
+        },
+        {
+          "groupId": "org.codehaus.plexus",
+          "artifactId": "plexus-utils",
+          "version": "3.1.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "D/oK0ITr/1cSVAp7fqCr2kh8U9Ohj3jJjRo2ddq5v2E="
+        },
+        {
+          "groupId": "org.codehaus.plexus",
+          "artifactId": "plexus-utils",
+          "version": "3.1.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "FHPR654v++0CWBmJKweJhcXdVcGQsdgv0bVoVQWyuBk="
+        },
+        {
+          "groupId": "org.codehaus.plexus",
+          "artifactId": "plexus",
+          "version": "4.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "ChtpLX/MkNakXa4uUPRmDUj3pEUE8XSqYO80++Eyf2o="
+        },
+        {
+          "groupId": "org.codehaus",
+          "artifactId": "codehaus-parent",
+          "version": "4",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "a4cjfejC4XQM+AYnx/POPhXeGTC7JQxVoeypT6PgFN8="
+        },
+        {
+          "groupId": "org.jetbrains.intellij.deps",
+          "artifactId": "trove4j",
+          "version": "1.0.20181211",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "r/t8haPIe9z2n/HbuE3hH2PckxKTk0vAjNerGN4INgE="
+        },
+        {
+          "groupId": "org.jetbrains.intellij.deps",
+          "artifactId": "trove4j",
+          "version": "1.0.20181211",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "MQpqotkFNMMrj0bx/JjNDtrpXc38oj4oR+Xvqa4MAZo="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-annotation-processing-embeddable",
+          "version": "1.2.71",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "rPoYJ6iKfJ5VHkyqpzWrn7tsVChe4y+wawJ2/sLGx6c="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-annotation-processing-embeddable",
+          "version": "1.2.71",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "uDtOT5E2+uv6fskLjJ11vS6xwpTEku3a6fgNpUvJquE="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-annotation-processing-gradle",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "+viAMV1P1qZmzBeqXpYIx0aMcKJ5tJzMpn26KlSt9pI="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-annotation-processing-gradle",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "9X3OxdUN+KLeVw86yJcYidSUPyuqyogUACoudn0L6Mk="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-compiler-embeddable",
+          "version": "1.2.71",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "Yj5UYxDT2ontK8DPn3/t14+t2c1l0v95j6iUwU5SdmU="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-compiler-embeddable",
+          "version": "1.2.71",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "4XIB+2uoiBi8K3Vs4XnWGYJiaToL73BIUZvnPqj0200="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-compiler-embeddable",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "r6rtwyT79jlNnzlUTvzJPPxZ+KWqGhpccdYeJINmbGo="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-compiler-embeddable",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "Uyu5QViDU4ZwPnZUMH56w2ccCUfZZWGs2quaC3Lp30Q="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-reflect",
+          "version": "1.2.71",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "Hz4Qq9aNCwgWvdq3MU9hJp4B2KosocvRIMEtO03JSw8="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-reflect",
+          "version": "1.2.71",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "OiUeTEuWcSe0gO1fTVGtqebyz2Ibwz6qvkIlduJMaSs="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-reflect",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "owZcgiYzGR4KPj7hKim+wjT8SyhkpruH70jM4+ngwmo="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-reflect",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "QtTq+ZQiO5Yet71owWo7tK775B8vdL1wJ0Lv+QkXC8w="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-sam-with-receiver",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "DYASsAOo2O/p+0ADrkyyuOtJvfH6FNmPW9oKIy+BZ3I="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-sam-with-receiver",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "wdYGy0qD/mrV8VugwzRbVH/Si9DJXqqWGIO+G+BhDd4="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-script-runtime",
+          "version": "1.2.71",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "MH0KVnNEWKXlfj6niMFbIlkZEro5+BssyLCgkJRAErs="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-script-runtime",
+          "version": "1.2.71",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "NvuWlPDSbW2lK6KkmPLa4eoX0Sr0HZVf5cLwLQREI9c="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-script-runtime",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "LiW6vI3NIkucR54sFs57TFBAfSXxjWDR/SYveMK0dMs="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-script-runtime",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "65n/mMkw7B9deLEt5j+o0aqEnLp+ZjyNuYz/F83HV0c="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-scripting-compiler-embeddable",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "9Ob5/ThNQhZ+m4n5he5KSKBna/5wWy4vnRPhWR1LfAs="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-scripting-compiler-embeddable",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "zogfIC+Za2bxr3XBK3JgBI+Zy6IqDyqNXVquIGI1g1Y="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-common",
+          "version": "1.2.71",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "Y5mWh/8vzopZLdGA/7v48dIcJrQETFXNx0/zzzs88yg="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-common",
+          "version": "1.2.71",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "qMPtWJIDK56TlVJKTaKVOXXJlii5Mt8zNrJdVG58ZpM="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-common",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "zqYfe2EYleZPWFaal1f8CrDVgvEHIR4ZMODOKgrdUqc="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-common",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "HkQzMKGrEIPdEjMesYI7zaGM06YWLtxTagNeTeHXhz0="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-jdk7",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "qHh1YE/UIUDaaTiuTTXuYQgfRIJTbvxtJhW4tiahmK8="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-jdk7",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "Jke6QWznPfilAYm2gN2TuHn7031z4xEIt5+9tVAAWnY="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-jdk8",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "WCPtZqwSKhxVRC68paIJqEPM2H9WLtwxp4fz0uR/dNQ="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-jdk8",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "Vy3BzP3Nbd1GkYKm1Ty8eAKIsyXaUvJ8J/pc+mv5mYc="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib",
+          "version": "1.2.71",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "TIlcJwuH9f7ConluHYnBVAfugh3pYVJ8KFiLtGr7xos="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib",
+          "version": "1.2.71",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "cT23fJoMR6Zw+VwjsAUbm9lCs6DqH2zJu12eq6H6da4="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "OLojcNnwb1BDPgayyndblEc8LieF9BCSYHmreTxysDQ="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib",
+          "version": "1.3.21",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "nOHqMzlsW/5I7IQSoM1WHsyQnXHI+TZZZ6FPnyT9uaU="
+        },
+        {
+          "groupId": "org.jetbrains",
+          "artifactId": "annotations",
+          "version": "13.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "rOKhDcji1f00kl7KwD5JiLLA+FFlDJS4zvSbob0RFHg="
+        },
+        {
+          "groupId": "org.jetbrains",
+          "artifactId": "annotations",
+          "version": "13.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "llrrK+3/NpgZvd4b96CzuJuCR91pyIuGN112Fju4w5c="
+        },
+        {
+          "groupId": "org.sonatype.forge",
+          "artifactId": "forge-parent",
+          "version": "10",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "wU+5wytZzAMlH2CUFtt8DP8B+BHtzMtPaoZdbnBGvQs="
+        },
+        {
+          "groupId": "org.sonatype.oss",
+          "artifactId": "oss-parent",
+          "version": "7",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "tR+IZ8kranIkmVV/w6H96ne9+e9XRyL+kM5DailVlFQ="
+        }
+      ]
+    }
+  }
+}

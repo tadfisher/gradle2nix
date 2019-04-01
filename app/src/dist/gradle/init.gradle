@@ -1,0 +1,7 @@
+initscript {
+    dependencies {
+        classpath files("plugin.jar")
+    }
+}
+
+apply plugin: org.nixos.gradle2nix.Gradle2NixPlugin
