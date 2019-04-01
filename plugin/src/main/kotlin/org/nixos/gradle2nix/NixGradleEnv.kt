@@ -6,6 +6,7 @@ import okio.sink
 import okio.source
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.RegularFile
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
@@ -13,18 +14,21 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.listProperty
+import javax.inject.Inject
 
-open class NixGradleEnv : DefaultTask() {
+open class NixGradleEnv @Inject constructor(
+    objects: ObjectFactory
+) : DefaultTask() {
 
     @InputFiles
-    val inputEnvs = project.objects.fileCollection()
+    val inputEnvs = project.files()
 
     @Internal
-    val outputDir = project.objects.directoryProperty()
+    val outputDir = objects.directoryProperty()
 
     @OutputFile
-    val outputFile = project.objects.fileProperty()
-        .convention(outputDir.file("gradle-env.json"))
+    val outputFile = objects.fileProperty()
+        .conventionCompat(outputDir.file("gradle-env.json"))
 
     @TaskAction
     fun run() {

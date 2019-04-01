@@ -156,7 +156,7 @@ private class MavenPomResolver(
     override fun addRepository(repository: Repository, replace: Boolean) {}
 }
 
-fun sha256(file: File): String {
+private fun sha256(file: File): String {
     val hashSource = HashingSource.sha256(file.source())
     val hash: ByteString = hashSource.buffer().use { source ->
         source.readAll(blackholeSink())

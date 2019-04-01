@@ -1,31 +1,32 @@
 package org.nixos.gradle2nix
 
 import com.squareup.moshi.JsonClass
-import com.squareup.moshi.Moshi
 import okio.buffer
 import okio.sink
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.repositories.ArtifactRepository
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
+import org.gradle.api.file.ProjectLayout
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import java.net.URI
+import javax.inject.Inject
 
-abstract class NixEnv : DefaultTask() {
+abstract class NixEnv(layout: ProjectLayout, objects: ObjectFactory): DefaultTask() {
     abstract fun environment(): String
     abstract fun repositories(): List<String>
     abstract fun artifacts(): List<Artifact>
     abstract fun filename(): String
 
     @Internal
-    val outputDir = project.objects.directoryProperty()
-        .convention(project.layout.buildDirectory.dir("nix"))
+    val outputDir = objects.directoryProperty()
+        .conventionCompat(layout.buildDirectory.dir("nix"))
 
     @OutputFile
-    val outputFile = project.objects.fileProperty()
-        .convention(outputDir.map { it.file(filename()) })
+    val outputFile = objects.fileProperty()
+        .conventionCompat(outputDir.map { it.file(filename()) })
 
     @TaskAction
     open fun run() {
