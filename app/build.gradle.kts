@@ -1,12 +1,23 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.3.21"
+    kotlin("jvm")
     application
 }
 
 group = "org.nixos"
 version = "1.0.0-SNAPSHOT"
+
+repositories {
+    jcenter()
+    maven { url = uri("https://repo.gradle.org/gradle/libs-releases") }
+}
+
+dependencies {
+    implementation(kotlin("stdlib-jdk8"))
+    implementation("org.gradle:gradle-tooling-api:${gradle.gradleVersion}")
+    implementation("com.github.ajalt:clikt:2.0.0")
+}
 
 application {
     mainClassName = "org.nixos.gradle2nix.MainKt"
@@ -18,17 +29,6 @@ application {
             project(":plugin").file("src/main/resources/init.gradle"))
         .into("gradle")
         .rename("plugin.*\\.jar", "plugin.jar")
-}
-
-dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-    implementation("org.gradle:gradle-tooling-api:${gradle.gradleVersion}")
-    implementation("com.github.ajalt:clikt:1.7.0")
-}
-
-repositories {
-    jcenter()
-    maven { url = uri("https://repo.gradle.org/gradle/libs-releases") }
 }
 
 tasks {

@@ -2,9 +2,9 @@ plugins {
     `java-gradle-plugin`
     `kotlin-dsl`
     `maven-publish`
-    kotlin("kapt") version embeddedKotlinVersion
-    id("com.github.johnrengelman.shadow") version "4.0.0"
-    id("org.ysb33r.gradletest") version "2.0-rc.4"
+    kotlin("kapt")
+    id("com.github.johnrengelman.shadow")
+    id("org.ysb33r.gradletest")
 }
 
 group = "org.nixos"
@@ -16,8 +16,8 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.apache.maven:maven-model:3.5.4")
-    implementation("org.apache.maven:maven-model-builder:3.5.4")
+    implementation("org.apache.maven:maven-model:3.6.1")
+    implementation("org.apache.maven:maven-model-builder:3.6.1")
     implementation("com.squareup.okio:okio:2.2.2")
     implementation("com.squareup.moshi:moshi:1.8.0")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.8.0")
@@ -36,7 +36,7 @@ gradlePlugin {
 
 tasks {
     gradleTest {
-        versions("5.0", "5.1.1", "5.2.1", "5.3.1")
+        versions("5.0", "5.1.1", "5.2.1", "5.3.1", "5.4.1")
         kotlinDsl = true
     }
 

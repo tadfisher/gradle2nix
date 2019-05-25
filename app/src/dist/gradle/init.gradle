@@ -1,5 +1,3 @@
-package org.nixos.gradle2nix
-
 initscript {
     dependencies {
         classpath files("plugin.jar")
