@@ -1,10 +1,6 @@
 package org.nixos.gradle2nix
 
-import okio.ByteString
-import okio.HashingSource
-import okio.blackholeSink
-import okio.buffer
-import okio.source
+import okio.*
 import org.apache.maven.model.Parent
 import org.apache.maven.model.Repository
 import org.apache.maven.model.building.DefaultModelBuilderFactory

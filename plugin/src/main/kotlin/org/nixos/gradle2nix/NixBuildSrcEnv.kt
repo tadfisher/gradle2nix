@@ -1,9 +1,6 @@
 package org.nixos.gradle2nix
 
 import org.gradle.api.tasks.GradleBuild
-import org.gradle.api.tasks.InputDirectory
-import org.gradle.api.tasks.InputFile
-import org.gradle.api.tasks.Optional
 import org.gradle.kotlin.dsl.configure
 import java.io.File
 

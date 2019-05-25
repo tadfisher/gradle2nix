@@ -1,20 +1,13 @@
 package org.nixos.gradle2nix
 
-import org.gradle.api.file.ProjectLayout
-import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
-import org.gradle.kotlin.dsl.setProperty
+import org.gradle.kotlin.dsl.listProperty
 import java.net.URI
-import javax.inject.Inject
 
-open class NixProjectEnv @Inject constructor(
-    layout: ProjectLayout,
-    objects: ObjectFactory
-) : NixEnv(layout, objects) {
+open class NixProjectEnv : NixEnv() {
     @Input @Optional
-    val configurations = objects.setProperty<String>().empty()
-
+    val configurations = project.objects.listProperty<String>().conventionCompat(emptyList())
 
     private val resolveConfigurations by lazy {
         val configs = configurations.get()

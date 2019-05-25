@@ -2,19 +2,12 @@ package org.nixos.gradle2nix
 
 import okio.buffer
 import okio.source
-import org.gradle.api.file.ProjectLayout
-import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.InputFile
-import java.lang.IllegalStateException
 import java.net.URI
-import javax.inject.Inject
 
-open class NixBuildscriptEnv @Inject constructor(
-    layout: ProjectLayout,
-    objects: ObjectFactory
-): NixEnv(layout, objects) {
+open class NixBuildscriptEnv : NixEnv() {
     @InputFile
-    val pluginEnvFile = objects.fileProperty()
+    val pluginEnvFile = project.filePropertyCompat()
 
     private val pluginEnv: BuildEnv by lazy {
         pluginEnvFile.get().asFile.source().buffer().use { src ->

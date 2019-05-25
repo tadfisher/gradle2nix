@@ -4,26 +4,22 @@ import com.squareup.moshi.JsonClass
 import okio.buffer
 import okio.sink
 import org.gradle.api.DefaultTask
-import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.property
 import java.io.Serializable
-import javax.inject.Inject
 
-open class NixGradleDist @Inject constructor(
-    objects: ObjectFactory
-) : DefaultTask() {
+open class NixGradleDist : DefaultTask() {
     @Input
-    internal val gradleDist = objects.property<GradleDist>()
+    internal val gradleDist = project.objects.property<GradleDist>()
 
     @OutputDirectory
-    val outputDir = objects.directoryProperty()
+    val outputDir = project.directoryPropertyCompat()
 
     @OutputFile
-    val outputFile = objects.fileProperty()
+    val outputFile = project.filePropertyCompat()
         .conventionCompat(outputDir.file("gradle-dist.json"))
 
     @TaskAction

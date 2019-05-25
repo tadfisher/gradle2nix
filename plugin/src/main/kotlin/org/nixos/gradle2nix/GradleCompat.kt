@@ -5,6 +5,7 @@ import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.util.GradleVersion
@@ -45,6 +46,26 @@ internal fun DirectoryProperty.conventionCompat(
         convention(valueProvider)
     } else {
         apply { set(valueProvider) }
+    }
+}
+
+internal fun <T> ListProperty<T>.conventionCompat(
+    elements: Iterable<T>
+): ListProperty<T> {
+    return if (versionAtLeast("5.1")) {
+        convention(elements)
+    } else {
+        apply { set(elements) }
+    }
+}
+
+internal fun <T> ListProperty<T>.conventionCompat(
+    provider: Provider<out Iterable<T>>
+): ListProperty<T> {
+    return if (versionAtLeast("5.1")) {
+        convention(provider)
+    } else {
+        apply { set(provider) }
     }
 }
 

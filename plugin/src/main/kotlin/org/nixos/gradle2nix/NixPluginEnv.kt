@@ -1,10 +1,8 @@
 package org.nixos.gradle2nix
 
 import org.gradle.api.artifacts.ExternalModuleDependency
-import org.gradle.api.file.ProjectLayout
 import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.strategy.VersionSelectorScheme
 import org.gradle.api.internal.plugins.PluginImplementation
-import org.gradle.api.model.ObjectFactory
 import org.gradle.plugin.management.PluginRequest
 import org.gradle.plugin.management.internal.PluginRequestInternal
 import org.gradle.plugin.use.PluginId
@@ -17,12 +15,10 @@ import java.net.URI
 import javax.inject.Inject
 
 open class NixPluginEnv @Inject constructor(
-    layout: ProjectLayout,
-    objects: ObjectFactory,
     private val pluginDependencyResolutionServices: PluginDependencyResolutionServices,
     versionSelectorScheme: VersionSelectorScheme,
     private val pluginRequests: Collection<PluginRequest>
-) : NixEnv(layout, objects) {
+) : NixEnv() {
     private val repositories by lazy {
         pluginDependencyResolutionServices.resolveRepositoryHandler
     }

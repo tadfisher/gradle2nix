@@ -5,27 +5,16 @@ import okio.buffer
 import okio.source
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.file.RegularFile
-import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.internal.DocumentationRegistry
-import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.strategy.VersionSelectorScheme
-import org.gradle.api.internal.plugins.PluginRegistry
 import org.gradle.api.invocation.Gradle
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.wrapper.Wrapper
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.named
-import org.gradle.kotlin.dsl.property
 import org.gradle.kotlin.dsl.register
-import org.gradle.kotlin.dsl.withType
 import org.gradle.plugin.management.PluginRequest
-import org.gradle.plugin.use.internal.PluginDependencyResolutionServices
-import org.gradle.plugin.use.internal.PluginResolverFactory
 import java.io.File
 import java.net.URL
-import java.util.Locale
-import javax.inject.Inject
+import java.util.*
 
 open class Gradle2NixPlugin : Plugin<Gradle> {
     override fun apply(gradle: Gradle) {
