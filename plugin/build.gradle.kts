@@ -40,11 +40,6 @@ tasks {
         kotlinDsl = true
     }
 
-    register("gradle2nixTest", Test::class) {
-        dependsOn(gradleTest)
-
-    }
-
     gradleTestGenerator {
         dependsOn(shadowJar)
         doLast {

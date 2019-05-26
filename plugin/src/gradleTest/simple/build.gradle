@@ -11,6 +11,11 @@ dependencies {
     implementation("com.squareup.moshi:moshi:1.8.0")
 }
 
-task runGradleTest {
+tasks.register("runGradleTest") {
     dependsOn 'nixGradleEnv'
+    
+    doLast {
+        assert file("gradle-env.json").text == file("gradle/nix/gradle-env.json").text : 
+                "Mismatch: gradle-env.json"
+    }
 }

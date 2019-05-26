@@ -1,0 +1,121 @@
+{
+  ":": {
+    "plugins": {
+      "path": ":",
+      "env": "plugins",
+      "repositories": [],
+      "artifacts": []
+    },
+    "buildscript": {
+      "path": ":",
+      "env": "buildscript",
+      "repositories": [],
+      "artifacts": []
+    },
+    "project": {
+      "path": ":",
+      "env": "project",
+      "repositories": [
+        "https://jcenter.bintray.com/"
+      ],
+      "artifacts": [
+        {
+          "groupId": "com.squareup.moshi",
+          "artifactId": "moshi-parent",
+          "version": "1.8.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "2t8UzX/uSexrgqkORdccwax1imVTFwGtlNy+98xgP7c="
+        },
+        {
+          "groupId": "com.squareup.moshi",
+          "artifactId": "moshi",
+          "version": "1.8.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "Qv50bSaU6hH+agK+zZ2iyj2v6Xye/VCg+a9cRZbnSmo="
+        },
+        {
+          "groupId": "com.squareup.moshi",
+          "artifactId": "moshi",
+          "version": "1.8.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "FLuAWbnddiACWSkN+IfjfmaaB0qsnImUAePIEC/lII8="
+        },
+        {
+          "groupId": "com.squareup.okio",
+          "artifactId": "okio",
+          "version": "2.2.2",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "5YyXQGprsROIk3UCmaxjxqoEs4trSerhv8rRpj75uhs="
+        },
+        {
+          "groupId": "com.squareup.okio",
+          "artifactId": "okio",
+          "version": "2.2.2",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "/WIZiPf2lXAlc13G3QkLAKIPOju413ynkDYHf2KbFAs="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-common",
+          "version": "1.2.60",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "CbQ3WgZc8SeryZjF3PIrFmTEWvQrSJSZ16j0+Kt5P7E="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib-common",
+          "version": "1.2.60",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "gwwnrx4c8k8PUm6kV5AcQ/OMGbtvfl03Y8PSU98bjaE="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib",
+          "version": "1.2.60",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "ahMCmPUXGsUqHiSW9+rnhbb1ZBbqPMuZ5DRNBNg/8HE="
+        },
+        {
+          "groupId": "org.jetbrains.kotlin",
+          "artifactId": "kotlin-stdlib",
+          "version": "1.2.60",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "5jKJkgnmtMqrlA/YLk7GOjLjJkP4Fff6cJdkeJDXnxg="
+        },
+        {
+          "groupId": "org.jetbrains",
+          "artifactId": "annotations",
+          "version": "13.0",
+          "classifier": "",
+          "extension": "jar",
+          "sha256": "rOKhDcji1f00kl7KwD5JiLLA+FFlDJS4zvSbob0RFHg="
+        },
+        {
+          "groupId": "org.jetbrains",
+          "artifactId": "annotations",
+          "version": "13.0",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "llrrK+3/NpgZvd4b96CzuJuCR91pyIuGN112Fju4w5c="
+        },
+        {
+          "groupId": "org.sonatype.oss",
+          "artifactId": "oss-parent",
+          "version": "7",
+          "classifier": "",
+          "extension": "pom",
+          "sha256": "tR+IZ8kranIkmVV/w6H96ne9+e9XRyL+kM5DailVlFQ="
+        }
+      ]
+    }
+  }
+}

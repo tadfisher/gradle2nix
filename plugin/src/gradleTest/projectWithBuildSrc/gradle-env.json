@@ -1,0 +1,22 @@
+{
+  ":": {
+    "plugins": {
+      "path": ":",
+      "env": "plugins",
+      "repositories": [],
+      "artifacts": []
+    },
+    "buildscript": {
+      "path": ":",
+      "env": "buildscript",
+      "repositories": [],
+      "artifacts": []
+    },
+    "project": {
+      "path": ":",
+      "env": "project",
+      "repositories": [],
+      "artifacts": []
+    }
+  }
+}

@@ -1,3 +1,9 @@
-task runGradleTest {
+tasks.register("runGradleTest") {
     dependsOn 'nixGradleEnv'
+
+    doLast {
+        assert file("gradle-env.json").text == file("gradle/nix/gradle-env.json").text: "Mismatch: gradle-env.json"
+        assert (file("buildSrc/gradle-env.json").text == file("buildSrc/gradle/nix/gradle-env.json").text) :
+                "Mismatch (buildSrc): gradle-env.json"
+    }
 }
