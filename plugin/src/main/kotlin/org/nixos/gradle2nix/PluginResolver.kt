@@ -11,15 +11,14 @@ import org.gradle.plugin.use.resolve.internal.ArtifactRepositoriesPluginResolver
 import org.gradle.plugin.use.resolve.internal.PluginResolution
 import org.gradle.plugin.use.resolve.internal.PluginResolutionResult
 import org.gradle.plugin.use.resolve.internal.PluginResolveContext
-import java.net.URI
 import javax.inject.Inject
 
-open class NixPluginEnv @Inject constructor(
+open class PluginResolver @Inject constructor(
     private val pluginDependencyResolutionServices: PluginDependencyResolutionServices,
     versionSelectorScheme: VersionSelectorScheme,
     private val pluginRequests: Collection<PluginRequest>
-) : NixEnv() {
-    private val repositories by lazy {
+) {
+    val repositories by lazy {
         pluginDependencyResolutionServices.resolveRepositoryHandler
     }
 
@@ -29,10 +28,9 @@ open class NixPluginEnv @Inject constructor(
     )
 
     private val resolver by lazy {
-        Resolver(
+        DependencyResolver(
             pluginDependencyResolutionServices.configurationContainer,
-            pluginDependencyResolutionServices.dependencyHandler,
-            logger
+            pluginDependencyResolutionServices.dependencyHandler
         )
     }
 
@@ -50,61 +48,53 @@ open class NixPluginEnv @Inject constructor(
         }
     }
 
-    override fun environment(): String = "plugins"
-
-    override fun repositories(): List<String> {
-        return repositories.flatMap { it.repositoryUrls() }.map(URI::toString) +
-            pluginContext.repositories.toList()
-    }
-
-    override fun artifacts(): List<Artifact> {
+    fun artifacts(): List<DefaultArtifact> {
         return (resolver.resolveDependencies(pluginContext.dependencies, true) +
             resolver.resolvePoms(pluginContext.dependencies, true))
             .sorted()
             .distinct()
     }
 
-    override fun filename(): String = "plugins.json"
-}
+    private class PluginResult : PluginResolutionResult {
+        val found = mutableSetOf<PluginResolution>()
 
-private class PluginResult : PluginResolutionResult {
-    val found = mutableSetOf<PluginResolution>()
+        override fun notFound(sourceDescription: String?, notFoundMessage: String?) {}
 
-    override fun notFound(sourceDescription: String?, notFoundMessage: String?) {}
+        override fun notFound(
+            sourceDescription: String?,
+            notFoundMessage: String?,
+            notFoundDetail: String?
+        ) {
+        }
 
-    override fun notFound(
-        sourceDescription: String?,
-        notFoundMessage: String?,
-        notFoundDetail: String?
-    ) {
+        override fun isFound(): Boolean = true
+
+        override fun found(sourceDescription: String, pluginResolution: PluginResolution) {
+            found.add(pluginResolution)
+        }
     }
 
-    override fun isFound(): Boolean = true
+    private class PluginContext : PluginResolveContext {
+        val dependencies = mutableSetOf<ExternalModuleDependency>()
+        val repositories = mutableSetOf<String>()
 
-    override fun found(sourceDescription: String, pluginResolution: PluginResolution) {
-        found.add(pluginResolution)
-    }
-}
+        override fun add(plugin: PluginImplementation<*>) {
+            println("add: $plugin")
+        }
 
-private class PluginContext : PluginResolveContext {
-    val dependencies = mutableSetOf<ExternalModuleDependency>()
-    val repositories = mutableSetOf<String>()
+        override fun addFromDifferentLoader(plugin: PluginImplementation<*>) {
+            println("addFromDifferentLoader: $plugin")
+        }
 
-    override fun add(plugin: PluginImplementation<*>) {
-        println("add: $plugin")
-    }
+        override fun addLegacy(pluginId: PluginId, m2RepoUrl: String, dependencyNotation: Any) {
+            repositories.add(m2RepoUrl)
+        }
 
-    override fun addFromDifferentLoader(plugin: PluginImplementation<*>) {
-        println("addFromDifferentLoader: $plugin")
-    }
-
-    override fun addLegacy(pluginId: PluginId, m2RepoUrl: String, dependencyNotation: Any) {
-        repositories.add(m2RepoUrl)
-    }
-
-    override fun addLegacy(pluginId: PluginId, dependencyNotation: Any) {
-        if (dependencyNotation is ExternalModuleDependency) {
-            dependencies.add(dependencyNotation)
+        override fun addLegacy(pluginId: PluginId, dependencyNotation: Any) {
+            if (dependencyNotation is ExternalModuleDependency) {
+                dependencies.add(dependencyNotation)
+            }
         }
     }
 }
+

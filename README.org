@@ -1,0 +1,12 @@
+* gradle2nix
+
+Application and Gradle plugin to generate Nix build scripts for Gradle-based
+projects.
+
+** Installation
+
+
+** Usage
+
+
+** License

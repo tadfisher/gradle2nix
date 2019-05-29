@@ -1,45 +1,40 @@
 package org.nixos.gradle2nix
 
 import org.gradle.tooling.GradleConnector
-import java.io.File
+import org.gradle.tooling.ProjectConnection
 
-class GradleRunner(
-    private val projectDir: File,
-    private val useWrapper: Boolean,
-    private val gradleVersion: String?,
-    private val configurations: List<String>
-) {
-    companion object {
-        val initScript: String = System.getProperty("org.nixos.gradle2nix.initScript")
+private val initScript: String = System.getProperty("org.nixos.gradle2nix.initScript")
+
+fun connect(config: Config): ProjectConnection =
+    GradleConnector.newConnector()
+        .apply {
+            if (config.wrapper) {
+                useBuildDistribution()
+            } else if (config.gradleVersion != null) {
+                useGradleVersion(config.gradleVersion)
+            }
+        }
+        .forProjectDirectory(config.projectDir)
+        .connect()
+
+fun ProjectConnection.getBuildModel(config: Config, path: String): DefaultBuild {
+    val arguments = mutableListOf(
+        "--init-script=$initScript",
+        "-Dorg.nixos.gradle2nix.configurations='${config.configurations.joinToString(",")}'"
+    )
+
+    if (path.isNotEmpty()) {
+        arguments += "--project-dir=$path"
     }
 
-    fun runGradle() {
-        GradleConnector.newConnector()
-            .apply {
-                if (useWrapper) {
-                    useBuildDistribution()
-                } else if (gradleVersion != null) {
-                    useGradleVersion(gradleVersion)
-                }
+    return model(Build::class.java)
+        .withArguments(arguments)
+        .apply {
+            if (config.verbose) {
+                setStandardOutput(System.out)
+                setStandardError(System.err)
             }
-            .forProjectDirectory(projectDir)
-            .connect()
-            .use { connection ->
-                connection.newBuild()
-                    .withArguments("--init-script", initScript)
-                    .apply {
-                        if (configurations.isNotEmpty()) {
-                            withArguments(
-                                "-Dorg.nixos.gradle2nix.configurations=${configurations.joinToString(
-                                    ","
-                                )}"
-                            )
-                        }
-                    }
-                    .forTasks("nixGradleEnv")
-                    .setStandardOutput(System.out)
-                    .setStandardError(System.err)
-                    .run()
-            }
-    }
+        }
+        .get()
+        .let { DefaultBuild(it) }
 }

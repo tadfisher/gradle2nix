@@ -1,2 +1,1 @@
-include(":app")
-include(":plugin")
+include(":app", ":model", ":plugin")

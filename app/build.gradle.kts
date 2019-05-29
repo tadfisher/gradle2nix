@@ -14,9 +14,17 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":model"))
     implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("reflect"))
     implementation("org.gradle:gradle-tooling-api:${gradle.gradleVersion}")
     implementation("com.github.ajalt:clikt:2.0.0")
+    implementation("org.slf4j:slf4j-api:1.7.26")
+    runtimeOnly("org.slf4j:slf4j-simple:1.7.26")
+    implementation("com.squareup.moshi:moshi:1.8.0")
+    implementation("com.squareup.moshi:moshi-adapters:1.8.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.8.0")
+    implementation("com.squareup.okio:okio:2.2.2")
 }
 
 application {

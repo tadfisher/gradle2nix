@@ -15,27 +15,28 @@ import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.artifacts.result.ResolvedArtifactResult
 import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
 import org.gradle.maven.MavenModule
 import org.gradle.maven.MavenPomArtifact
 import java.io.File
 import java.io.InputStream
 import java.net.URI
 
-internal class Resolver(
+internal class DependencyResolver(
     private val configurations: ConfigurationContainer,
     private val dependencies: DependencyHandler,
-    private val logger: Logger
+    private val logger: Logger = Logging.getLogger(DependencyResolver::class.simpleName)
 ) {
     private val mavenPomResolver = MavenPomResolver(configurations, dependencies)
 
-    fun resolveDependencies(configuration: Configuration): Set<Artifact> {
+    fun resolveDependencies(configuration: Configuration): Set<DefaultArtifact> {
         if (!configuration.isCanBeResolved) {
             logger.warn("Cannot resolve configuration ${configuration.name}; ignoring.")
             return emptySet()
         }
         return configuration.resolvedConfiguration.resolvedArtifacts.mapTo(sortedSetOf()) {
             with (it) {
-                Artifact(
+                DefaultArtifact(
                     groupId = moduleVersion.id.group,
                     artifactId = moduleVersion.id.name,
                     version = moduleVersion.id.version,
@@ -50,13 +51,13 @@ internal class Resolver(
     fun resolveDependencies(
         dependencies: Collection<Dependency>,
         includeTransitive: Boolean = false
-    ): Set<Artifact> {
+    ): Set<DefaultArtifact> {
         val configuration = configurations.detachedConfiguration(*(dependencies.toTypedArray()))
         configuration.isTransitive = includeTransitive
         return resolveDependencies(configuration)
     }
 
-    fun resolvePoms(configuration: Configuration): Set<Artifact> {
+    fun resolvePoms(configuration: Configuration): Set<DefaultArtifact> {
         return dependencies.createArtifactResolutionQuery()
             .forComponents(configuration.incoming.resolutionResult.allComponents.map { it.id })
             .withArtifacts(MavenModule::class.java, MavenPomArtifact::class.java)
@@ -73,7 +74,7 @@ internal class Resolver(
                 }
             }
             .flatMapTo(sortedSetOf()) { (id, artifact) ->
-                sequenceOf(Artifact(
+                sequenceOf(DefaultArtifact(
                     groupId = id.group,
                     artifactId = id.module,
                     version = id.version,
@@ -87,7 +88,7 @@ internal class Resolver(
     fun resolvePoms(
         dependencies: Collection<Dependency>,
         includeTransitive: Boolean = false
-    ): Set<Artifact> {
+    ): Set<DefaultArtifact> {
         val configuration = configurations.detachedConfiguration(*(dependencies.toTypedArray()))
         configuration.isTransitive = includeTransitive
         return resolvePoms(configuration)
@@ -99,10 +100,10 @@ private class MavenPomResolver(
     private val dependencies: DependencyHandler
 ) : ModelResolver {
     private val modelBuilder = DefaultModelBuilderFactory().newInstance()
-    private val resolvedDependencies = mutableSetOf<Artifact>()
+    private val resolvedDependencies = mutableSetOf<DefaultArtifact>()
 
     @Synchronized
-    fun resolve(pom: File): Set<Artifact> {
+    fun resolve(pom: File): Set<DefaultArtifact> {
         resolvedDependencies.clear()
         modelBuilder.build(
             DefaultModelBuildingRequest()
@@ -124,7 +125,7 @@ private class MavenPomResolver(
         val file = configurations
             .detachedConfiguration(dependencies.create("$groupId:$artifactId:$version@pom"))
             .singleFile
-        resolvedDependencies.add(Artifact(
+        resolvedDependencies.add(DefaultArtifact(
             groupId = groupId,
             artifactId = artifactId,
             version = version,

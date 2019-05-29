@@ -14,6 +14,9 @@ let
   mkFilename = artifact: with artifact;
     "${artifactId}-${version}${lib.optionalString (classifier != "") "-${classifier}"}.${extension}";
 
+  mkMavenUrls = repo: artifact:
+
+
   mkArtifactUrl = base: artifact:
     "${lib.removeSuffix "/" base}/${mkPath artifact}/${mkFilename artifact}";
 
