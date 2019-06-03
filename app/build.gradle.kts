@@ -18,13 +18,13 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
     implementation("org.gradle:gradle-tooling-api:${gradle.gradleVersion}")
-    implementation("com.github.ajalt:clikt:2.0.0")
-    implementation("org.slf4j:slf4j-api:1.7.26")
-    runtimeOnly("org.slf4j:slf4j-simple:1.7.26")
-    implementation("com.squareup.moshi:moshi:1.8.0")
-    implementation("com.squareup.moshi:moshi-adapters:1.8.0")
-    implementation("com.squareup.moshi:moshi-kotlin:1.8.0")
-    implementation("com.squareup.okio:okio:2.2.2")
+    implementation("com.github.ajalt:clikt:latest.release")
+    implementation("org.slf4j:slf4j-api:latest.release")
+    runtimeOnly("org.slf4j:slf4j-simple:latest.release")
+    implementation("com.squareup.moshi:moshi:latest.release")
+    implementation("com.squareup.moshi:moshi-adapters:latest.release")
+    implementation("com.squareup.moshi:moshi-kotlin:latest.release")
+    implementation("com.squareup.okio:okio:latest.release")
 }
 
 application {
@@ -40,13 +40,13 @@ application {
 }
 
 tasks {
-    val startScripts by existing(CreateStartScripts::class)
-    startScripts {
+    named<CreateStartScripts>("startScripts") {
         doLast {
             unixScript.writeText(unixScript.readText().replace("@APP_HOME@", "\$APP_HOME"))
             windowsScript.writeText(windowsScript.readText().replace("@APP_HOME@", "%APP_HOME%"))
         }
     }
+
     withType<KotlinCompile> {
         kotlinOptions {
             jvmTarget = "1.8"
