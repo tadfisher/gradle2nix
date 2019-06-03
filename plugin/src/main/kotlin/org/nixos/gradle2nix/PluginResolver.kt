@@ -1,8 +1,10 @@
 package org.nixos.gradle2nix
 
 import org.gradle.api.artifacts.ExternalModuleDependency
+import org.gradle.api.internal.GradleInternal
 import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.strategy.VersionSelectorScheme
 import org.gradle.api.internal.plugins.PluginImplementation
+import org.gradle.kotlin.dsl.support.serviceOf
 import org.gradle.plugin.management.PluginRequest
 import org.gradle.plugin.management.internal.PluginRequestInternal
 import org.gradle.plugin.use.PluginId
@@ -11,21 +13,20 @@ import org.gradle.plugin.use.resolve.internal.ArtifactRepositoriesPluginResolver
 import org.gradle.plugin.use.resolve.internal.PluginResolution
 import org.gradle.plugin.use.resolve.internal.PluginResolutionResult
 import org.gradle.plugin.use.resolve.internal.PluginResolveContext
-import javax.inject.Inject
 
-open class PluginResolver @Inject constructor(
-    private val pluginDependencyResolutionServices: PluginDependencyResolutionServices,
-    versionSelectorScheme: VersionSelectorScheme,
+internal class PluginResolver(
+    gradle: GradleInternal,
     private val pluginRequests: Collection<PluginRequest>
 ) {
-    val repositories by lazy {
-        pluginDependencyResolutionServices.resolveRepositoryHandler
-    }
+    private val pluginDependencyResolutionServices = gradle.serviceOf<PluginDependencyResolutionServices>()
+    private val versionSelectorScheme = gradle.serviceOf<VersionSelectorScheme>()
 
     private val artifactRepositoriesPluginResolver = ArtifactRepositoriesPluginResolver(
         pluginDependencyResolutionServices,
         versionSelectorScheme
     )
+
+    val repositories = pluginDependencyResolutionServices.resolveRepositoryHandler
 
     private val resolver by lazy {
         DependencyResolver(

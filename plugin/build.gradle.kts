@@ -25,8 +25,15 @@ dependencyLocking {
     lockAllConfigurations()
 }
 
+configurations {
+    compile {
+        dependencies.remove(project.dependencies.gradleApi())
+    }
+}
+
 dependencies {
     implementation(project(":model"))
+    shadow(gradleApi())
     compileOnly("org.gradle:gradle-tooling-api:${gradle.gradleVersion}")
     implementation("org.apache.maven:maven-model:latest.release")
     implementation("org.apache.maven:maven-model-builder:latest.release")
@@ -56,7 +63,7 @@ kotlinDslPluginOptions {
 
 stutter {
     java(8) {
-        compatibleRange("4.5")
+        compatibleRange("4.4")
     }
     java(11) {
         compatibleRange("5.0")
@@ -64,26 +71,11 @@ stutter {
 }
 
 tasks {
+    pluginUnderTestMetadata {
+        pluginClasspath.setFrom(files(shadowJar))
+    }
+
     withType<Test> {
         useJUnitPlatform()
     }
-
-//    gradleTestGenerator {
-//        dependsOn(shadowJar)
-//        doLast {
-//            file(gradleTest.get().initScript).bufferedWriter().use { out ->
-//                out.append("""
-//                    initscript {
-//                        dependencies {
-//                            classpath fileTree('file:${buildDir.absolutePath}/libs'.toURI()) {
-//                                include '*.jar'
-//                            }
-//                        }
-//                    }
-//
-//                    apply plugin: org.nixos.gradle2nix.Gradle2NixPlugin
-//                """.trimIndent())
-//            }
-//        }
-//    }
 }

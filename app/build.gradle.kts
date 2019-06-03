@@ -40,7 +40,7 @@ application {
 }
 
 tasks {
-    named<CreateStartScripts>("startScripts") {
+    startScripts {
         doLast {
             unixScript.writeText(unixScript.readText().replace("@APP_HOME@", "\$APP_HOME"))
             windowsScript.writeText(windowsScript.readText().replace("@APP_HOME@", "%APP_HOME%"))

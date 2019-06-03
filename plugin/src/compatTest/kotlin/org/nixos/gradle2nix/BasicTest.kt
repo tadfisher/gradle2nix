@@ -1,9 +1,5 @@
 package org.nixos.gradle2nix
 
-import org.gradle.internal.classpath.DefaultClassPath
-import org.gradle.testkit.runner.internal.PluginUnderTestMetadataReading
-import org.gradle.tooling.GradleConnector
-import org.gradle.tooling.internal.consumer.DefaultModelBuilder
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
@@ -11,32 +7,11 @@ import kotlin.test.assertEquals
 
 
 class BasicTest {
-    companion object {
-        @JvmStatic @TempDir lateinit var projectDir: File
-
-        val initScript: File by lazy {
-            projectDir.resolve("init.gradle").also {
-                it.writer().use { out ->
-//                    val classpath = DefaultClassPath.of(PluginUnderTestMetadataReading.readImplementationClasspath())
-//                        .asFiles.joinToString(prefix = "'", postfix = "'")
-//                    out.appendln("""
-//                        initscript {
-//                            dependencies {
-//                                classpath files($classpath)
-//                            }
-//                        }
-//
-//                        apply plugin: org.nixos.gradle2nix.Gradle2NixPlugin
-//                    """.trimIndent())
-                    out.appendln("apply plugin: org.nixos.gradle2nix.Gradle2NixPlugin")
-                }
-            }
-        }
-    }
+    @TempDir lateinit var projectDir: File
 
     @Test
     fun `builds basic project with kotlin dsl`() {
-        projectDir.resolve("build.gradle.kts").writeText("""
+        val model = projectDir.buildKotlin("""
             plugins {
                 java
             }
@@ -51,20 +26,48 @@ class BasicTest {
             }
         """.trimIndent())
 
-        val connection = GradleConnector.newConnector()
-            .useGradleVersion(System.getProperty("compat.gradle.version"))
-            .forProjectDirectory(projectDir)
-            .connect()
+        assertEquals(model.gradle.version, System.getProperty("compat.gradle.version"))
 
-        val model = (connection.model(Build::class.java) as DefaultModelBuilder<Build>)
-            .withArguments(
-                "--init-script=$initScript",
-                "--stacktrace"
+        with(model.rootProject.projectDependencies) {
+            with(repositories) {
+                assertEquals(1, maven.size)
+                assertEquals(maven[0].urls[0], "https://jcenter.bintray.com/")
+            }
+
+            assertArtifacts(
+                pom("com.squareup.moshi:moshi-parent:1.8.0"),
+                jar("com.squareup.moshi:moshi:1.8.0"),
+                pom("com.squareup.moshi:moshi:1.8.0"),
+                jar("com.squareup.okio:okio:2.2.2"),
+                pom("com.squareup.okio:okio:2.2.2"),
+                jar("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
+                pom("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
+                jar("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
+                pom("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
+                jar("org.jetbrains:annotations:13.0"),
+                pom("org.jetbrains:annotations:13.0"),
+                pom("org.sonatype.oss:oss-parent:7"),
+                actual = artifacts
             )
-            .withInjectedClassPath(DefaultClassPath.of(PluginUnderTestMetadataReading.readImplementationClasspath()))
-            .setStandardOutput(System.out)
-            .setStandardError(System.out)
-            .get()
+        }
+    }
+
+    @Test
+    fun `builds basic project with groovy dsl`() {
+        val model = projectDir.buildGroovy("""
+            plugins {
+                id("java")
+            }
+
+            repositories {
+                jcenter()
+            }
+
+            dependencies {
+                implementation 'com.squareup.okio:okio:2.2.2'
+                implementation 'com.squareup.moshi:moshi:1.8.0'
+            }
+        """.trimIndent())
 
         assertEquals(model.gradle.version, System.getProperty("compat.gradle.version"))
 
@@ -73,6 +76,22 @@ class BasicTest {
                 assertEquals(1, maven.size)
                 assertEquals(maven[0].urls[0], "https://jcenter.bintray.com/")
             }
+
+            assertArtifacts(
+                pom("com.squareup.moshi:moshi-parent:1.8.0"),
+                jar("com.squareup.moshi:moshi:1.8.0"),
+                pom("com.squareup.moshi:moshi:1.8.0"),
+                jar("com.squareup.okio:okio:2.2.2"),
+                pom("com.squareup.okio:okio:2.2.2"),
+                jar("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
+                pom("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
+                jar("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
+                pom("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
+                jar("org.jetbrains:annotations:13.0"),
+                pom("org.jetbrains:annotations:13.0"),
+                pom("org.sonatype.oss:oss-parent:7"),
+                actual = artifacts
+            )
         }
     }
 }

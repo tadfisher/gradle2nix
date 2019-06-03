@@ -4,14 +4,15 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
+import org.gradle.api.internal.GradleInternal
 import org.gradle.api.invocation.Gradle
 import org.gradle.api.tasks.wrapper.Wrapper
-import org.gradle.kotlin.dsl.named
-import org.gradle.kotlin.dsl.newInstance
+import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.support.serviceOf
 import org.gradle.plugin.management.PluginRequest
 import org.gradle.tooling.provider.model.ToolingModelBuilder
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
+import org.gradle.util.GradleVersion
 import java.net.URL
 import java.util.*
 import org.nixos.gradle2nix.Gradle as NixGradle
@@ -64,12 +65,12 @@ private class NixToolingModelBuilder(
 }
 
 private fun Project.buildGradle(): DefaultGradle =
-    with(tasks.named<Wrapper>("wrapper").get()) {
+    with(tasks.getByName<Wrapper>("wrapper")) {
         DefaultGradle(
             version = gradleVersion,
             type = distributionType.name.toLowerCase(Locale.US),
             url = distributionUrl,
-            sha256 = distributionSha256Sum ?: fetchDistSha256(distributionUrl),
+            sha256 = sha256,
             nativeVersion = gradle.gradleHomeDir?.resolve("lib")?.listFiles()
                 ?.firstOrNull { f -> nativePlatformJarRegex matches f.name }?.let { nf ->
                     nativePlatformJarRegex.find(nf.name)?.groupValues?.get(1)
@@ -85,7 +86,7 @@ private fun Project.buildGradle(): DefaultGradle =
     }
 
 private fun Project.buildPlugins(pluginRequests: List<PluginRequest>): DefaultDependencies =
-    with(objects.newInstance<PluginResolver>(pluginRequests)) {
+    with(PluginResolver(gradle as GradleInternal, pluginRequests)) {
         DefaultDependencies(repositories.repositories(), artifacts())
     }
 
@@ -151,3 +152,12 @@ internal fun RepositoryHandler.repositories() = DefaultRepositories(
             DefaultMaven(listOf(repo.url.toString()) + repo.artifactUrls.map { it.toString() })
         }
 )
+
+private val Wrapper.sha256: String
+    get() {
+        return if (GradleVersion.current() < GradleVersion.version("4.5")) {
+            fetchDistSha256(distributionUrl)
+        } else {
+            distributionSha256Sum ?: fetchDistSha256(distributionUrl)
+        }
+    }
