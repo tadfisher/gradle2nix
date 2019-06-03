@@ -1,7 +1,6 @@
 # This is a Gradle generated file for dependency locking.
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
-com.squareup.okio:okio:2.2.2
 org.apache.commons:commons-lang3:3.8.1
 org.apache.maven:maven-artifact:3.6.1
 org.apache.maven:maven-builder-support:3.6.1

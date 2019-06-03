@@ -30,7 +30,6 @@ dependencies {
     compileOnly("org.gradle:gradle-tooling-api:${gradle.gradleVersion}")
     implementation("org.apache.maven:maven-model:latest.release")
     implementation("org.apache.maven:maven-model-builder:latest.release")
-    implementation("com.squareup.okio:okio:latest.release")
 
     compatTestImplementation(embeddedKotlin("stdlib-jdk8"))
     compatTestImplementation(embeddedKotlin("test-junit5"))

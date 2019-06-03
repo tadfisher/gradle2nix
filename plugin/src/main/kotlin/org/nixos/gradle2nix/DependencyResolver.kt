@@ -1,6 +1,5 @@
 package org.nixos.gradle2nix
 
-import okio.*
 import org.apache.maven.model.Parent
 import org.apache.maven.model.Repository
 import org.apache.maven.model.building.DefaultModelBuilderFactory
@@ -21,6 +20,7 @@ import org.gradle.maven.MavenPomArtifact
 import java.io.File
 import java.io.InputStream
 import java.net.URI
+import java.security.MessageDigest
 
 internal class DependencyResolver(
     private val configurations: ConfigurationContainer,
@@ -153,11 +153,14 @@ private class MavenPomResolver(
     override fun addRepository(repository: Repository, replace: Boolean) {}
 }
 
-private fun sha256(file: File): String {
-    val hashSource = HashingSource.sha256(file.source())
-    val hash: ByteString = hashSource.buffer().use { source ->
-        source.readAll(blackholeSink())
-        hashSource.hash
-    }
-    return hash.base64()
+private val HEX = "0123456789ABCDEF"
+
+private fun sha256(file: File): String = buildString {
+    MessageDigest.getInstance("SHA-256").digest(file.readBytes())
+        .asSequence()
+        .map { it.toInt() }
+        .forEach {
+            append(HEX[it shr 4 and 0x0f])
+            append(HEX[it and 0x0f])
+        }
 }

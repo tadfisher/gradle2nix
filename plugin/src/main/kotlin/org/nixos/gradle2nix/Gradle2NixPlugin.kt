@@ -1,7 +1,5 @@
 package org.nixos.gradle2nix
 
-import okio.buffer
-import okio.source
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
@@ -140,9 +138,7 @@ private fun Project.projectDependencies(explicitConfigurations: List<String>): D
 private fun fetchDistSha256(url: String): String {
     return URL("$url.sha256").openConnection().run {
         connect()
-        getInputStream().source().buffer().use { source ->
-            source.readUtf8()
-        }
+        getInputStream().reader().use { it.readText() }
     }
 }
 
