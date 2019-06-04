@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
+    kotlin("kapt")
     application
 }
 
@@ -24,6 +25,7 @@ dependencies {
     implementation("com.squareup.moshi:moshi:latest.release")
     implementation("com.squareup.moshi:moshi-adapters:latest.release")
     implementation("com.squareup.moshi:moshi-kotlin:latest.release")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:latest.release")
     implementation("com.squareup.okio:okio:latest.release")
 }
 

@@ -2,6 +2,8 @@ package org.nixos.gradle2nix
 
 import com.github.ajalt.clikt.completion.CompletionCandidates
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.context
+import com.github.ajalt.clikt.output.CliktHelpFormatter
 import com.github.ajalt.clikt.parameters.arguments.ProcessedArgument
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
@@ -9,6 +11,7 @@ import com.github.ajalt.clikt.parameters.arguments.default
 import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.file
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import okio.buffer
 import okio.sink
 import java.io.File
@@ -20,33 +23,30 @@ data class Config(
     val projectDir: File,
     val includes: List<File>,
     val buildSrc: Boolean,
-    val verbose: Boolean
+    val quiet: Boolean
 ) {
     val allProjects = listOf(projectDir) + includes
 }
 
-class Main : CliktCommand() {
+class Main : CliktCommand(
+    name = "gradle2nix"
+) {
     val wrapper: Boolean by option("--gradle-wrapper", "-w",
         help = "Use the project's gradle wrapper for building")
         .flag()
 
     val gradleVersion: String? by option("--gradle-version", "-g",
+        metavar = "VERSION",
         help = "Use a specific Gradle version")
 
-    val configurations: List<String> by option(help = "Project configuration(s)").multiple()
-
-    val projectDir: File by argument(help = "Path to the project root")
-        .projectDir()
-        .default(File("."))
-
-    val outputDir: File by option("--out", "-o",
-        help = "Path to write Nix environment files")
-        .file(fileOkay = false, folderOkay = true)
-        .default(File("."))
+    val configurations: List<String> by option("--configuration", "-c",
+        metavar = "NAME",
+        help = "Add a configuration to resolve (default: all configurations)")
+        .multiple()
 
     val includes: List<File> by option("--include", "-i",
-        help = "Path to included build(s)",
-        metavar = "DIR")
+        metavar = "DIR",
+        help = "Add an additional project to include")
         .file(exists = true, fileOkay = false, folderOkay = true, readable = true)
         .multiple()
         .validate { files ->
@@ -58,32 +58,62 @@ class Main : CliktCommand() {
             }
         }
 
-    val buildSrc: Boolean by option("--enableBuildSrc", help = "Include buildSrc project")
-        .flag("--disableBuildSrc", default = true)
+    val outDir: File? by option("--out-dir", "-o",
+        metavar = "DIR",
+        help = "Path to write generated files (default: PROJECT-DIR)")
+        .file(fileOkay = false, folderOkay = true)
 
-    val verbose: Boolean by option("--verbose", "-v", help = "Enable verbose logging")
+    val envFile: String by option("--env", "-e",
+        metavar = "FILENAME",
+        help = "Name of the environment file")
+        .default("gradle-env.json")
+
+    val buildSrc: Boolean by option("--build-src", "-b", help = "Include buildSrc project (default: true)")
+        .flag("--no-build-src", "-nb", default = true)
+
+    val quiet: Boolean by option("--quiet", "-q", help = "Disable logging")
         .flag(default = false)
 
-    override fun run() {
-        val config = Config(wrapper, gradleVersion, configurations, projectDir, includes, buildSrc, verbose)
-        val (log, warn, error) = Logger(verbose = config.verbose)
+    val projectDir: File by argument("PROJECT-DIR", help = "Path to the project root (default: .)")
+        .projectDir()
+        .default(File("."))
 
-        val json by lazy { Moshi.Builder().build().adapter(DefaultBuild::class.java).indent("  ") }
-        val out by lazy { outputDir.also { it.mkdirs() }}
+    init {
+        context {
+            helpFormatter = CliktHelpFormatter(showDefaultValues = true)
+        }
+    }
+
+    override fun run() {
+        val config = Config(wrapper, gradleVersion, configurations, projectDir, includes, buildSrc, quiet)
+        val (log, _, _) = Logger(verbose = !config.quiet)
 
         val paths = resolveProjects(config).map { p ->
             p.toRelativeString(config.projectDir)
         }
 
-        connect(config).use { connection ->
-            for (project in paths) {
-                log("Resolving project model: ${project.takeIf { it.isNotEmpty() } ?: "root project"}")
-                val build = connection.getBuildModel(config, project)
-                val filename = build.rootProject.name + ".json"
-                val file = out.resolve(filename)
-                file.sink().buffer().use { sink -> json.toJson(sink, build) }
-                log("  --> $file")
+        val models = connect(config).use { connection ->
+            paths.associate { project ->
+                log("Resolving project model: ${project.takeIf { it.isNotEmpty() } ?: "root project"}...")
+                project to connection.getBuildModel(config, project)
             }
+        }
+
+        log("Building environment...")
+        val nixGradleEnv = buildEnv(models)
+
+        val outDir = outDir ?: projectDir
+        val envFile = outDir.resolve(envFile)
+        log("Writing environment to $envFile")
+
+        envFile.sink().buffer().use { out ->
+            Moshi.Builder().build()
+                .adapter<Map<String, NixGradleEnv>>(
+                    Types.newParameterizedType(Map::class.java, String::class.java, NixGradleEnv::class.java)
+                )
+                .indent("  ")
+                .toJson(out, nixGradleEnv)
+            out.flush()
         }
     }
 }

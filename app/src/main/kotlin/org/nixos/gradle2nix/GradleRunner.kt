@@ -30,8 +30,8 @@ fun ProjectConnection.getBuildModel(config: Config, path: String): DefaultBuild 
     return model(Build::class.java)
         .withArguments(arguments)
         .apply {
-            if (config.verbose) {
-                setStandardOutput(System.out)
+            if (!config.quiet) {
+                setStandardOutput(System.err)
                 setStandardError(System.err)
             }
         }
