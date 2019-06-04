@@ -16,6 +16,8 @@ import okio.buffer
 import okio.sink
 import java.io.File
 
+val shareDir: String = System.getProperty("org.nixos.gradle2nix.share")
+
 data class Config(
     val wrapper: Boolean,
     val gradleVersion: String?,

@@ -3,8 +3,6 @@ package org.nixos.gradle2nix
 import org.gradle.tooling.GradleConnector
 import org.gradle.tooling.ProjectConnection
 
-private val initScript: String = System.getProperty("org.nixos.gradle2nix.initScript")
-
 fun connect(config: Config): ProjectConnection =
     GradleConnector.newConnector()
         .apply {
@@ -19,7 +17,7 @@ fun connect(config: Config): ProjectConnection =
 
 fun ProjectConnection.getBuildModel(config: Config, path: String): DefaultBuild {
     val arguments = mutableListOf(
-        "--init-script=$initScript",
+        "--init-script=$shareDir/init.gradle",
         "-Dorg.nixos.gradle2nix.configurations='${config.configurations.joinToString(",")}'"
     )
 

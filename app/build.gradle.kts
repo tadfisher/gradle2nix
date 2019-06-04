@@ -32,12 +32,10 @@ dependencies {
 application {
     mainClassName = "org.nixos.gradle2nix.MainKt"
     applicationName = "gradle2nix"
-    applicationDefaultJvmArgs += "-Dorg.nixos.gradle2nix.initScript=@APP_HOME@/gradle/init.gradle"
+    applicationDefaultJvmArgs += "-Dorg.nixos.gradle2nix.share=@APP_HOME@/share"
     applicationDistribution
-        .from(
-            tasks.getByPath(":plugin:shadowJar"),
-            project(":plugin").file("src/main/resources/init.gradle"))
-        .into("gradle")
+        .from(tasks.getByPath(":plugin:shadowJar"))
+        .into("share")
         .rename("plugin.*\\.jar", "plugin.jar")
 }
 
