@@ -11,6 +11,7 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
+import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.artifacts.result.ResolvedArtifactResult
 import org.gradle.api.logging.Logger
@@ -34,17 +35,19 @@ internal class DependencyResolver(
             logger.warn("Cannot resolve configuration ${configuration.name}; ignoring.")
             return emptySet()
         }
-        return configuration.resolvedConfiguration.resolvedArtifacts.mapTo(sortedSetOf()) {
-            with (it) {
-                DefaultArtifact(
-                    groupId = moduleVersion.id.group,
-                    artifactId = moduleVersion.id.name,
-                    version = moduleVersion.id.version,
-                    classifier = classifier ?: "",
-                    extension = extension,
-                    sha256 = sha256(file)
-                )
-            }
+        return configuration.resolvedConfiguration.resolvedArtifacts
+            .filterNot { it.id.componentIdentifier is ProjectComponentIdentifier }
+            .mapTo(sortedSetOf()) {
+                with (it) {
+                    DefaultArtifact(
+                        groupId = moduleVersion.id.group,
+                        artifactId = moduleVersion.id.name,
+                        version = moduleVersion.id.version,
+                        classifier = classifier ?: "",
+                        extension = extension,
+                        sha256 = sha256(file)
+                    )
+                }
         }
     }
 
@@ -153,7 +156,7 @@ private class MavenPomResolver(
     override fun addRepository(repository: Repository, replace: Boolean) {}
 }
 
-private val HEX = "0123456789ABCDEF"
+private const val HEX = "0123456789abcdef"
 
 private fun sha256(file: File): String = buildString {
     MessageDigest.getInstance("SHA-256").digest(file.readBytes())

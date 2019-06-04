@@ -29,6 +29,7 @@ class SubprojectsTest {
                 }
 
                 dependencies {
+                    implementation(project(":child-a"))
                     implementation("com.squareup.moshi:moshi:1.8.0")
                 }
             """.trimIndent())
@@ -110,6 +111,14 @@ class SubprojectsTest {
                         pom("com.squareup.okio:okio-parent:1.16.0"),
                         jar("com.squareup.okio:okio:1.16.0"),
                         pom("com.squareup.okio:okio:1.16.0"),
+                        jar("com.squareup.okio:okio:2.2.2"),
+                        pom("com.squareup.okio:okio:2.2.2"),
+                        jar("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
+                        pom("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
+                        jar("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
+                        pom("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
+                        jar("org.jetbrains:annotations:13.0"),
+                        pom("org.jetbrains:annotations:13.0"),
                         pom("org.sonatype.oss:oss-parent:7"),
                         actual = artifacts
                     )
@@ -138,6 +147,7 @@ class SubprojectsTest {
                 }
 
                 dependencies {
+                    implementation project(':child-a')
                     implementation 'com.squareup.moshi:moshi:1.8.0'
                 }
             """.trimIndent())
@@ -217,6 +227,14 @@ class SubprojectsTest {
                         pom("com.squareup.okio:okio-parent:1.16.0"),
                         jar("com.squareup.okio:okio:1.16.0"),
                         pom("com.squareup.okio:okio:1.16.0"),
+                        jar("com.squareup.okio:okio:2.2.2"),
+                        pom("com.squareup.okio:okio:2.2.2"),
+                        jar("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
+                        pom("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
+                        jar("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
+                        pom("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
+                        jar("org.jetbrains:annotations:13.0"),
+                        pom("org.jetbrains:annotations:13.0"),
                         pom("org.sonatype.oss:oss-parent:7"),
                         actual = artifacts)
                 }
