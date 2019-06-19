@@ -22,6 +22,7 @@ interface Gradle {
 
 interface Project {
     val name: String
+    val version: String
     val path: String
     val projectDir: String
     val buildscriptDependencies: Dependencies

@@ -33,20 +33,20 @@ data class Config(
 class Main : CliktCommand(
     name = "gradle2nix"
 ) {
-    val wrapper: Boolean by option("--gradle-wrapper", "-w",
+    private val wrapper: Boolean by option("--gradle-wrapper", "-w",
         help = "Use the project's gradle wrapper for building")
         .flag()
 
-    val gradleVersion: String? by option("--gradle-version", "-g",
+    private val gradleVersion: String? by option("--gradle-version", "-g",
         metavar = "VERSION",
         help = "Use a specific Gradle version")
 
-    val configurations: List<String> by option("--configuration", "-c",
+    private val configurations: List<String> by option("--configuration", "-c",
         metavar = "NAME",
         help = "Add a configuration to resolve (default: all configurations)")
         .multiple()
 
-    val includes: List<File> by option("--include", "-i",
+    private val includes: List<File> by option("--include", "-i",
         metavar = "DIR",
         help = "Add an additional project to include")
         .file(exists = true, fileOkay = false, folderOkay = true, readable = true)
@@ -60,23 +60,23 @@ class Main : CliktCommand(
             }
         }
 
-    val outDir: File? by option("--out-dir", "-o",
+    private val outDir: File? by option("--out-dir", "-o",
         metavar = "DIR",
         help = "Path to write generated files (default: PROJECT-DIR)")
         .file(fileOkay = false, folderOkay = true)
 
-    val envFile: String by option("--env", "-e",
+    private val envFile: String by option("--env", "-e",
         metavar = "FILENAME",
-        help = "Name of the environment file")
-        .default("gradle-env.json")
+        help = "Prefix for environment files (.json and .nix)")
+        .default("gradle-env")
 
-    val buildSrc: Boolean by option("--build-src", "-b", help = "Include buildSrc project (default: true)")
+    private val buildSrc: Boolean by option("--build-src", "-b", help = "Include buildSrc project (default: true)")
         .flag("--no-build-src", "-nb", default = true)
 
-    val quiet: Boolean by option("--quiet", "-q", help = "Disable logging")
+    private val quiet: Boolean by option("--quiet", "-q", help = "Disable logging")
         .flag(default = false)
 
-    val projectDir: File by argument("PROJECT-DIR", help = "Path to the project root (default: .)")
+    private val projectDir: File by argument("PROJECT-DIR", help = "Path to the project root (default: .)")
         .projectDir()
         .default(File("."))
 
@@ -105,10 +105,11 @@ class Main : CliktCommand(
         val nixGradleEnv = buildEnv(models)
 
         val outDir = outDir ?: projectDir
-        val envFile = outDir.resolve(envFile)
-        log("Writing environment to $envFile")
 
-        envFile.sink().buffer().use { out ->
+        val json = outDir.resolve("$envFile.json")
+        log("Writing environment to $json")
+
+        json.sink().buffer().use { out ->
             Moshi.Builder().build()
                 .adapter<Map<String, NixGradleEnv>>(
                     Types.newParameterizedType(Map::class.java, String::class.java, NixGradleEnv::class.java)
@@ -117,6 +118,11 @@ class Main : CliktCommand(
                 .toJson(out, nixGradleEnv)
             out.flush()
         }
+
+        val nix = outDir.resolve("$envFile.nix")
+        log("Writing Nix script to $nix")
+
+        File(shareDir).resolve("gradle-env.nix").copyTo(nix, overwrite = true)
     }
 }
 

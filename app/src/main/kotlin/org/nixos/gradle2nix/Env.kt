@@ -4,9 +4,11 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class NixGradleEnv(
-    val project: String,
-    val pluginRepo: List<Dependency>,
-    val projectRepos: Map<String, List<Dependency>>
+    val name: String,
+    val version: String,
+    val path: String,
+    val gradle: DefaultGradle,
+    val dependencies: Map<String, List<Dependency>>
 )
 
 @JsonClass(generateAdapter = true)
@@ -21,12 +23,18 @@ data class Dependency(
 fun buildEnv(builds: Map<String, DefaultBuild>): Map<String, NixGradleEnv> =
     builds.mapValues { (path, build) ->
         NixGradleEnv(
-            project = path,
-            pluginRepo = buildRepo(build.pluginDependencies).values.toList(),
-            projectRepos = mapOf(
-                "buildscript" to build.rootProject.collectDependencies(DefaultProject::buildscriptDependencies).values.toList(),
-                "project" to build.rootProject.collectDependencies(DefaultProject::projectDependencies).values.toList()
-            ))
+            name = build.rootProject.name,
+            version = build.rootProject.version,
+            path = path,
+            gradle = build.gradle,
+            dependencies = mapOf(
+                "plugin" to buildRepo(build.pluginDependencies).values.toList(),
+                "buildscript" to build.rootProject.collectDependencies(DefaultProject::buildscriptDependencies)
+                    .values.toList(),
+                "project" to build.rootProject.collectDependencies(DefaultProject::projectDependencies)
+                    .values.toList()
+            )
+        )
     }
 
 private fun DefaultProject.collectDependencies(chooser: DefaultProject.() -> DefaultDependencies): Map<DefaultArtifact, Dependency> {

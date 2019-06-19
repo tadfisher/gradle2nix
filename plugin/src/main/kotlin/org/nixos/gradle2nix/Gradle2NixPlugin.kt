@@ -101,6 +101,7 @@ private fun Project.buildProject(
 ): DefaultProject =
     DefaultProject(
         name = name,
+        version = version.toString(),
         path = path,
         projectDir = projectDir.toRelativeString(rootProject.projectDir),
         buildscriptDependencies = buildscriptDependencies(plugins),

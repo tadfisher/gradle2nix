@@ -49,6 +49,7 @@ data class DefaultGradle(
 @JsonClass(generateAdapter = true)
 data class DefaultProject(
     override val name: String,
+    override val version: String,
     override val path: String,
     override val projectDir: String,
     override val buildscriptDependencies: DefaultDependencies,
@@ -57,6 +58,7 @@ data class DefaultProject(
 ) : Project, Serializable {
     constructor(model: Project) : this(
         model.name,
+        model.version,
         model.path,
         model.projectDir,
         DefaultDependencies(model.buildscriptDependencies),

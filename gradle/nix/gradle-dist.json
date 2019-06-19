@@ -1,7 +1,0 @@
-{
-  "version": "5.4.1",
-  "type": "all",
-  "url": "https://services.gradle.org/distributions/gradle-5.4.1-all.zip",
-  "sha256": "14cd15fc8cc8705bd69dcfa3c8fefb27eb7027f5de4b47a8b279218f76895a91",
-  "nativeVersion": "0.17"
-}
