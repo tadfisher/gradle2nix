@@ -25,7 +25,9 @@ data class Config(
     val projectDir: File,
     val includes: List<File>,
     val buildSrc: Boolean,
-    val quiet: Boolean
+    val quiet: Boolean,
+    val args: List<String>,
+    val ignoreMavenLocal: Boolean
 ) {
     val allProjects = listOf(projectDir) + includes
 }
@@ -80,6 +82,15 @@ class Main : CliktCommand(
         .projectDir()
         .default(File("."))
 
+    private val args: List<String> by option("--arg", "-a",
+            metavar = "ARGUMENT",
+            help = "Add an extra argument to the build.gradle")
+            .multiple()
+
+    private val ignoreMavenLocal: Boolean by option("--ignore-maven-local",
+            help = "Don't include mavenLocal() repositories")
+            .flag()
+
     init {
         context {
             helpFormatter = CliktHelpFormatter(showDefaultValues = true)
@@ -87,7 +98,7 @@ class Main : CliktCommand(
     }
 
     override fun run() {
-        val config = Config(wrapper, gradleVersion, configurations, projectDir, includes, buildSrc, quiet)
+        val config = Config(wrapper, gradleVersion, configurations, projectDir, includes, buildSrc, quiet, args, ignoreMavenLocal)
         val (log, _, _) = Logger(verbose = !config.quiet)
 
         val paths = resolveProjects(config).map { p ->

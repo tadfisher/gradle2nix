@@ -15,20 +15,20 @@ import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
 import org.gradle.util.GradleVersion
 import java.net.URL
 import java.util.*
-import org.nixos.gradle2nix.Gradle as NixGradle
-import org.nixos.gradle2nix.Project as NixProject
 
 @Suppress("unused")
 open class Gradle2NixPlugin : Plugin<Gradle> {
     override fun apply(gradle: Gradle) {
         val configurationNames: List<String> =
             System.getProperty("org.nixos.gradle2nix.configurations")?.split(",") ?: emptyList()
+        val ignoreMavenLocal: Boolean =
+            System.getProperty("org.nixos.gradle2nix.ignoreMavenLocal")?.equals("true") ?: false
 
         val pluginRequests = collectPlugins(gradle)
 
         gradle.projectsLoaded {
             rootProject.serviceOf<ToolingModelBuilderRegistry>()
-                .register(NixToolingModelBuilder(configurationNames, pluginRequests))
+                .register(NixToolingModelBuilder(configurationNames, pluginRequests, ignoreMavenLocal))
         }
     }
 
@@ -47,18 +47,19 @@ open class Gradle2NixPlugin : Plugin<Gradle> {
 
 private class NixToolingModelBuilder(
     private val explicitConfigurations: List<String>,
-    private val pluginRequests: List<PluginRequest>
+    private val pluginRequests: List<PluginRequest>,
+    private val ignoreMavenLocal: Boolean
 ) : ToolingModelBuilder {
     override fun canBuild(modelName: String): Boolean {
         return modelName == "org.nixos.gradle2nix.Build"
     }
 
     override fun buildAll(modelName: String, project: Project): Build = project.run {
-        val plugins = buildPlugins(pluginRequests)
+        val plugins = buildPlugins(pluginRequests, ignoreMavenLocal)
         DefaultBuild(
             gradle = buildGradle(),
             pluginDependencies = plugins,
-            rootProject = buildProject(explicitConfigurations, plugins),
+            rootProject = buildProject(explicitConfigurations, plugins, ignoreMavenLocal),
             includedBuilds = includedBuilds()
         )
     }
@@ -85,9 +86,9 @@ private fun Project.buildGradle(): DefaultGradle =
         )
     }
 
-private fun Project.buildPlugins(pluginRequests: List<PluginRequest>): DefaultDependencies =
+private fun Project.buildPlugins(pluginRequests: List<PluginRequest>, ignoreMavenLocal: Boolean): DefaultDependencies =
     with(PluginResolver(gradle as GradleInternal, pluginRequests)) {
-        DefaultDependencies(repositories.repositories(), artifacts())
+        DefaultDependencies(repositories.repositories(ignoreMavenLocal), artifacts())
     }
 
 private fun Project.includedBuilds(): List<DefaultIncludedBuild> =
@@ -97,22 +98,23 @@ private fun Project.includedBuilds(): List<DefaultIncludedBuild> =
 
 private fun Project.buildProject(
     explicitConfigurations: List<String>,
-    plugins: DefaultDependencies
+    plugins: DefaultDependencies,
+    ignoreMavenLocal: Boolean
 ): DefaultProject =
     DefaultProject(
         name = name,
         version = version.toString(),
         path = path,
         projectDir = projectDir.toRelativeString(rootProject.projectDir),
-        buildscriptDependencies = buildscriptDependencies(plugins),
-        projectDependencies = projectDependencies(explicitConfigurations),
-        children = childProjects.values.map { it.buildProject(explicitConfigurations, plugins) }
+        buildscriptDependencies = buildscriptDependencies(plugins, ignoreMavenLocal),
+        projectDependencies = projectDependencies(explicitConfigurations, ignoreMavenLocal),
+        children = childProjects.values.map { it.buildProject(explicitConfigurations, plugins, ignoreMavenLocal) }
     )
 
-private fun Project.buildscriptDependencies(plugins: DefaultDependencies): DefaultDependencies =
+private fun Project.buildscriptDependencies(plugins: DefaultDependencies, ignoreMavenLocal: Boolean): DefaultDependencies =
     with(DependencyResolver(buildscript.configurations, buildscript.dependencies)) {
         DefaultDependencies(
-            repositories = buildscript.repositories.repositories(),
+            repositories = buildscript.repositories.repositories(ignoreMavenLocal),
             artifacts = buildscript.configurations
                 .filter { it.isCanBeResolved }
                 .flatMap { resolveDependencies(it) + resolvePoms(it) }
@@ -121,7 +123,7 @@ private fun Project.buildscriptDependencies(plugins: DefaultDependencies): Defau
         )
     }
 
-private fun Project.projectDependencies(explicitConfigurations: List<String>): DefaultDependencies =
+private fun Project.projectDependencies(explicitConfigurations: List<String>, ignoreMavenLocal: Boolean): DefaultDependencies =
     with(DependencyResolver(configurations, dependencies)) {
         val toResolve = if (explicitConfigurations.isEmpty()) {
             configurations.filter { it.isCanBeResolved }
@@ -130,7 +132,7 @@ private fun Project.projectDependencies(explicitConfigurations: List<String>): D
         }
 
         DefaultDependencies(
-            repositories = repositories.repositories(),
+            repositories = repositories.repositories(ignoreMavenLocal),
             artifacts = toResolve.flatMap { resolveDependencies(it) + resolvePoms(it) }
                 .sorted()
                 .distinct()
@@ -146,9 +148,10 @@ private fun fetchDistSha256(url: String): String {
 
 private val nativePlatformJarRegex = Regex("""native-platform-([\d.]+)\.jar""")
 
-internal fun RepositoryHandler.repositories() = DefaultRepositories(
+internal fun RepositoryHandler.repositories(ignoreMavenLocal: Boolean) = DefaultRepositories(
     maven = filterIsInstance<MavenArtifactRepository>()
         .filterNot { it.name == "Embedded Kotlin Repository" }
+        .filterNot { ignoreMavenLocal && it.name == "MavenLocal" }
         .map { repo ->
             DefaultMaven(listOf(repo.url.toString()) + repo.artifactUrls.map { it.toString() })
         }
