@@ -67,6 +67,7 @@ let
             buildscript {
               repositories {
                 clear()
+                maven { url = uri("${repos.plugin}") }
                 maven { url = uri("${repos.buildscript}") }
               }
             }
