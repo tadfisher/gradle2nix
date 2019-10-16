@@ -37,7 +37,7 @@ let
       inherit (depSpec) urls sha256;
     };
 
-    phases = "installPhase fixupPhase";
+    phases = "installPhase";
 
     installPhase = ''
       mkdir -p $out/${depSpec.path}
