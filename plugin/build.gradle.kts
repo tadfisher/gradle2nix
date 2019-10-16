@@ -16,11 +16,6 @@ apply {
 group = "org.nixos"
 version = "1.0.0-SNAPSHOT"
 
-repositories {
-    mavenCentral()
-    maven { url = uri("https://repo.gradle.org/gradle/libs-releases") }
-}
-
 dependencyLocking {
     lockAllConfigurations()
 }
@@ -44,6 +39,10 @@ dependencies {
     compatTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4+")
     compatTestImplementation(gradleTestKit())
     compatTestImplementation(project(":model"))
+
+    // https://github.com/gradle/gradle/issues/10697
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib-common:1.3.41")
+    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-common:1.3.41")
 }
 
 gradlePlugin {

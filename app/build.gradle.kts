@@ -9,11 +9,6 @@ plugins {
 group = "org.nixos"
 version = "1.0.0-SNAPSHOT"
 
-repositories {
-    jcenter()
-    maven { url = uri("https://repo.gradle.org/gradle/libs-releases") }
-}
-
 dependencies {
     implementation(project(":model"))
     implementation(kotlin("stdlib-jdk8"))
