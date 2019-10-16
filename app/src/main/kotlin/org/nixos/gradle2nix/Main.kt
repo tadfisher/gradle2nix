@@ -19,7 +19,6 @@ import java.io.File
 val shareDir: String = System.getProperty("org.nixos.gradle2nix.share")
 
 data class Config(
-    val wrapper: Boolean,
     val gradleVersion: String?,
     val configurations: List<String>,
     val projectDir: File,
@@ -33,10 +32,6 @@ data class Config(
 class Main : CliktCommand(
     name = "gradle2nix"
 ) {
-    private val wrapper: Boolean by option("--gradle-wrapper", "-w",
-        help = "Use the project's gradle wrapper for building")
-        .flag()
-
     private val gradleVersion: String? by option("--gradle-version", "-g",
         metavar = "VERSION",
         help = "Use a specific Gradle version")
@@ -87,7 +82,7 @@ class Main : CliktCommand(
     }
 
     override fun run() {
-        val config = Config(wrapper, gradleVersion, configurations, projectDir, includes, buildSrc, quiet)
+        val config = Config(gradleVersion, configurations, projectDir, includes, buildSrc, quiet)
         val (log, _, _) = Logger(verbose = !config.quiet)
 
         val paths = resolveProjects(config).map { p ->
@@ -95,9 +90,9 @@ class Main : CliktCommand(
         }
 
         val models = connect(config).use { connection ->
-            paths.associate { project ->
+            paths.associateWith { project ->
                 log("Resolving project model: ${project.takeIf { it.isNotEmpty() } ?: "root project"}...")
-                project to connection.getBuildModel(config, project)
+                connection.getBuildModel(config, project)
             }
         }
 

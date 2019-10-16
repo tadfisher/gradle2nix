@@ -6,9 +6,7 @@ import org.gradle.tooling.ProjectConnection
 fun connect(config: Config): ProjectConnection =
     GradleConnector.newConnector()
         .apply {
-            if (config.wrapper) {
-                useBuildDistribution()
-            } else if (config.gradleVersion != null) {
+            if (config.gradleVersion != null) {
                 useGradleVersion(config.gradleVersion)
             }
         }

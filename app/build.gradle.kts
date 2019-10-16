@@ -35,6 +35,13 @@ application {
 }
 
 tasks {
+    (run) {
+        dependsOn(installDist)
+        doFirst {
+            jvmArgs = listOf("-Dorg.nixos.gradle2nix.share=${installDist.get().destinationDir.resolve("share")}")
+        }
+    }
+
     startScripts {
         doLast {
             unixScript.writeText(unixScript.readText().replace("@APP_HOME@", "\$APP_HOME"))
