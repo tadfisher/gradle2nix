@@ -16,12 +16,12 @@ fun connect(config: Config): ProjectConnection =
 @Suppress("UnstableApiUsage")
 fun ProjectConnection.getBuildModel(config: Config, path: String): DefaultBuild {
     return model(Build::class.java).apply {
-        addArguments("--init-script=$shareDir/init.gradle")
-        if (path.isNotEmpty()) addArguments("--project-dir=$path")
-        addJvmArguments(
-            "-Dorg.nixos.gradle2nix.configurations='${config.configurations.joinToString(",")}'",
-            "-Dorg.nixos.gradle2nix.subprojects='${config.subprojects.joinToString(",")}'"
+        addArguments(
+            "--init-script=$shareDir/init.gradle",
+            "-Porg.nixos.gradle2nix.configurations=${config.configurations.joinToString(",")}",
+            "-Porg.nixos.gradle2nix.subprojects=${config.subprojects.joinToString(",")}"
         )
+        if (path.isNotEmpty()) addArguments("--project-dir=$path")
         if (!config.quiet) {
             setStandardOutput(System.err)
             setStandardError(System.err)

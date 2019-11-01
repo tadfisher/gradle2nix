@@ -2,6 +2,9 @@ package org.nixos.gradle2nix
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import strikt.api.expectThat
+import strikt.assertions.containsExactlyInAnyOrder
+import strikt.assertions.map
 import java.io.File
 import kotlin.test.assertEquals
 
@@ -413,6 +416,45 @@ class SubprojectsTest {
                     )
                 }
             }
+        }
+    }
+
+    @Test
+    fun `includes subproject dependencies`() {
+        root.resolve("child-a").also { it.mkdirs() }.resolve("build.gradle.kts").writeText("")
+        root.resolve("child-b").also { it.mkdirs() }.resolve("build.gradle.kts").writeText("")
+        root.resolve("child-c").also { it.mkdirs() }.resolve("build.gradle.kts").writeText("")
+        root.resolve("child-d").also { it.mkdirs() }.resolve("build.gradle.kts").writeText("")
+
+        root.resolve("settings.gradle.kts").writeText("""
+            include(":child-a", ":child-b", ":child-c", ":child-d")
+        """.trimIndent())
+
+        val buildscript = """
+            subprojects {
+                apply(plugin = "java")
+            }
+            
+            project(":child-a") {
+                dependencies {
+                    "implementation"(project(":child-b"))
+                }
+            }
+            
+            project(":child-b") {
+                dependencies {
+                    "implementation"(project(":child-c"))
+                }
+            }
+        """.trimIndent()
+
+        with(root.buildKotlin(buildscript, subprojects = listOf(":child-a"))) {
+            expectThat(rootProject.children).map { it.path }
+                .containsExactlyInAnyOrder(":child-a", ":child-b", ":child-c")
+        }
+
+        with(root.buildKotlin(buildscript, subprojects = listOf(":child-b"))) {
+            expectThat(rootProject.children).map { it.path }.containsExactlyInAnyOrder(":child-b", ":child-c")
         }
     }
 }

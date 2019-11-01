@@ -1,25 +1,33 @@
 package org.nixos.gradle2nix
 
+import com.squareup.moshi.Moshi
+import okio.buffer
+import okio.source
 import org.gradle.api.internal.artifacts.dsl.ParsedModuleStringNotation
 import org.gradle.internal.classpath.DefaultClassPath
+import org.gradle.testkit.runner.GradleRunner
+import org.gradle.testkit.runner.internal.DefaultGradleRunner
 import org.gradle.testkit.runner.internal.PluginUnderTestMetadataReading
 import org.gradle.tooling.GradleConnector
+import org.gradle.tooling.events.ProgressListener
 import java.io.File
 import kotlin.test.assertTrue
+
+private val moshi = Moshi.Builder().build()
 
 private fun File.initscript() = resolve("init.gradle").also {
     it.writer().use { out ->
         val classpath = DefaultClassPath.of(PluginUnderTestMetadataReading.readImplementationClasspath())
-            .asFiles.joinToString(prefix = "'", postfix = "'")
+            .asFiles.joinToString { n -> "'$n'" }
         out.appendln("""
-                        initscript {
-                            dependencies {
-                                classpath files($classpath)
-                            }
-                        }
+            initscript {
+                dependencies {
+                    classpath files($classpath)
+                }
+            }
 
-                        apply plugin: org.nixos.gradle2nix.Gradle2NixPlugin
-                    """.trimIndent())
+            apply plugin: org.nixos.gradle2nix.Gradle2NixPlugin
+        """.trimIndent())
      }
 }
 
@@ -45,22 +53,43 @@ private fun File.build(
     configurations: List<String>,
     subprojects: List<String>
 ): DefaultBuild {
-    return GradleConnector.newConnector()
-        .useGradleVersion(System.getProperty("compat.gradle.version"))
-        .forProjectDirectory(this)
-        .connect()
-        .model(Build::class.java).apply {
-            addArguments("--init-script=${initscript()}", "--stacktrace")
-            addJvmArguments(
-                "-Dorg.nixos.gradle2nix.configurations=${configurations.joinToString(",")}",
-                "-Dorg.nixos.gradle2nix.subprojects=${subprojects.joinToString(",")}"
-            )
-            setStandardOutput(System.out)
-            setStandardError(System.out)
+    GradleRunner.create()
+        .withGradleVersion(System.getProperty("compat.gradle.version"))
+        .withProjectDir(this)
+        .forwardOutput()
+        .withArguments(
+            "nixModel",
+            "--init-script=${initscript()}",
+            "--stacktrace",
+            "-Porg.nixos.gradle2nix.configurations=${configurations.joinToString(",")}",
+            "-Porg.nixos.gradle2nix.subprojects=${subprojects.joinToString(",")}"
+        )
+        .build()
+
+    return resolve("build/nix/model.json").run {
+        println(readText())
+        source().buffer().use { src ->
+            checkNotNull(moshi.adapter(DefaultBuild::class.java).fromJson(src))
         }
-        .get()
-        .let { DefaultBuild(it) }
+    }
 }
+//
+//    return GradleConnector.newConnector()
+//        .useGradleVersion(System.getProperty("compat.gradle.version"))
+//        .forProjectDirectory(this)
+//        .connect()
+//        .model(Build::class.java).apply {
+//            addArguments("--init-script=${initscript()}", "--stacktrace")
+//            addJvmArguments(
+//                "-Dorg.gradle.debug=true",
+//                "-Dorg.nixos.gradle2nix.configurations=${configurations.joinToString(",")}",
+//                "-Dorg.nixos.gradle2nix.subprojects=${subprojects.joinToString(",")}"
+//            )
+//            setStandardOutput(System.out)
+//            setStandardError(System.out)
+//        }
+//        .get()
+//        .let { DefaultBuild(it) }
 
 fun jar(notation: String, sha256: String = ""): DefaultArtifact =
         artifact(notation, sha256, "jar")

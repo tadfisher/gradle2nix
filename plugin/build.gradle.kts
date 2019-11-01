@@ -35,14 +35,12 @@ dependencies {
 
     compatTestImplementation(embeddedKotlin("stdlib-jdk8"))
     compatTestImplementation(embeddedKotlin("test-junit5"))
+    compatTestImplementation(embeddedKotlin("reflect"))
     compatTestImplementation("org.junit.jupiter:junit-jupiter-api:5.4+")
     compatTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4+")
     compatTestImplementation(gradleTestKit())
     compatTestImplementation(project(":model"))
-
-    // https://github.com/gradle/gradle/issues/10697
-    compileOnly("org.jetbrains.kotlin:kotlin-stdlib-common:1.3.41")
-    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-common:1.3.41")
+    compatTestImplementation("io.strikt:strikt-core:latest.release")
 }
 
 gradlePlugin {

@@ -1,8 +1,13 @@
 package org.nixos.gradle2nix
 
+import com.squareup.moshi.Moshi
+import okio.buffer
+import okio.sink
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ArtifactRepositoryContainer
+import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.api.internal.GradleInternal
@@ -10,6 +15,7 @@ import org.gradle.api.invocation.Gradle
 import org.gradle.api.tasks.wrapper.Wrapper
 import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.support.serviceOf
+import org.gradle.kotlin.dsl.withType
 import org.gradle.plugin.management.PluginRequest
 import org.gradle.tooling.provider.model.ToolingModelBuilder
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
@@ -19,56 +25,79 @@ import java.util.Locale
 
 @Suppress("unused")
 open class Gradle2NixPlugin : Plugin<Gradle> {
-    override fun apply(gradle: Gradle) {
-        val configurationNames: List<String> = System.getProperty("org.nixos.gradle2nix.configurations")
-            ?.takeIf { it.isNotEmpty() }
-            ?.split(",")
-            ?: emptyList()
+    override fun apply(gradle: Gradle): Unit = gradle.run {
+        val pluginRequests = collectPlugins()
 
-        val subprojects: List<String> = System.getProperty("org.nixos.gradle2nix.subprojects")
-            ?.takeIf { it.isNotEmpty() }
-            ?.split(",")
-            ?: emptyList()
-
-        val pluginRequests = collectPlugins(gradle)
-
-        gradle.projectsLoaded {
+        projectsLoaded {
+            val modelProperties = rootProject.loadModelProperties()
             rootProject.serviceOf<ToolingModelBuilderRegistry>()
-                .register(NixToolingModelBuilder(configurationNames, subprojects, pluginRequests))
-        }
-    }
+                .register(NixToolingModelBuilder(modelProperties, pluginRequests))
 
-    private fun collectPlugins(gradle: Gradle): List<PluginRequest> {
-        val pluginRequests = mutableListOf<PluginRequest>()
-        gradle.settingsEvaluated {
-            pluginManagement.resolutionStrategy.eachPlugin {
-                if (requested.id.namespace != null && requested.id.namespace != "org.gradle") {
-                    pluginRequests.add(target)
+            rootProject.tasks.register("nixModel") {
+                doLast {
+                    val outFile = project.mkdir(project.buildDir.resolve("nix")).resolve("model.json")
+                    val model = project.buildModel(modelProperties, pluginRequests)
+                    outFile.sink().buffer().use { out ->
+                        Moshi.Builder().build()
+                            .adapter(DefaultBuild::class.java)
+                            .indent("  ")
+                            .toJson(out, model)
+                        out.flush()
+                    }
                 }
             }
         }
-        return pluginRequests
     }
 }
 
+private const val NIX_MODEL_NAME = "org.nixos.gradle2nix.Build"
+
 private class NixToolingModelBuilder(
-    private val explicitConfigurations: List<String>,
-    private val explicitSubprojects: List<String>,
+    private val modelProperties: ModelProperties,
     private val pluginRequests: List<PluginRequest>
 ) : ToolingModelBuilder {
     override fun canBuild(modelName: String): Boolean {
-        return modelName == "org.nixos.gradle2nix.Build"
+        return modelName == NIX_MODEL_NAME
     }
 
-    override fun buildAll(modelName: String, project: Project): Build = project.run {
-        val plugins = buildPlugins(pluginRequests)
-        DefaultBuild(
-            gradle = buildGradle(),
-            pluginDependencies = plugins,
-            rootProject = buildProject(explicitConfigurations, explicitSubprojects, plugins),
-            includedBuilds = includedBuilds()
-        )
+    override fun buildAll(modelName: String, project: Project): Build =
+        project.buildModel(modelProperties, pluginRequests)
+}
+
+private fun Gradle.collectPlugins(): List<PluginRequest> {
+    val pluginRequests = mutableListOf<PluginRequest>()
+    gradle.settingsEvaluated {
+        pluginManagement.resolutionStrategy.eachPlugin {
+            if (requested.id.namespace != null && requested.id.namespace != "org.gradle") {
+                pluginRequests.add(target)
+            }
+        }
     }
+    return pluginRequests
+}
+
+private fun Project.buildModel(
+    modelProperties: ModelProperties,
+    pluginRequests: List<PluginRequest>
+): DefaultBuild {
+    val plugins = buildPlugins(pluginRequests)
+
+    val subprojects = if (modelProperties.subprojects.isEmpty()) {
+        project.subprojects
+    } else {
+        project.subprojects
+            .filter { it.path in modelProperties.subprojects }
+            // Include dependent subprojects as well
+            .flatMap { setOf(it) + it.dependentSubprojects(modelProperties.configurations) }
+            .toSet()
+    }
+
+    return DefaultBuild(
+        gradle = buildGradle(),
+        pluginDependencies = plugins,
+        rootProject = buildProject(modelProperties.configurations, subprojects, plugins),
+        includedBuilds = includedBuilds()
+    )
 }
 
 private fun Project.buildGradle(): DefaultGradle =
@@ -104,20 +133,20 @@ private fun Project.includedBuilds(): List<DefaultIncludedBuild> =
 
 private fun Project.buildProject(
     explicitConfigurations: List<String>,
-    explicitSubprojects: List<String>,
+    explicitSubprojects: Collection<Project>,
     plugins: DefaultDependencies
-): DefaultProject =
-    DefaultProject(
+): DefaultProject {
+    logger.lifecycle("    Subproject: $path")
+    return DefaultProject(
         name = name,
         version = version.toString(),
         path = path,
         projectDir = projectDir.toRelativeString(rootProject.projectDir),
         buildscriptDependencies = buildscriptDependencies(plugins),
         projectDependencies = projectDependencies(explicitConfigurations),
-        children = subprojects
-            .filter { explicitSubprojects.isEmpty() || it.path in explicitSubprojects }
-            .map { it.buildProject(explicitConfigurations, emptyList(), plugins) }
+        children = explicitSubprojects.map { it.buildProject(explicitConfigurations, emptyList(), plugins) }
     )
+}
 
 private fun Project.buildscriptDependencies(plugins: DefaultDependencies): DefaultDependencies =
     with(DependencyResolver(buildscript.configurations, buildscript.dependencies)) {
@@ -133,12 +162,7 @@ private fun Project.buildscriptDependencies(plugins: DefaultDependencies): Defau
 
 private fun Project.projectDependencies(explicitConfigurations: List<String>): DefaultDependencies =
     with(DependencyResolver(configurations, dependencies)) {
-        val toResolve = if (explicitConfigurations.isEmpty()) {
-            configurations.filter { it.isCanBeResolved }
-        } else {
-            configurations.filter { it.name in explicitConfigurations }
-        }
-
+        val toResolve = collectConfigurations(explicitConfigurations)
         DefaultDependencies(
             repositories = repositories.repositories(),
             artifacts = toResolve.flatMap { resolveDependencies(it) + resolvePoms(it) }
@@ -147,14 +171,24 @@ private fun Project.projectDependencies(explicitConfigurations: List<String>): D
         )
     }
 
-private fun fetchDistSha256(url: String): String {
-    return URL("$url.sha256").openConnection().run {
-        connect()
-        getInputStream().reader().use { it.readText() }
-    }
+private fun Project.dependentSubprojects(explicitConfigurations: List<String>): Set<Project> {
+    return collectConfigurations(explicitConfigurations)
+        .flatMap { it.allDependencies.withType<ProjectDependency>() }
+        .map { it.dependencyProject }
+        .toSet()
+        .flatMap { setOf(it) + it.dependentSubprojects(explicitConfigurations) }
+        .toSet()
 }
 
-private val nativePlatformJarRegex = Regex("""native-platform-([\d.]+)\.jar""")
+private fun Project.collectConfigurations(
+    explicitConfigurations: List<String>
+): Set<Configuration> {
+    return if (explicitConfigurations.isEmpty()) {
+        configurations.filter { it.isCanBeResolved }.toSet()
+    } else {
+        configurations.filter { it.name in explicitConfigurations }.toSet()
+    }
+}
 
 private val excludedRepoNames = setOf(
     "Embedded Kotlin Repository",
@@ -168,6 +202,15 @@ internal fun RepositoryHandler.repositories() = DefaultRepositories(
             DefaultMaven(listOf(repo.url.toString()) + repo.artifactUrls.map { it.toString() })
         }
 )
+
+private fun fetchDistSha256(url: String): String {
+    return URL("$url.sha256").openConnection().run {
+        connect()
+        getInputStream().reader().use { it.readText() }
+    }
+}
+
+private val nativePlatformJarRegex = Regex("""native-platform-([\d.]+)\.jar""")
 
 private val Wrapper.sha256: String
     get() {
