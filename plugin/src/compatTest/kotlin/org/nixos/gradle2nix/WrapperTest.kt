@@ -12,7 +12,7 @@ class WrapperTest {
     @Test
     fun `resolves gradle version from wrapper configuration`() {
         val model = root.buildKotlin("""
-            tasks.wrapper {
+            tasks.withType<org.gradle.api.tasks.wrapper.Wrapper> {
                 gradleVersion = "5.5.1"
             }
         """.trimIndent())

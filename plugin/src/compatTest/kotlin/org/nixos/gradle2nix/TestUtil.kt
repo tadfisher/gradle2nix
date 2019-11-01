@@ -23,28 +23,41 @@ private fun File.initscript() = resolve("init.gradle").also {
      }
 }
 
-fun File.buildGroovy(script: String): DefaultBuild {
+fun File.buildGroovy(
+    script: String,
+    configurations: List<String> = emptyList(),
+    subprojects: List<String> = emptyList()
+): DefaultBuild {
     resolve("build.gradle").writeText(script)
-    return build()
+    return build(configurations, subprojects)
 }
 
-fun File.buildKotlin(script: String): DefaultBuild {
+fun File.buildKotlin(
+    script: String,
+    configurations: List<String> = emptyList(),
+    subprojects: List<String> = emptyList()
+): DefaultBuild {
     resolve("build.gradle.kts").writeText(script)
-    return build()
+    return build(configurations, subprojects)
 }
 
-private fun File.build(): DefaultBuild {
+private fun File.build(
+    configurations: List<String>,
+    subprojects: List<String>
+): DefaultBuild {
     return GradleConnector.newConnector()
         .useGradleVersion(System.getProperty("compat.gradle.version"))
         .forProjectDirectory(this)
         .connect()
-        .model(Build::class.java)
-        .withArguments(
-            "--init-script=${initscript()}",
-            "--stacktrace"
-        )
-        .setStandardOutput(System.out)
-        .setStandardError(System.out)
+        .model(Build::class.java).apply {
+            addArguments("--init-script=${initscript()}", "--stacktrace")
+            addJvmArguments(
+                "-Dorg.nixos.gradle2nix.configurations=${configurations.joinToString(",")}",
+                "-Dorg.nixos.gradle2nix.subprojects=${subprojects.joinToString(",")}"
+            )
+            setStandardOutput(System.out)
+            setStandardError(System.out)
+        }
         .get()
         .let { DefaultBuild(it) }
 }
@@ -67,8 +80,8 @@ private fun artifact(notation: String, sha256: String, type: String): DefaultArt
     )
 }
 
-private fun artifactEquals(expected: DefaultArtifact, actual: DefaultArtifact): Boolean {
-    return with (expected) {
+private fun artifactEquals(expected: DefaultArtifact, actual: DefaultArtifact?): Boolean {
+    return actual != null && with (expected) {
         groupId == actual.groupId &&
                 artifactId == actual.artifactId &&
                 version == actual.version &&
@@ -82,24 +95,24 @@ fun assertArtifacts(vararg expected: DefaultArtifact, actual: List<DefaultArtifa
     val mismatches = mutableListOf<Mismatch>()
     val remaining = mutableListOf<DefaultArtifact>().also { it.addAll(actual) }
     expected.forEachIndexed { i: Int, exp: DefaultArtifact ->
-        val act = actual[i]
+        val act = actual.elementAtOrNull(i)
         if (!artifactEquals(exp, act)) {
             mismatches += Mismatch(i, exp, act)
-        } else {
+        } else if (act != null) {
             remaining -= act
         }
     }
     assertTrue(mismatches.isEmpty() && remaining.isEmpty(), """
         Artifact mismatches:
-        ${mismatches.joinToString("\n            ", prefix = "            ")}
+        ${mismatches.joinToString("\n            ", prefix = "    ")}
 
         Missing artifacts:
-        ${remaining.joinToString("\n            ", prefix = "            ")}
+        ${remaining.joinToString("\n            ", prefix = "    ")}
     """)
 }
 
 data class Mismatch(
     val index: Int,
     val expected: DefaultArtifact,
-    val actual: DefaultArtifact
+    val actual: DefaultArtifact?
 )

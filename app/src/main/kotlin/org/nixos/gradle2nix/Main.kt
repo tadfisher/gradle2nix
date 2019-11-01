@@ -23,6 +23,7 @@ data class Config(
     val configurations: List<String>,
     val projectDir: File,
     val includes: List<File>,
+    val subprojects: List<String>,
     val buildSrc: Boolean,
     val quiet: Boolean
 ) {
@@ -55,6 +56,19 @@ class Main : CliktCommand(
             }
         }
 
+    private val subprojects: List<String> by option("--project", "-p",
+        metavar = "PATH",
+        help = "Only resolve these subproject paths, e.g. ':', or ':sub:project' (default: all projects)")
+        .multiple()
+        .validate { paths ->
+            val failures = paths.filterNot { it.startsWith(":") }
+            if (failures.isNotEmpty()) {
+                val message = failures.joinToString("\n    ")
+                fail("Subproject paths must be absolute:\n$message\n" +
+                    "Paths are in the form ':parent:child'.")
+            }
+        }
+
     private val outDir: File? by option("--out-dir", "-o",
         metavar = "DIR",
         help = "Path to write generated files (default: PROJECT-DIR)")
@@ -82,7 +96,7 @@ class Main : CliktCommand(
     }
 
     override fun run() {
-        val config = Config(gradleVersion, configurations, projectDir, includes, buildSrc, quiet)
+        val config = Config(gradleVersion, configurations, projectDir, includes, subprojects, buildSrc, quiet)
         val (log, _, _) = Logger(verbose = !config.quiet)
 
         val paths = resolveProjects(config).map { p ->

@@ -2,6 +2,7 @@ package org.nixos.gradle2nix
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.ArtifactRepositoryContainer
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.api.internal.GradleInternal
@@ -14,21 +15,26 @@ import org.gradle.tooling.provider.model.ToolingModelBuilder
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
 import org.gradle.util.GradleVersion
 import java.net.URL
-import java.util.*
-import org.nixos.gradle2nix.Gradle as NixGradle
-import org.nixos.gradle2nix.Project as NixProject
+import java.util.Locale
 
 @Suppress("unused")
 open class Gradle2NixPlugin : Plugin<Gradle> {
     override fun apply(gradle: Gradle) {
-        val configurationNames: List<String> =
-            System.getProperty("org.nixos.gradle2nix.configurations")?.split(",") ?: emptyList()
+        val configurationNames: List<String> = System.getProperty("org.nixos.gradle2nix.configurations")
+            ?.takeIf { it.isNotEmpty() }
+            ?.split(",")
+            ?: emptyList()
+
+        val subprojects: List<String> = System.getProperty("org.nixos.gradle2nix.subprojects")
+            ?.takeIf { it.isNotEmpty() }
+            ?.split(",")
+            ?: emptyList()
 
         val pluginRequests = collectPlugins(gradle)
 
         gradle.projectsLoaded {
             rootProject.serviceOf<ToolingModelBuilderRegistry>()
-                .register(NixToolingModelBuilder(configurationNames, pluginRequests))
+                .register(NixToolingModelBuilder(configurationNames, subprojects, pluginRequests))
         }
     }
 
@@ -47,6 +53,7 @@ open class Gradle2NixPlugin : Plugin<Gradle> {
 
 private class NixToolingModelBuilder(
     private val explicitConfigurations: List<String>,
+    private val explicitSubprojects: List<String>,
     private val pluginRequests: List<PluginRequest>
 ) : ToolingModelBuilder {
     override fun canBuild(modelName: String): Boolean {
@@ -58,7 +65,7 @@ private class NixToolingModelBuilder(
         DefaultBuild(
             gradle = buildGradle(),
             pluginDependencies = plugins,
-            rootProject = buildProject(explicitConfigurations, plugins),
+            rootProject = buildProject(explicitConfigurations, explicitSubprojects, plugins),
             includedBuilds = includedBuilds()
         )
     }
@@ -97,6 +104,7 @@ private fun Project.includedBuilds(): List<DefaultIncludedBuild> =
 
 private fun Project.buildProject(
     explicitConfigurations: List<String>,
+    explicitSubprojects: List<String>,
     plugins: DefaultDependencies
 ): DefaultProject =
     DefaultProject(
@@ -106,7 +114,9 @@ private fun Project.buildProject(
         projectDir = projectDir.toRelativeString(rootProject.projectDir),
         buildscriptDependencies = buildscriptDependencies(plugins),
         projectDependencies = projectDependencies(explicitConfigurations),
-        children = childProjects.values.map { it.buildProject(explicitConfigurations, plugins) }
+        children = subprojects
+            .filter { explicitSubprojects.isEmpty() || it.path in explicitSubprojects }
+            .map { it.buildProject(explicitConfigurations, emptyList(), plugins) }
     )
 
 private fun Project.buildscriptDependencies(plugins: DefaultDependencies): DefaultDependencies =
@@ -146,9 +156,14 @@ private fun fetchDistSha256(url: String): String {
 
 private val nativePlatformJarRegex = Regex("""native-platform-([\d.]+)\.jar""")
 
+private val excludedRepoNames = setOf(
+    "Embedded Kotlin Repository",
+    ArtifactRepositoryContainer.DEFAULT_MAVEN_LOCAL_REPO_NAME
+)
+
 internal fun RepositoryHandler.repositories() = DefaultRepositories(
     maven = filterIsInstance<MavenArtifactRepository>()
-        .filterNot { it.name == "Embedded Kotlin Repository" }
+        .filter { it.name !in excludedRepoNames }
         .map { repo ->
             DefaultMaven(listOf(repo.url.toString()) + repo.artifactUrls.map { it.toString() })
         }
