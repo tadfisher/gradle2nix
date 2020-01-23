@@ -1,20 +1,14 @@
 # This is a Gradle generated file for dependency locking.
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
-com.squareup.moshi:moshi:1.9.1
-com.squareup.okio:okio:2.4.1
-javax.inject:javax.inject:1
-org.apache.commons:commons-lang3:3.8.1
-org.apache.maven:maven-artifact:3.6.2
-org.apache.maven:maven-builder-support:3.6.2
-org.apache.maven:maven-model-builder:3.6.2
-org.apache.maven:maven-model:3.6.2
-org.codehaus.plexus:plexus-interpolation:1.25
+com.squareup.moshi:moshi:1.9.2
+com.squareup.okio:okio:1.16.0
+org.apache.ivy:ivy:2.5.0
+org.apache.maven:maven-repository-metadata:3.6.3
 org.codehaus.plexus:plexus-utils:3.2.1
-org.eclipse.sisu:org.eclipse.sisu.inject:0.3.3
-org.jetbrains.kotlin:kotlin-reflect:1.3.41
-org.jetbrains.kotlin:kotlin-stdlib-common:1.3.50
-org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.41
-org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.41
-org.jetbrains.kotlin:kotlin-stdlib:1.3.50
+org.jetbrains.kotlin:kotlin-reflect:1.3.61
+org.jetbrains.kotlin:kotlin-stdlib-common:1.3.61
+org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61
+org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.61
+org.jetbrains.kotlin:kotlin-stdlib:1.3.61
 org.jetbrains:annotations:13.0

@@ -21,8 +21,10 @@ fun ProjectConnection.getBuildModel(config: Config, path: String): DefaultBuild 
             "-Porg.nixos.gradle2nix.configurations=${config.configurations.joinToString(",")}",
             "-Porg.nixos.gradle2nix.subprojects=${config.subprojects.joinToString(",")}"
         )
+        if (config.gradleArgs != null) addArguments(config.gradleArgs)
         if (path.isNotEmpty()) addArguments("--project-dir=$path")
         if (!config.quiet) {
+            setColorOutput(true)
             setStandardOutput(System.err)
             setStandardError(System.err)
         }

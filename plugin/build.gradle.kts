@@ -9,12 +9,14 @@ plugins {
     id("com.github.johnrengelman.shadow")
     id("org.ajoberstar.stutter")
 }
-apply {
-    plugin("kotlin")
-}
 
-group = "org.nixos"
-version = "1.0.0-SNAPSHOT"
+sourceSets {
+    compatTest {
+        resources {
+            srcDir("$rootDir/fixtures")
+        }
+    }
+}
 
 dependencyLocking {
     lockAllConfigurations()
@@ -30,17 +32,21 @@ dependencies {
     implementation(project(":model"))
     shadow(gradleApi())
     compileOnly("org.gradle:gradle-tooling-api:${gradle.gradleVersion}")
-    implementation("org.apache.maven:maven-model:latest.release")
-    implementation("org.apache.maven:maven-model-builder:latest.release")
+    implementation("org.apache.ivy:ivy:latest.release")
+    implementation("org.apache.maven:maven-repository-metadata:latest.release")
 
     compatTestImplementation(embeddedKotlin("stdlib-jdk8"))
     compatTestImplementation(embeddedKotlin("test-junit5"))
     compatTestImplementation(embeddedKotlin("reflect"))
-    compatTestImplementation("org.junit.jupiter:junit-jupiter-api:5.4+")
-    compatTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4+")
+    compatTestImplementation("org.junit.jupiter:junit-jupiter-api:latest.release")
+    compatTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:latest.release")
+    compatTestImplementation("org.junit.jupiter:junit-jupiter-params:latest.release")
+    compatTestRuntimeOnly("org.junit.platform:junit-platform-launcher:latest.release")
+    compatTestImplementation("dev.minutest:minutest:latest.release")
     compatTestImplementation(gradleTestKit())
     compatTestImplementation(project(":model"))
     compatTestImplementation("io.strikt:strikt-core:latest.release")
+    compatTestImplementation("com.squareup.okio:okio:latest.release")
 }
 
 gradlePlugin {

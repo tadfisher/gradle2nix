@@ -1,19 +1,32 @@
 package org.nixos.gradle2nix
 
 import com.squareup.moshi.Moshi
+import dev.minutest.ContextBuilder
+import dev.minutest.MinutestFixture
+import dev.minutest.TestContextBuilder
 import okio.buffer
 import okio.source
-import org.gradle.api.internal.artifacts.dsl.ParsedModuleStringNotation
 import org.gradle.internal.classpath.DefaultClassPath
 import org.gradle.testkit.runner.GradleRunner
-import org.gradle.testkit.runner.internal.DefaultGradleRunner
 import org.gradle.testkit.runner.internal.PluginUnderTestMetadataReading
-import org.gradle.tooling.GradleConnector
-import org.gradle.tooling.events.ProgressListener
+import org.gradle.util.GradleVersion
+import org.junit.jupiter.api.Assumptions.assumeTrue
+import strikt.api.Assertion
+import strikt.assertions.map
 import java.io.File
-import kotlin.test.assertTrue
+import java.io.StringWriter
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import kotlin.streams.toList
+
+const val SONATYPE_OSS_URL = "https://oss.sonatype.org/content/repositories/snapshots/"
 
 private val moshi = Moshi.Builder().build()
+
+private val gradleVersion = GradleVersion.version(System.getProperty("compat.gradle.version"))
+
+val GRADLE_4_5 = GradleVersion.version("4.5")
 
 private fun File.initscript() = resolve("init.gradle").also {
     it.writer().use { out ->
@@ -31,20 +44,12 @@ private fun File.initscript() = resolve("init.gradle").also {
      }
 }
 
-fun File.buildGroovy(
-    script: String,
-    configurations: List<String> = emptyList(),
-    subprojects: List<String> = emptyList()
-): DefaultBuild {
-    resolve("build.gradle").writeText(script)
-    return build(configurations, subprojects)
-}
-
 fun File.buildKotlin(
     script: String,
     configurations: List<String> = emptyList(),
     subprojects: List<String> = emptyList()
 ): DefaultBuild {
+    assumeTrue(gradleVersion >= GRADLE_4_5)
     resolve("build.gradle.kts").writeText(script)
     return build(configurations, subprojects)
 }
@@ -53,10 +58,13 @@ private fun File.build(
     configurations: List<String>,
     subprojects: List<String>
 ): DefaultBuild {
-    GradleRunner.create()
-        .withGradleVersion(System.getProperty("compat.gradle.version"))
+    val log = StringWriter()
+
+    val result = GradleRunner.create()
+        .withGradleVersion(gradleVersion.version)
         .withProjectDir(this)
-        .forwardOutput()
+        .forwardStdOutput(log)
+        .forwardStdError(log)
         .withArguments(
             "nixModel",
             "--init-script=${initscript()}",
@@ -64,8 +72,12 @@ private fun File.build(
             "-Porg.nixos.gradle2nix.configurations=${configurations.joinToString(",")}",
             "-Porg.nixos.gradle2nix.subprojects=${subprojects.joinToString(",")}"
         )
-        .build()
+        .runCatching { build() }
 
+    result.onFailure { error ->
+        System.err.print(log)
+        throw error
+    }
     return resolve("build/nix/model.json").run {
         println(readText())
         source().buffer().use { src ->
@@ -73,75 +85,48 @@ private fun File.build(
         }
     }
 }
-//
-//    return GradleConnector.newConnector()
-//        .useGradleVersion(System.getProperty("compat.gradle.version"))
-//        .forProjectDirectory(this)
-//        .connect()
-//        .model(Build::class.java).apply {
-//            addArguments("--init-script=${initscript()}", "--stacktrace")
-//            addJvmArguments(
-//                "-Dorg.gradle.debug=true",
-//                "-Dorg.nixos.gradle2nix.configurations=${configurations.joinToString(",")}",
-//                "-Dorg.nixos.gradle2nix.subprojects=${subprojects.joinToString(",")}"
-//            )
-//            setStandardOutput(System.out)
-//            setStandardError(System.out)
-//        }
-//        .get()
-//        .let { DefaultBuild(it) }
 
-fun jar(notation: String, sha256: String = ""): DefaultArtifact =
-        artifact(notation, sha256, "jar")
+val <T : Iterable<Artifact>> Assertion.Builder<T>.ids: Assertion.Builder<Iterable<String>>
+    get() = map { it.id.toString() }
 
-fun pom(notation: String, sha256: String = ""): DefaultArtifact =
-        artifact(notation, sha256, "pom")
+@MinutestFixture
+class Fixture(val testRoots: List<Path>)
 
-private fun artifact(notation: String, sha256: String, type: String): DefaultArtifact {
-    val parsed = ParsedModuleStringNotation(notation, type)
-    return DefaultArtifact(
-        groupId = parsed.group ?: "",
-        artifactId = parsed.name ?: "",
-        version = parsed.version ?: "",
-        classifier = parsed.classifier ?: "",
-        extension = type,
-        sha256 = sha256
-    )
+@MinutestFixture
+class ProjectFixture(val testRoot: Path) {
+    fun build(
+        configurations: List<String> = emptyList(),
+        subprojects: List<String> = emptyList()
+    ) = testRoot.toFile().build(configurations, subprojects)
 }
 
-private fun artifactEquals(expected: DefaultArtifact, actual: DefaultArtifact?): Boolean {
-    return actual != null && with (expected) {
-        groupId == actual.groupId &&
-                artifactId == actual.artifactId &&
-                version == actual.version &&
-                classifier == actual.classifier &&
-                extension == actual.extension &&
-                (sha256.takeIf { it.isNotEmpty() }?.equals(actual.sha256) ?: true)
+fun ContextBuilder<Fixture>.withFixture(
+    name: String,
+    block: TestContextBuilder<Fixture, ProjectFixture>.() -> Unit
+) = context(name) {
+    val url = checkNotNull(Thread.currentThread().contextClassLoader.getResource(name)?.toURI()) {
+        "$name: No test fixture found"
     }
-}
+    val fixtureRoot = Paths.get(url)
+    val dest = createTempDir("gradle2nix").toPath()
+    val src = checkNotNull(fixtureRoot.takeIf(Files::exists)) {
+        "$name: Test fixture not found: $fixtureRoot}"
+    }
+    src.toFile().copyRecursively(dest.toFile())
+    val testRoots = Files.list(dest).filter { Files.isDirectory(it) }.toList()
 
-fun assertArtifacts(vararg expected: DefaultArtifact, actual: List<DefaultArtifact>) {
-    val mismatches = mutableListOf<Mismatch>()
-    val remaining = mutableListOf<DefaultArtifact>().also { it.addAll(actual) }
-    expected.forEachIndexed { i: Int, exp: DefaultArtifact ->
-        val act = actual.elementAtOrNull(i)
-        if (!artifactEquals(exp, act)) {
-            mismatches += Mismatch(i, exp, act)
-        } else if (act != null) {
-            remaining -= act
+    fixture {
+        Fixture(testRoots)
+    }
+
+    afterAll {
+        dest.toFile().deleteRecursively()
+    }
+
+    testRoots.forEach { testRoot ->
+        derivedContext<ProjectFixture>(testRoot.fileName.toString()) {
+            deriveFixture { ProjectFixture(testRoot) }
+            block()
         }
     }
-    assertTrue(mismatches.isEmpty() && remaining.isEmpty(), """
-        Artifact mismatches:
-        ${mismatches.joinToString("\n            ", prefix = "    ")}
-
-        Missing artifacts:
-        ${remaining.joinToString("\n            ", prefix = "    ")}
-    """)
 }
-
-data class Mismatch(
-    val index: Int,
-    val expected: DefaultArtifact,
-    val actual: DefaultArtifact?
-)

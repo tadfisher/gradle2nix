@@ -1,19 +1,16 @@
 package org.nixos.gradle2nix
 
 import com.squareup.moshi.Moshi
-import okio.buffer
-import okio.sink
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.ArtifactRepositoryContainer
+import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ProjectDependency
-import org.gradle.api.artifacts.dsl.RepositoryHandler
-import org.gradle.api.artifacts.repositories.MavenArtifactRepository
-import org.gradle.api.internal.GradleInternal
 import org.gradle.api.invocation.Gradle
+import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.wrapper.Wrapper
 import org.gradle.kotlin.dsl.getByName
+import org.gradle.kotlin.dsl.newInstance
 import org.gradle.kotlin.dsl.support.serviceOf
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugin.management.PluginRequest
@@ -33,15 +30,17 @@ open class Gradle2NixPlugin : Plugin<Gradle> {
             rootProject.serviceOf<ToolingModelBuilderRegistry>()
                 .register(NixToolingModelBuilder(modelProperties, pluginRequests))
 
-            rootProject.tasks.register("nixModel") {
+            rootProject.tasks.registerCompat("nixModel") {
                 doLast {
                     val outFile = project.mkdir(project.buildDir.resolve("nix")).resolve("model.json")
                     val model = project.buildModel(modelProperties, pluginRequests)
-                    outFile.sink().buffer().use { out ->
-                        Moshi.Builder().build()
-                            .adapter(DefaultBuild::class.java)
-                            .indent("  ")
-                            .toJson(out, model)
+                    outFile.bufferedWriter().use { out ->
+                        out.write(
+                            Moshi.Builder().build()
+                                .adapter(DefaultBuild::class.java)
+                                .indent("  ")
+                                .toJson(model)
+                        )
                         out.flush()
                     }
                 }
@@ -50,7 +49,13 @@ open class Gradle2NixPlugin : Plugin<Gradle> {
     }
 }
 
-private const val NIX_MODEL_NAME = "org.nixos.gradle2nix.Build"
+private fun TaskContainer.registerCompat(name: String, configureAction: Task.() -> Unit) {
+    if (GradleVersion.current() >= GradleVersion.version("4.9")) {
+        register(name, configureAction)
+    } else {
+        create(name, configureAction)
+    }
+}
 
 private class NixToolingModelBuilder(
     private val modelProperties: ModelProperties,
@@ -100,6 +105,7 @@ private fun Project.buildModel(
     )
 }
 
+@Suppress("UnstableApiUsage")
 private fun Project.buildGradle(): DefaultGradle =
     with(tasks.getByName<Wrapper>("wrapper")) {
         DefaultGradle(
@@ -113,18 +119,16 @@ private fun Project.buildGradle(): DefaultGradle =
                 }
                 ?: throw IllegalStateException(
                     """
-                            Failed to find native-platform jar in ${gradle.gradleHomeDir}.
-
-                            Ask Tad to fix this.
-                        """.trimIndent()
+                    Failed to find native-platform jar in ${gradle.gradleHomeDir}.
+                    Ask Tad to fix this.
+                    """.trimIndent()
                 )
         )
     }
 
-private fun Project.buildPlugins(pluginRequests: List<PluginRequest>): DefaultDependencies =
-    with(PluginResolver(gradle as GradleInternal, pluginRequests)) {
-        DefaultDependencies(repositories.repositories(), artifacts())
-    }
+private fun Project.buildPlugins(pluginRequests: List<PluginRequest>): List<DefaultArtifact> {
+    return objects.newInstance<PluginResolver>().resolve(pluginRequests).distinct().sorted()
+}
 
 private fun Project.includedBuilds(): List<DefaultIncludedBuild> =
     gradle.includedBuilds.map {
@@ -134,7 +138,7 @@ private fun Project.includedBuilds(): List<DefaultIncludedBuild> =
 private fun Project.buildProject(
     explicitConfigurations: List<String>,
     explicitSubprojects: Collection<Project>,
-    plugins: DefaultDependencies
+    pluginArtifacts: List<DefaultArtifact>
 ): DefaultProject {
     logger.lifecycle("    Subproject: $path")
     return DefaultProject(
@@ -142,34 +146,33 @@ private fun Project.buildProject(
         version = version.toString(),
         path = path,
         projectDir = projectDir.toRelativeString(rootProject.projectDir),
-        buildscriptDependencies = buildscriptDependencies(plugins),
+        buildscriptDependencies = buildscriptDependencies(pluginArtifacts),
         projectDependencies = projectDependencies(explicitConfigurations),
-        children = explicitSubprojects.map { it.buildProject(explicitConfigurations, emptyList(), plugins) }
+        children = explicitSubprojects.map {
+            it.buildProject(explicitConfigurations, emptyList(), pluginArtifacts)
+        }
     )
 }
 
-private fun Project.buildscriptDependencies(plugins: DefaultDependencies): DefaultDependencies =
-    with(DependencyResolver(buildscript.configurations, buildscript.dependencies)) {
-        DefaultDependencies(
-            repositories = buildscript.repositories.repositories(),
-            artifacts = buildscript.configurations
-                .filter { it.isCanBeResolved }
-                .flatMap { resolveDependencies(it) + resolvePoms(it) }
-                .minus(plugins.artifacts)
-                .distinct()
-        )
-    }
+private fun Project.buildscriptDependencies(pluginArtifacts: List<DefaultArtifact>): List<DefaultArtifact> {
+    val resolverFactory = ConfigurationResolverFactory(buildscript.repositories)
+    val resolver = resolverFactory.create(buildscript.dependencies)
+    val pluginIds = pluginArtifacts.map(DefaultArtifact::id)
+    return buildscript.configurations
+        .flatMap(resolver::resolve)
+        .distinct()
+        .filter { it.id !in pluginIds }
+        .sorted()
+}
 
-private fun Project.projectDependencies(explicitConfigurations: List<String>): DefaultDependencies =
-    with(DependencyResolver(configurations, dependencies)) {
-        val toResolve = collectConfigurations(explicitConfigurations)
-        DefaultDependencies(
-            repositories = repositories.repositories(),
-            artifacts = toResolve.flatMap { resolveDependencies(it) + resolvePoms(it) }
-                .sorted()
-                .distinct()
-        )
-    }
+private fun Project.projectDependencies(explicitConfigurations: List<String>): List<DefaultArtifact> {
+    val resolverFactory = ConfigurationResolverFactory(repositories)
+    val resolver = resolverFactory.create(dependencies)
+    return collectConfigurations(explicitConfigurations)
+        .flatMap(resolver::resolve)
+        .distinct()
+        .sorted()
+}
 
 private fun Project.dependentSubprojects(explicitConfigurations: List<String>): Set<Project> {
     return collectConfigurations(explicitConfigurations)
@@ -190,19 +193,6 @@ private fun Project.collectConfigurations(
     }
 }
 
-private val excludedRepoNames = setOf(
-    "Embedded Kotlin Repository",
-    ArtifactRepositoryContainer.DEFAULT_MAVEN_LOCAL_REPO_NAME
-)
-
-internal fun RepositoryHandler.repositories() = DefaultRepositories(
-    maven = filterIsInstance<MavenArtifactRepository>()
-        .filter { it.name !in excludedRepoNames }
-        .map { repo ->
-            DefaultMaven(listOf(repo.url.toString()) + repo.artifactUrls.map { it.toString() })
-        }
-)
-
 private fun fetchDistSha256(url: String): String {
     return URL("$url.sha256").openConnection().run {
         connect()
@@ -217,6 +207,9 @@ private val Wrapper.sha256: String
         return if (GradleVersion.current() < GradleVersion.version("4.5")) {
             fetchDistSha256(distributionUrl)
         } else {
+            @Suppress("UnstableApiUsage")
             distributionSha256Sum ?: fetchDistSha256(distributionUrl)
         }
     }
+
+private const val NIX_MODEL_NAME = "org.nixos.gradle2nix.Build"

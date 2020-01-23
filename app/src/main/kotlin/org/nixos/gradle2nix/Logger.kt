@@ -4,7 +4,8 @@ import java.io.PrintStream
 
 class Logger(
     val out: PrintStream = System.err,
-    val verbose: Boolean) {
+    val verbose: Boolean
+) {
 
     val log: (String) -> Unit = { if (verbose) out.println(it) }
     val warn: (String) -> Unit = { out.println("Warning: $it")}

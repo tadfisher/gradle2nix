@@ -8,16 +8,7 @@ data class NixGradleEnv(
     val version: String,
     val path: String,
     val gradle: DefaultGradle,
-    val dependencies: Map<String, List<Dependency>>
-)
-
-@JsonClass(generateAdapter = true)
-data class Dependency(
-    val name: String,
-    val filename: String,
-    val path: String,
-    val urls: List<String>,
-    val sha256: String
+    val dependencies: Map<String, List<DefaultArtifact>>
 )
 
 fun buildEnv(builds: Map<String, DefaultBuild>): Map<String, NixGradleEnv> =
@@ -28,58 +19,31 @@ fun buildEnv(builds: Map<String, DefaultBuild>): Map<String, NixGradleEnv> =
             path = path,
             gradle = build.gradle,
             dependencies = mapOf(
-                "plugin" to buildRepo(build.pluginDependencies).values.toList(),
-                "buildscript" to build.rootProject.collectDependencies(DefaultProject::buildscriptDependencies)
-                    .values.toList(),
+                "plugin" to build.pluginDependencies,
+                "buildscript" to build.rootProject.collectDependencies(DefaultProject::buildscriptDependencies),
                 "project" to build.rootProject.collectDependencies(DefaultProject::projectDependencies)
-                    .values.toList()
             )
         )
     }
 
-private fun DefaultProject.collectDependencies(chooser: DefaultProject.() -> DefaultDependencies): Map<DefaultArtifact, Dependency> {
-    val result = mutableMapOf<DefaultArtifact, Dependency>()
-    mergeRepo(result, buildRepo(chooser()))
+private fun DefaultProject.collectDependencies(
+    chooser: DefaultProject.() -> List<DefaultArtifact>
+): List<DefaultArtifact> {
+    val result = mutableMapOf<ArtifactIdentifier, DefaultArtifact>()
+    mergeRepo(result, chooser())
     for (child in children) {
         mergeRepo(result, child.collectDependencies(chooser))
     }
-    return result
+    return result.values.toList()
 }
 
-private fun buildRepo(deps: DefaultDependencies): Map<DefaultArtifact, Dependency> =
-    deps.artifacts.associate { artifact ->
-        val name = with(artifact) {
-            buildString {
-                append("$groupId-$artifactId-$version")
-                if (classifier.isNotEmpty()) append("-$classifier")
-                append("-$extension")
-                replace(Regex("[^A-Za-z0-9+\\-._?=]"), "_")
-            }
-        }
-        val filename = with(artifact) {
-            buildString {
-                append("$artifactId-$version")
-                if (classifier.isNotEmpty()) append("-$classifier")
-                append(".$extension")
-            }
-        }
-        val path = with(artifact) { "${groupId.replace(".", "/")}/$artifactId/$version" }
-        val dep = Dependency(
-            name = name,
-            filename = filename,
-            path = path,
-            urls = deps.repositories.maven.flatMap { repo ->
-                repo.urls.map { "${it.removeSuffix("/")}/$path/$filename"  }
-            },
-            sha256 = artifact.sha256
-        )
-        artifact to dep
-    }
-
-private fun mergeRepo(base: MutableMap<DefaultArtifact, Dependency>, extra: Map<DefaultArtifact, Dependency>) {
-    extra.forEach { (artifact, dep) ->
-        base.merge(artifact, dep) { old, new ->
-            old.copy(urls = old.urls + (new.urls - old.urls))
+private fun mergeRepo(
+    base: MutableMap<ArtifactIdentifier, DefaultArtifact>,
+    extra: List<DefaultArtifact>
+) {
+    extra.forEach { artifact ->
+        base.merge(artifact.id, artifact) { old, new ->
+            old.copy(urls = old.urls.union(new.urls).toList())
         }
     }
 }

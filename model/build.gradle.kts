@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api("com.squareup.moshi:moshi:+")
-    api("com.squareup.okio:okio:+")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:+")
+    api("com.squareup.moshi:moshi:latest.release")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:latest.release")
+    implementation("net.swiftzer.semver:semver:latest.release")
 }

@@ -1,6 +1,5 @@
 package org.nixos.gradle2nix
 
-import java.util.Properties
 import org.gradle.api.Project
 
 data class ModelProperties(

@@ -6,9 +6,6 @@ plugins {
     application
 }
 
-group = "org.nixos"
-version = "1.0.0-SNAPSHOT"
-
 dependencies {
     implementation(project(":model"))
     implementation(kotlin("stdlib-jdk8"))
