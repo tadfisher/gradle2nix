@@ -1,242 +1,149 @@
 package org.nixos.gradle2nix
 
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
-import java.io.File
-import kotlin.test.assertEquals
+import dev.minutest.Tests
+import dev.minutest.junit.JUnit5Minutests
+import dev.minutest.rootContext
+import org.gradle.api.internal.artifacts.dsl.DefaultRepositoryHandler.BINTRAY_JCENTER_URL
+import strikt.api.expectThat
+import strikt.assertions.all
+import strikt.assertions.containsExactly
+import strikt.assertions.containsExactlyInAnyOrder
+import strikt.assertions.get
+import strikt.assertions.hasSize
+import strikt.assertions.isEqualTo
+import strikt.assertions.map
+import strikt.assertions.single
+import strikt.assertions.startsWith
 
-class SubprojectsTest {
-    @TempDir
-    lateinit var root: File
+class SubprojectsTest : JUnit5Minutests {
+    @Tests
+    fun tests() = rootContext<Fixture>("subproject tests") {
+        withFixture("subprojects/multi-module") {
+            test("builds multi-module project") {
+                expectThat(build().rootProject) {
+                    get("root project dependencies") { projectDependencies }.and {
+                        ids.containsExactly(
+                            "junit:junit:4.12@jar",
+                            "junit:junit:4.12@pom",
+                            "org.hamcrest:hamcrest-core:1.3@jar",
+                            "org.hamcrest:hamcrest-core:1.3@pom",
+                            "org.hamcrest:hamcrest-parent:1.3@pom"
+                        )
+                        all {
+                            get("urls") { urls }.single().startsWith(BINTRAY_JCENTER_URL)
+                        }
+                    }
 
-    @Test
-    fun `builds multi-module project with kotlin dsl`() {
-        root.resolve("child-a").also { it.mkdirs() }
-            .resolve("build.gradle.kts").writeText("""
-                plugins {
-                    java
-                }
+                    get("children") { children }.and {
+                        hasSize(2)
 
-                dependencies {
-                    implementation("com.squareup.okio:okio:2.2.2")
-                }
-            """.trimIndent())
+                        get(0).and {
+                            get("name") { name }.isEqualTo("child-a")
+                            get("projectDir") { projectDir }.isEqualTo("child-a")
 
-        root.resolve("child-b").also { it.mkdirs() }
-            .resolve("build.gradle.kts").writeText("""
-                plugins {
-                    java
-                }
+                            get("child-a project dependencies") { projectDependencies }.and {
+                                ids.containsExactly(
+                                    "com.squareup.okio:okio:2.2.2@jar",
+                                    "com.squareup.okio:okio:2.2.2@pom",
+                                    "org.jetbrains:annotations:13.0@jar",
+                                    "org.jetbrains:annotations:13.0@pom",
+                                    "org.jetbrains.kotlin:kotlin-stdlib:1.2.60@jar",
+                                    "org.jetbrains.kotlin:kotlin-stdlib:1.2.60@pom",
+                                    "org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60@jar",
+                                    "org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60@pom"
+                                )
 
-                dependencies {
-                    implementation(project(":child-a"))
-                    implementation("com.squareup.moshi:moshi:1.8.0")
-                }
-            """.trimIndent())
+                                all {
+                                    get("urls") { urls }.single().startsWith(BINTRAY_JCENTER_URL)
+                                }
+                            }
+                        }
 
-        root.resolve("settings.gradle.kts").writeText("""
-            include(":child-a", ":child-b")
-        """.trimIndent())
+                        get(1).and {
+                            get("name") { name }.isEqualTo("child-b")
+                            get("projectDir") { projectDir }.isEqualTo("child-b")
 
-        val model = root.buildKotlin("""
-            plugins {
-                java
-            }
+                            get("child-b project dependencies") { projectDependencies }.and {
+                                ids.containsExactly(
+                                    "com.squareup.moshi:moshi:1.8.0@jar",
+                                    "com.squareup.moshi:moshi:1.8.0@pom",
+                                    "com.squareup.moshi:moshi-parent:1.8.0@pom",
+                                    "com.squareup.okio:okio:1.16.0@jar",        // compileClasspath
+                                    "com.squareup.okio:okio:1.16.0@pom",        // compileClasspath
+                                    "com.squareup.okio:okio:2.2.2@jar",         // runtimeClasspath
+                                    "com.squareup.okio:okio:2.2.2@pom",         // runtimeClasspath
+                                    "com.squareup.okio:okio-parent:1.16.0@pom", // compileClasspath
+                                    "org.jetbrains:annotations:13.0@jar",
+                                    "org.jetbrains:annotations:13.0@pom",
+                                    "org.jetbrains.kotlin:kotlin-stdlib:1.2.60@jar",
+                                    "org.jetbrains.kotlin:kotlin-stdlib:1.2.60@pom",
+                                    "org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60@jar",
+                                    "org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60@pom",
+                                    "org.sonatype.oss:oss-parent:7@pom"
+                                )
 
-            allprojects {
-                repositories {
-                    jcenter()
-                }
-            }
-
-            dependencies {
-                testImplementation("junit:junit:4.12")
-            }
-        """.trimIndent())
-
-        with(model.rootProject) {
-            with(projectDependencies) {
-                assertEquals(listOf(DefaultMaven(urls = listOf("https://jcenter.bintray.com/"))),
-                    repositories.maven)
-
-                assertArtifacts(
-                    jar("junit:junit:4.12"),
-                    pom("junit:junit:4.12"),
-                    jar("org.hamcrest:hamcrest-core:1.3"),
-                    pom("org.hamcrest:hamcrest-core:1.3"),
-                    pom("org.hamcrest:hamcrest-parent:1.3"),
-                    actual = artifacts)
-            }
-
-            assertEquals(2, children.size)
-
-            with(children[0]) {
-                assertEquals("child-a", name)
-                assertEquals(root.resolve("child-a").toRelativeString(root), projectDir)
-
-                with(projectDependencies) {
-                    assertEquals(
-                        listOf(DefaultMaven(urls = listOf("https://jcenter.bintray.com/"))),
-                        repositories.maven
-                    )
-
-                    assertArtifacts(
-                        jar("com.squareup.okio:okio:2.2.2"),
-                        pom("com.squareup.okio:okio:2.2.2"),
-                        jar("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
-                        pom("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
-                        jar("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
-                        pom("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
-                        jar("org.jetbrains:annotations:13.0"),
-                        pom("org.jetbrains:annotations:13.0"),
-                        actual = artifacts
-                    )
+                                all {
+                                    get("urls") { urls }.single().startsWith(BINTRAY_JCENTER_URL)
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
-            with(children[1]) {
-                assertEquals("child-b", name)
-                assertEquals(root.resolve("child-b").toRelativeString(root), projectDir)
+            test("builds single subproject") {
+                expectThat(build(subprojects = listOf(":child-a")).rootProject) {
+                    get("root project dependencies") { projectDependencies }.and {
+                        ids.containsExactly(
+                            "junit:junit:4.12@jar",
+                            "junit:junit:4.12@pom",
+                            "org.hamcrest:hamcrest-core:1.3@jar",
+                            "org.hamcrest:hamcrest-core:1.3@pom",
+                            "org.hamcrest:hamcrest-parent:1.3@pom"
+                        )
 
-                with(projectDependencies) {
-                    assertEquals(
-                        listOf(DefaultMaven(urls = listOf("https://jcenter.bintray.com/"))),
-                        repositories.maven
-                    )
+                        all {
+                            get("urls") { urls }.single().startsWith(BINTRAY_JCENTER_URL)
+                        }
+                    }
 
-                    assertArtifacts(
-                        pom("com.squareup.moshi:moshi-parent:1.8.0"),
-                        jar("com.squareup.moshi:moshi:1.8.0"),
-                        pom("com.squareup.moshi:moshi:1.8.0"),
-                        pom("com.squareup.okio:okio-parent:1.16.0"),
-                        jar("com.squareup.okio:okio:1.16.0"),
-                        pom("com.squareup.okio:okio:1.16.0"),
-                        jar("com.squareup.okio:okio:2.2.2"),
-                        pom("com.squareup.okio:okio:2.2.2"),
-                        jar("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
-                        pom("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
-                        jar("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
-                        pom("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
-                        jar("org.jetbrains:annotations:13.0"),
-                        pom("org.jetbrains:annotations:13.0"),
-                        pom("org.sonatype.oss:oss-parent:7"),
-                        actual = artifacts
-                    )
+                    get("children") { children }.single().and {
+                        get("name") { name }.isEqualTo("child-a")
+                        get("projectDir") { projectDir }.isEqualTo("child-a")
+
+                        get("child-a project dependencies") { projectDependencies }.and {
+                            ids.containsExactly(
+                                "com.squareup.okio:okio:2.2.2@jar",
+                                "com.squareup.okio:okio:2.2.2@pom",
+                                "org.jetbrains:annotations:13.0@jar",
+                                "org.jetbrains:annotations:13.0@pom",
+                                "org.jetbrains.kotlin:kotlin-stdlib:1.2.60@jar",
+                                "org.jetbrains.kotlin:kotlin-stdlib:1.2.60@pom",
+                                "org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60@jar",
+                                "org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60@pom"
+                            )
+
+                            all {
+                                get("urls") { urls }.single().startsWith(BINTRAY_JCENTER_URL)
+                            }
+                        }
+                    }
                 }
             }
         }
-    }
 
-    @Test
-    fun `builds multi-module project with groovy dsl`() {
-        root.resolve("child-a").also { it.mkdirs() }
-            .resolve("build.gradle").writeText("""
-                plugins {
-                    id 'java'
+        withFixture("subprojects/dependent-subprojects") {
+            test("includes dependent subprojects") {
+                expectThat(build(subprojects = listOf(":child-a"))) {
+                    get("children") { rootProject.children }
+                        .map { it.path }
+                        .containsExactlyInAnyOrder(":child-a", ":child-b", ":child-c")
                 }
 
-                dependencies {
-                    implementation 'com.squareup.okio:okio:2.2.2'
-                }
-            """.trimIndent())
-
-        root.resolve("child-b").also { it.mkdirs() }
-            .resolve("build.gradle").writeText("""
-                plugins {
-                    id 'java'
-                }
-
-                dependencies {
-                    implementation project(':child-a')
-                    implementation 'com.squareup.moshi:moshi:1.8.0'
-                }
-            """.trimIndent())
-
-        root.resolve("settings.gradle").writeText("""
-            include ':child-a', ':child-b'
-        """.trimIndent())
-
-        val model = root.buildGroovy("""
-            plugins {
-                id 'java'
-            }
-
-            allprojects {
-                repositories {
-                    jcenter()
-                }
-            }
-
-            dependencies {
-                testImplementation 'junit:junit:4.12'
-            }
-        """.trimIndent())
-
-        with(model.rootProject) {
-            with(projectDependencies) {
-                assertEquals(listOf(DefaultMaven(urls = listOf("https://jcenter.bintray.com/"))),
-                    repositories.maven)
-
-                assertArtifacts(
-                    jar("junit:junit:4.12"),
-                    pom("junit:junit:4.12"),
-                    jar("org.hamcrest:hamcrest-core:1.3"),
-                    pom("org.hamcrest:hamcrest-core:1.3"),
-                    pom("org.hamcrest:hamcrest-parent:1.3"),
-                    actual = artifacts)
-            }
-
-            assertEquals(2, children.size)
-
-            with(children[0]) {
-                assertEquals("child-a", name)
-                assertEquals(root.resolve("child-a").toRelativeString(root), projectDir)
-
-                with(projectDependencies) {
-                    assertEquals(
-                        listOf(DefaultMaven(urls = listOf("https://jcenter.bintray.com/"))),
-                        repositories.maven
-                    )
-
-                    assertArtifacts(
-                        jar("com.squareup.okio:okio:2.2.2"),
-                        pom("com.squareup.okio:okio:2.2.2"),
-                        jar("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
-                        pom("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
-                        jar("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
-                        pom("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
-                        jar("org.jetbrains:annotations:13.0"),
-                        pom("org.jetbrains:annotations:13.0"),
-                        actual = artifacts
-                    )
-                }
-            }
-
-            with(children[1]) {
-                assertEquals("child-b", name)
-                assertEquals(root.resolve("child-b").toRelativeString(root), projectDir)
-
-                with(projectDependencies) {
-                    assertEquals(listOf(DefaultMaven(urls = listOf("https://jcenter.bintray.com/"))),
-                        repositories.maven)
-
-                    assertArtifacts(
-                        pom("com.squareup.moshi:moshi-parent:1.8.0"),
-                        jar("com.squareup.moshi:moshi:1.8.0"),
-                        pom("com.squareup.moshi:moshi:1.8.0"),
-                        pom("com.squareup.okio:okio-parent:1.16.0"),
-                        jar("com.squareup.okio:okio:1.16.0"),
-                        pom("com.squareup.okio:okio:1.16.0"),
-                        jar("com.squareup.okio:okio:2.2.2"),
-                        pom("com.squareup.okio:okio:2.2.2"),
-                        jar("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
-                        pom("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
-                        jar("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
-                        pom("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
-                        jar("org.jetbrains:annotations:13.0"),
-                        pom("org.jetbrains:annotations:13.0"),
-                        pom("org.sonatype.oss:oss-parent:7"),
-                        actual = artifacts)
+                expectThat(build(subprojects = listOf(":child-b"))) {
+                    get("children") { rootProject.children }
+                        .map { it.path }
+                        .containsExactlyInAnyOrder(":child-b", ":child-c")
                 }
             }
         }

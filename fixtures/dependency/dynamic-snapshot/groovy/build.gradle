@@ -1,0 +1,12 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    jcenter()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.anuken:packr:-SNAPSHOT'
+}

@@ -13,24 +13,20 @@ fun connect(config: Config): ProjectConnection =
         .forProjectDirectory(config.projectDir)
         .connect()
 
+@Suppress("UnstableApiUsage")
 fun ProjectConnection.getBuildModel(config: Config, path: String): DefaultBuild {
-    val arguments = mutableListOf(
-        "--init-script=$shareDir/init.gradle",
-        "-Dorg.nixos.gradle2nix.configurations='${config.configurations.joinToString(",")}'"
-    )
-
-    if (path.isNotEmpty()) {
-        arguments += "--project-dir=$path"
-    }
-
-    return model(Build::class.java)
-        .withArguments(arguments)
-        .apply {
-            if (!config.quiet) {
-                setStandardOutput(System.err)
-                setStandardError(System.err)
-            }
+    return model(Build::class.java).apply {
+        addArguments(
+            "--init-script=$shareDir/init.gradle",
+            "-Porg.nixos.gradle2nix.configurations=${config.configurations.joinToString(",")}",
+            "-Porg.nixos.gradle2nix.subprojects=${config.subprojects.joinToString(",")}"
+        )
+        if (config.gradleArgs != null) addArguments(config.gradleArgs)
+        if (path.isNotEmpty()) addArguments("--project-dir=$path")
+        if (!config.quiet) {
+            setColorOutput(true)
+            setStandardOutput(System.err)
+            setStandardError(System.err)
         }
-        .get()
-        .let { DefaultBuild(it) }
+    }.get().let { DefaultBuild(it) }
 }

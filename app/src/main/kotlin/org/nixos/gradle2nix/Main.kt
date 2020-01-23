@@ -8,7 +8,12 @@ import com.github.ajalt.clikt.parameters.arguments.ProcessedArgument
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.convert
 import com.github.ajalt.clikt.parameters.arguments.default
-import com.github.ajalt.clikt.parameters.options.*
+import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.flag
+import com.github.ajalt.clikt.parameters.options.multiple
+import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.split
+import com.github.ajalt.clikt.parameters.options.validate
 import com.github.ajalt.clikt.parameters.types.file
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -20,9 +25,11 @@ val shareDir: String = System.getProperty("org.nixos.gradle2nix.share")
 
 data class Config(
     val gradleVersion: String?,
+    val gradleArgs: String?,
     val configurations: List<String>,
     val projectDir: File,
     val includes: List<File>,
+    val subprojects: List<String>,
     val buildSrc: Boolean,
     val quiet: Boolean
 ) {
@@ -35,6 +42,10 @@ class Main : CliktCommand(
     private val gradleVersion: String? by option("--gradle-version", "-g",
         metavar = "VERSION",
         help = "Use a specific Gradle version")
+
+    private val gradleArgs: String? by option("--gradle-args", "-a",
+        metavar = "ARGS",
+        help = "Extra arguments to pass to Gradle")
 
     private val configurations: List<String> by option("--configuration", "-c",
         metavar = "NAME",
@@ -52,6 +63,19 @@ class Main : CliktCommand(
                 val message = failures.joinToString("\n    ")
                 fail("Included builds are not Gradle projects:\n$message\n" +
                         "Gradle projects must contain a settings.gradle or settings.gradle.kts script.")
+            }
+        }
+
+    private val subprojects: List<String> by option("--project", "-p",
+        metavar = "PATH",
+        help = "Only resolve these subproject paths, e.g. ':', or ':sub:project' (default: all projects)")
+        .multiple()
+        .validate { paths ->
+            val failures = paths.filterNot { it.startsWith(":") }
+            if (failures.isNotEmpty()) {
+                val message = failures.joinToString("\n    ")
+                fail("Subproject paths must be absolute:\n$message\n" +
+                    "Paths are in the form ':parent:child'.")
             }
         }
 
@@ -82,7 +106,16 @@ class Main : CliktCommand(
     }
 
     override fun run() {
-        val config = Config(gradleVersion, configurations, projectDir, includes, buildSrc, quiet)
+        val config = Config(
+            gradleVersion,
+            gradleArgs,
+            configurations,
+            projectDir,
+            includes,
+            subprojects,
+            buildSrc,
+            quiet
+        )
         val (log, _, _) = Logger(verbose = !config.quiet)
 
         val paths = resolveProjects(config).map { p ->

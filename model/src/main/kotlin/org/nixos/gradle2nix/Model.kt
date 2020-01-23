@@ -2,7 +2,7 @@ package org.nixos.gradle2nix
 
 interface Build {
     val gradle: Gradle
-    val pluginDependencies: Dependencies
+    val pluginDependencies: List<Artifact>
     val rootProject: Project
     val includedBuilds: List<IncludedBuild>
 }
@@ -25,29 +25,26 @@ interface Project {
     val version: String
     val path: String
     val projectDir: String
-    val buildscriptDependencies: Dependencies
-    val projectDependencies: Dependencies
+    val buildscriptDependencies: List<Artifact>
+    val projectDependencies: List<Artifact>
     val children: List<Project>
 }
 
-interface Dependencies {
-    val repositories: Repositories
-    val artifacts: List<Artifact>
-}
-
-interface Repositories {
-    val maven: List<Maven>
-}
-
-interface Maven {
-    val urls: List<String>
-}
-
 interface Artifact {
-    val groupId: String
-    val artifactId: String
-    val version: String
-    val classifier: String
-    val extension: String
+    val id: ArtifactIdentifier
+    val name: String
+    val path: String
+    val timestamp: String?
+    val build: Int?
+    val urls: List<String>
     val sha256: String
+}
+
+interface ArtifactIdentifier {
+    val group: String
+    val name: String
+    val version: String
+    val type: String
+    val extension: String
+    val classifier: String?
 }

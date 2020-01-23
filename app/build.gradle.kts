@@ -6,9 +6,6 @@ plugins {
     application
 }
 
-group = "org.nixos"
-version = "1.0.0-SNAPSHOT"
-
 dependencies {
     implementation(project(":model"))
     implementation(kotlin("stdlib-jdk8"))
@@ -17,7 +14,6 @@ dependencies {
     implementation("com.github.ajalt:clikt:latest.release")
     implementation("org.slf4j:slf4j-api:latest.release")
     runtimeOnly("org.slf4j:slf4j-simple:latest.release")
-    implementation("com.squareup.moshi:moshi:latest.release")
     implementation("com.squareup.moshi:moshi-adapters:latest.release")
     implementation("com.squareup.moshi:moshi-kotlin:latest.release")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:latest.release")

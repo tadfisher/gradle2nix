@@ -1,0 +1,15 @@
+subprojects {
+    apply plugin: 'java'
+}
+
+project(':child-a') {
+    dependencies {
+        implementation project(':child-b')
+    }
+}
+
+project(':child-b') {
+    dependencies {
+        implementation project(':child-c')
+    }
+}

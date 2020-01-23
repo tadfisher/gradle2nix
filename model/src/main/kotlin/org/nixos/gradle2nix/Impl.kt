@@ -1,20 +1,22 @@
 package org.nixos.gradle2nix
 
 import com.squareup.moshi.JsonClass
+import net.swiftzer.semver.SemVer
 import java.io.Serializable
+import java.lang.IllegalArgumentException
 
 @JsonClass(generateAdapter = true)
 data class DefaultBuild(
     override val gradle: DefaultGradle,
-    override val pluginDependencies: DefaultDependencies,
+    override val pluginDependencies: List<DefaultArtifact>,
     override val rootProject: DefaultProject,
     override val includedBuilds: List<DefaultIncludedBuild>
 ) : Build, Serializable {
     constructor(model: Build) : this(
         DefaultGradle(model.gradle),
-        DefaultDependencies(model.pluginDependencies),
+        model.pluginDependencies.map(::DefaultArtifact),
         DefaultProject(model.rootProject),
-        model.includedBuilds.map { DefaultIncludedBuild(it) }
+        model.includedBuilds.map(::DefaultIncludedBuild)
     )
 }
 
@@ -52,8 +54,8 @@ data class DefaultProject(
     override val version: String,
     override val path: String,
     override val projectDir: String,
-    override val buildscriptDependencies: DefaultDependencies,
-    override val projectDependencies: DefaultDependencies,
+    override val buildscriptDependencies: List<DefaultArtifact>,
+    override val projectDependencies: List<DefaultArtifact>,
     override val children: List<DefaultProject>
 ) : Project, Serializable {
     constructor(model: Project) : this(
@@ -61,59 +63,75 @@ data class DefaultProject(
         model.version,
         model.path,
         model.projectDir,
-        DefaultDependencies(model.buildscriptDependencies),
-        DefaultDependencies(model.projectDependencies),
+        model.buildscriptDependencies.map(::DefaultArtifact),
+        model.projectDependencies.map(::DefaultArtifact),
         model.children.map { DefaultProject(it) }
     )
 }
 
 @JsonClass(generateAdapter = true)
-data class DefaultDependencies(
-    override val repositories: DefaultRepositories,
-    override val artifacts: List<DefaultArtifact>
-) : Dependencies, Serializable {
-    constructor(model: Dependencies) : this(
-        DefaultRepositories(model.repositories),
-        model.artifacts.map { DefaultArtifact(it) }
-    )
-}
-
-@JsonClass(generateAdapter = true)
-data class DefaultRepositories(
-    override val maven: List<DefaultMaven>
-) : Repositories, Serializable {
-    constructor(model: Repositories) : this(
-        model.maven.map { DefaultMaven(it) }
-    )
-}
-
-@JsonClass(generateAdapter = true)
-data class DefaultMaven(
-    override val urls: List<String>
-) : Maven, Serializable {
-    constructor(model: Maven) : this(
-        model.urls.toList()
-    )
-}
-
-@JsonClass(generateAdapter = true)
 data class DefaultArtifact(
-    override val groupId: String,
-    override val artifactId: String,
-    override val version: String,
-    override val classifier: String,
-    override val extension: String,
+    override val id: DefaultArtifactIdentifier,
+    override val name: String,
+    override val path: String,
+    override val timestamp: String? = null,
+    override val build: Int? = null,
+    override val urls: List<String>,
     override val sha256: String
 ) : Artifact, Comparable<DefaultArtifact>, Serializable {
     constructor(model: Artifact) : this(
-        model.groupId,
-        model.artifactId,
-        model.version,
-        model.classifier,
-        model.extension,
+        DefaultArtifactIdentifier(model.id),
+        model.name,
+        model.path,
+        model.timestamp,
+        model.build,
+        model.urls,
         model.sha256
     )
 
-    override fun toString() = "$groupId:$artifactId:$version:$classifier:$extension"
-    override fun compareTo(other: DefaultArtifact): Int = toString().compareTo(other.toString())
+    override fun toString() = id.toString()
+    override fun compareTo(other: DefaultArtifact): Int = id.compareTo(other.id)
+}
+
+@JsonClass(generateAdapter = true)
+data class DefaultArtifactIdentifier(
+    override val group: String,
+    override val name: String,
+    override val version: String,
+    override val type: String,
+    override val extension: String = type,
+    override val classifier: String? = null
+) : ArtifactIdentifier, Comparable<DefaultArtifactIdentifier>, Serializable {
+    constructor(model: ArtifactIdentifier) : this(
+        model.group,
+        model.name,
+        model.version,
+        model.type,
+        model.extension,
+        model.classifier
+    )
+
+    @delegate:Transient
+    private val semver: SemVer? by lazy {
+        try {
+            SemVer.parse(version)
+        } catch (_: IllegalArgumentException) {
+            null
+        }
+    }
+
+    override fun compareTo(other: DefaultArtifactIdentifier): Int {
+        return group.compareTo(other.group).takeUnless { it == 0 }
+            ?: name.compareTo(other.name).takeUnless { it == 0 }
+            ?: other.semver?.let { semver?.compareTo(it) }?.takeUnless { it == 0 }
+            ?: type.compareTo(other.type).takeUnless { it == 0 }
+            ?: other.classifier?.let { classifier?.compareTo(it) }?.takeUnless { it == 0 }
+            ?: 0
+    }
+
+    override fun toString(): String = buildString {
+        append("$group:$name:$version")
+        if (classifier != null) append(":$classifier")
+        append("@$type")
+    }
 }

@@ -1,22 +1,25 @@
 package org.nixos.gradle2nix
 
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
+import dev.minutest.Tests
+import dev.minutest.junit.JUnit5Minutests
+import dev.minutest.rootContext
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 import java.io.File
-import kotlin.test.assertEquals
 
-class WrapperTest {
-    @TempDir
-    lateinit var root: File
+class WrapperTest : JUnit5Minutests {
+    @Tests
+    fun tests() = rootContext<File>("wrapper tests") {
+        fixture { createTempDir("gradle2nix") }
 
-    @Test
-    fun `resolves gradle version from wrapper configuration`() {
-        val model = root.buildKotlin("""
-            tasks.wrapper {
-                gradleVersion = "5.5.1"
+        test("resolves gradle wrapper version") {
+            expectThat(buildKotlin("""
+                tasks.withType<org.gradle.api.tasks.wrapper.Wrapper> {
+                    gradleVersion = "5.5.1"
+                }
+            """.trimIndent())) {
+                get("gradle version") { gradle.version }.isEqualTo("5.5.1")
             }
-        """.trimIndent())
-
-        assertEquals(model.gradle.version, "5.5.1")
+        }
     }
 }

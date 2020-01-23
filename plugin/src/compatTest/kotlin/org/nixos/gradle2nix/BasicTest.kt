@@ -1,97 +1,51 @@
 package org.nixos.gradle2nix
 
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
-import java.io.File
-import kotlin.test.assertEquals
+import dev.minutest.Tests
+import dev.minutest.junit.JUnit5Minutests
+import dev.minutest.rootContext
+import org.gradle.api.internal.artifacts.dsl.DefaultRepositoryHandler.BINTRAY_JCENTER_URL
+import org.gradle.api.internal.artifacts.dsl.DefaultRepositoryHandler.MAVEN_CENTRAL_URL
+import strikt.api.expectThat
+import strikt.assertions.all
+import strikt.assertions.containsExactly
+import strikt.assertions.get
+import strikt.assertions.hasSize
+import strikt.assertions.isEqualTo
+import strikt.assertions.map
+import strikt.assertions.startsWith
 
+class BasicTest : JUnit5Minutests {
+    @Tests
+    fun tests() = rootContext<Fixture>("basic tests") {
+        withFixture("basic/basic-java-project") {
+            test("builds basic java project") {
+                expectThat(build()) {
+                    get("gradle version") { gradle.version }.isEqualTo(System.getProperty("compat.gradle.version"))
 
-class BasicTest {
-    @TempDir lateinit var projectDir: File
+                    get("root project dependencies") { rootProject.projectDependencies }.and {
+                        ids.containsExactly(
+                            "com.squareup.moshi:moshi:1.8.0@jar",
+                            "com.squareup.moshi:moshi:1.8.0@pom",
+                            "com.squareup.moshi:moshi-parent:1.8.0@pom",
+                            "com.squareup.okio:okio:2.2.2@jar",
+                            "com.squareup.okio:okio:2.2.2@pom",
+                            "org.jetbrains:annotations:13.0@jar",
+                            "org.jetbrains:annotations:13.0@pom",
+                            "org.jetbrains.kotlin:kotlin-stdlib:1.2.60@jar",
+                            "org.jetbrains.kotlin:kotlin-stdlib:1.2.60@pom",
+                            "org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60@jar",
+                            "org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60@pom",
+                            "org.sonatype.oss:oss-parent:7@pom"
+                        )
 
-    @Test
-    fun `builds basic project with kotlin dsl`() {
-        val model = projectDir.buildKotlin("""
-            plugins {
-                java
+                        map { it.urls }.all {
+                            hasSize(2)
+                            get(0).startsWith(BINTRAY_JCENTER_URL)
+                            get(1).startsWith(MAVEN_CENTRAL_URL)
+                        }
+                    }
+                }
             }
-
-            repositories {
-                jcenter()
-            }
-
-            dependencies {
-                implementation("com.squareup.okio:okio:2.2.2")
-                implementation("com.squareup.moshi:moshi:1.8.0")
-            }
-        """.trimIndent())
-
-        assertEquals(model.gradle.version, System.getProperty("compat.gradle.version"))
-
-        with(model.rootProject.projectDependencies) {
-            with(repositories) {
-                assertEquals(1, maven.size)
-                assertEquals(maven[0].urls[0], "https://jcenter.bintray.com/")
-            }
-
-            assertArtifacts(
-                pom("com.squareup.moshi:moshi-parent:1.8.0"),
-                jar("com.squareup.moshi:moshi:1.8.0"),
-                pom("com.squareup.moshi:moshi:1.8.0"),
-                jar("com.squareup.okio:okio:2.2.2"),
-                pom("com.squareup.okio:okio:2.2.2"),
-                jar("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
-                pom("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
-                jar("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
-                pom("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
-                jar("org.jetbrains:annotations:13.0"),
-                pom("org.jetbrains:annotations:13.0"),
-                pom("org.sonatype.oss:oss-parent:7"),
-                actual = artifacts
-            )
-        }
-    }
-
-    @Test
-    fun `builds basic project with groovy dsl`() {
-        val model = projectDir.buildGroovy("""
-            plugins {
-                id("java")
-            }
-
-            repositories {
-                jcenter()
-            }
-
-            dependencies {
-                implementation 'com.squareup.okio:okio:2.2.2'
-                implementation 'com.squareup.moshi:moshi:1.8.0'
-            }
-        """.trimIndent())
-
-        assertEquals(model.gradle.version, System.getProperty("compat.gradle.version"))
-
-        with(model.rootProject.projectDependencies) {
-            with(repositories) {
-                assertEquals(1, maven.size)
-                assertEquals(maven[0].urls[0], "https://jcenter.bintray.com/")
-            }
-
-            assertArtifacts(
-                pom("com.squareup.moshi:moshi-parent:1.8.0"),
-                jar("com.squareup.moshi:moshi:1.8.0"),
-                pom("com.squareup.moshi:moshi:1.8.0"),
-                jar("com.squareup.okio:okio:2.2.2"),
-                pom("com.squareup.okio:okio:2.2.2"),
-                jar("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
-                pom("org.jetbrains.kotlin:kotlin-stdlib-common:1.2.60"),
-                jar("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
-                pom("org.jetbrains.kotlin:kotlin-stdlib:1.2.60"),
-                jar("org.jetbrains:annotations:13.0"),
-                pom("org.jetbrains:annotations:13.0"),
-                pom("org.sonatype.oss:oss-parent:7"),
-                actual = artifacts
-            )
         }
     }
 }
