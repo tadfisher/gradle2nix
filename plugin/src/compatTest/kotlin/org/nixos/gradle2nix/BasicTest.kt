@@ -8,10 +8,12 @@ import org.gradle.api.internal.artifacts.dsl.DefaultRepositoryHandler.MAVEN_CENT
 import strikt.api.expectThat
 import strikt.assertions.all
 import strikt.assertions.containsExactly
+import strikt.assertions.flatMap
 import strikt.assertions.get
 import strikt.assertions.hasSize
 import strikt.assertions.isEqualTo
 import strikt.assertions.map
+import strikt.assertions.none
 import strikt.assertions.startsWith
 
 class BasicTest : JUnit5Minutests {
@@ -21,6 +23,12 @@ class BasicTest : JUnit5Minutests {
             test("builds basic java project") {
                 expectThat(build()) {
                     get("gradle version") { gradle.version }.isEqualTo(System.getProperty("compat.gradle.version"))
+
+                    get("all dependencies") {
+                        pluginDependencies +
+                            rootProject.buildscriptDependencies +
+                            rootProject.projectDependencies
+                    }.flatMap { it.urls }.none { startsWith("file:") }
 
                     get("root project dependencies") { rootProject.projectDependencies }.and {
                         ids.containsExactly(
@@ -44,6 +52,18 @@ class BasicTest : JUnit5Minutests {
                             get(1).startsWith(MAVEN_CENTRAL_URL)
                         }
                     }
+                }
+            }
+        }
+
+        withFixture("basic/basic-kotlin-project") {
+            test("excludes embedded kotlin repo") {
+                expectThat(build()) {
+                    get("all dependencies") {
+                        pluginDependencies +
+                            rootProject.buildscriptDependencies +
+                            rootProject.projectDependencies
+                    }.flatMap { it.urls }.all { not { startsWith("file:") } }
                 }
             }
         }

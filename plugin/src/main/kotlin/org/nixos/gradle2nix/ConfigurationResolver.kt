@@ -35,7 +35,9 @@ internal class ConfigurationResolverFactory(repositories: RepositoryHandler) {
         })
     }
 
-    private val resolvers = repositories.filterIsInstance<ResolutionAwareRepository>()
+    private val resolvers = repositories
+        .filterIsInstance<ResolutionAwareRepository>()
+        .filterNot { it.createResolver().isLocal }
         .mapNotNull { it.repositoryResolver(ivySettings) }
 
     fun create(dependencies: DependencyHandler): ConfigurationResolver =

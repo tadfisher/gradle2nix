@@ -1939,6 +1939,102 @@
         },
         {
           "id": {
+            "group": "com.github.ajalt",
+            "name": "clikt",
+            "version": "2.5.0-beta1",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "clikt-2.5.0-beta1.jar",
+          "path": "com/github/ajalt/clikt/2.5.0-beta1",
+          "urls": [
+            "https://jcenter.bintray.com/com/github/ajalt/clikt/2.5.0-beta1/clikt-2.5.0-beta1.jar",
+            "https://repo.gradle.org/gradle/libs-releases/com/github/ajalt/clikt/2.5.0-beta1/clikt-2.5.0-beta1.jar"
+          ],
+          "sha256": "6d0e62b4328fc555692f98aa41bf0aed46545dd1a87ad04e443ce705af3add5a"
+        },
+        {
+          "id": {
+            "group": "com.github.ajalt",
+            "name": "clikt",
+            "version": "2.5.0-beta1",
+            "type": "module",
+            "extension": "module"
+          },
+          "name": "clikt-2.5.0-beta1.module",
+          "path": "com/github/ajalt/clikt/2.5.0-beta1",
+          "urls": [
+            "https://jcenter.bintray.com/com/github/ajalt/clikt/2.5.0-beta1/clikt-2.5.0-beta1.module",
+            "https://repo.gradle.org/gradle/libs-releases/com/github/ajalt/clikt/2.5.0-beta1/clikt-2.5.0-beta1.module"
+          ],
+          "sha256": "b9b7eb3ef910635344877a8e4b70fca0497c945a11020e91c057c7b31a64558f"
+        },
+        {
+          "id": {
+            "group": "com.github.ajalt",
+            "name": "clikt",
+            "version": "2.5.0-beta1",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "clikt-2.5.0-beta1.pom",
+          "path": "com/github/ajalt/clikt/2.5.0-beta1",
+          "urls": [
+            "https://jcenter.bintray.com/com/github/ajalt/clikt/2.5.0-beta1/clikt-2.5.0-beta1.pom",
+            "https://repo.gradle.org/gradle/libs-releases/com/github/ajalt/clikt/2.5.0-beta1/clikt-2.5.0-beta1.pom"
+          ],
+          "sha256": "8d6e3114c251430eefd541018caa529bbf6b01b20fb6ae7ae1007b9c4131a895"
+        },
+        {
+          "id": {
+            "group": "com.github.ajalt",
+            "name": "clikt-metadata",
+            "version": "2.5.0-beta1",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "clikt-metadata-2.5.0-beta1.jar",
+          "path": "com/github/ajalt/clikt-metadata/2.5.0-beta1",
+          "urls": [
+            "https://jcenter.bintray.com/com/github/ajalt/clikt-metadata/2.5.0-beta1/clikt-metadata-2.5.0-beta1.jar",
+            "https://repo.gradle.org/gradle/libs-releases/com/github/ajalt/clikt-metadata/2.5.0-beta1/clikt-metadata-2.5.0-beta1.jar"
+          ],
+          "sha256": "409d61a9b008367c79e7e347a8fe14b685dd5b75b5dbb7e29c1a80a88da58e6d"
+        },
+        {
+          "id": {
+            "group": "com.github.ajalt",
+            "name": "clikt-metadata",
+            "version": "2.5.0-beta1",
+            "type": "module",
+            "extension": "module"
+          },
+          "name": "clikt-metadata-2.5.0-beta1.module",
+          "path": "com/github/ajalt/clikt-metadata/2.5.0-beta1",
+          "urls": [
+            "https://jcenter.bintray.com/com/github/ajalt/clikt-metadata/2.5.0-beta1/clikt-metadata-2.5.0-beta1.module",
+            "https://repo.gradle.org/gradle/libs-releases/com/github/ajalt/clikt-metadata/2.5.0-beta1/clikt-metadata-2.5.0-beta1.module"
+          ],
+          "sha256": "61717ae513800b96aa3cc0e3039903b257b2bbf6723457c5ab0b87dcbc3447cb"
+        },
+        {
+          "id": {
+            "group": "com.github.ajalt",
+            "name": "clikt-metadata",
+            "version": "2.5.0-beta1",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "clikt-metadata-2.5.0-beta1.pom",
+          "path": "com/github/ajalt/clikt-metadata/2.5.0-beta1",
+          "urls": [
+            "https://jcenter.bintray.com/com/github/ajalt/clikt-metadata/2.5.0-beta1/clikt-metadata-2.5.0-beta1.pom",
+            "https://repo.gradle.org/gradle/libs-releases/com/github/ajalt/clikt-metadata/2.5.0-beta1/clikt-metadata-2.5.0-beta1.pom"
+          ],
+          "sha256": "936e712cb1349f4107a1abc059810a432dba8ed4513d1a754c43a12003b3d244"
+        },
+        {
+          "id": {
             "group": "com.squareup",
             "name": "kotlinpoet",
             "version": "1.4.4",
@@ -3089,6 +3185,38 @@
         },
         {
           "id": {
+            "group": "com.christophsturm",
+            "name": "filepeek",
+            "version": "0.1.2",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "filepeek-0.1.2.jar",
+          "path": "com/christophsturm/filepeek/0.1.2",
+          "urls": [
+            "https://jcenter.bintray.com/com/christophsturm/filepeek/0.1.2/filepeek-0.1.2.jar",
+            "https://repo.gradle.org/gradle/libs-releases/com/christophsturm/filepeek/0.1.2/filepeek-0.1.2.jar"
+          ],
+          "sha256": "29a5735255bb1f3652a4e2592a2bd8ca754717f8d62eb4a65680c992b98af4b0"
+        },
+        {
+          "id": {
+            "group": "com.christophsturm",
+            "name": "filepeek",
+            "version": "0.1.2",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "filepeek-0.1.2.pom",
+          "path": "com/christophsturm/filepeek/0.1.2",
+          "urls": [
+            "https://jcenter.bintray.com/com/christophsturm/filepeek/0.1.2/filepeek-0.1.2.pom",
+            "https://repo.gradle.org/gradle/libs-releases/com/christophsturm/filepeek/0.1.2/filepeek-0.1.2.pom"
+          ],
+          "sha256": "a01fcc97303305918b3c8e943bc208c5a0d915b8f8fb9c963cddf27cd89e3e57"
+        },
+        {
+          "id": {
             "group": "dev.minutest",
             "name": "minutest",
             "version": "1.10.0",
@@ -3182,6 +3310,38 @@
             "https://repo.gradle.org/gradle/libs-releases/io/strikt/strikt-core/0.23.4/strikt-core-0.23.4.pom"
           ],
           "sha256": "e4280689a4843bcca02327f575084eb48468f387308ba01789fac19aa57483b7"
+        },
+        {
+          "id": {
+            "group": "io.strikt",
+            "name": "strikt-core",
+            "version": "0.23.7",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "strikt-core-0.23.7.jar",
+          "path": "io/strikt/strikt-core/0.23.7",
+          "urls": [
+            "https://jcenter.bintray.com/io/strikt/strikt-core/0.23.7/strikt-core-0.23.7.jar",
+            "https://repo.gradle.org/gradle/libs-releases/io/strikt/strikt-core/0.23.7/strikt-core-0.23.7.jar"
+          ],
+          "sha256": "981ddcab34436bf9eeb64481dd23a92c75c39f52a7581ed009b72ba371072fbe"
+        },
+        {
+          "id": {
+            "group": "io.strikt",
+            "name": "strikt-core",
+            "version": "0.23.7",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "strikt-core-0.23.7.pom",
+          "path": "io/strikt/strikt-core/0.23.7",
+          "urls": [
+            "https://jcenter.bintray.com/io/strikt/strikt-core/0.23.7/strikt-core-0.23.7.pom",
+            "https://repo.gradle.org/gradle/libs-releases/io/strikt/strikt-core/0.23.7/strikt-core-0.23.7.pom"
+          ],
+          "sha256": "3d679ad3f70c1ab17fee8125561da6226180f22b18f57693bcca1f2a92b9859c"
         },
         {
           "id": {
@@ -4080,6 +4240,23 @@
           "sha256": "919b5f42dde33ace036865d1e2b292d98a0627417ff756e0287f4a56ad3e544e"
         }
       ]
+    }
+  },
+  "buildSrc": {
+    "name": "buildSrc",
+    "version": "unspecified",
+    "path": "buildSrc",
+    "gradle": {
+      "version": "6.1",
+      "type": "bin",
+      "url": "https://services.gradle.org/distributions/gradle-6.1-bin.zip",
+      "sha256": "d0c43d14e1c70a48b82442f435d06186351a2d290d72afd5b8866f15e6d7038a",
+      "nativeVersion": "0.19"
+    },
+    "dependencies": {
+      "plugin": [],
+      "buildscript": [],
+      "project": []
     }
   }
 }
