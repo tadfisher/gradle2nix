@@ -1,7 +1,7 @@
 {
   "": {
     "name": "gradle2nix",
-    "version": "1.0.0-rc1",
+    "version": "1.0.0-rc2",
     "path": "",
     "gradle": {
       "version": "6.1",
