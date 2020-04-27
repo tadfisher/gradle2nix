@@ -50,7 +50,7 @@ allprojects {
 
 tasks {
     wrapper {
-        gradleVersion = "6.1"
+        gradleVersion = "6.3"
         distributionType = Wrapper.DistributionType.ALL
     }
 }
