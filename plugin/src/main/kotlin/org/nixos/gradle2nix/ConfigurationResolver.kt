@@ -52,12 +52,12 @@ internal class ConfigurationResolver(
     private val ivy = Ivy.newInstance(ivySettings)
 
     fun resolve(configuration: Configuration): List<DefaultArtifact> {
-        val resolved = configuration.resolvedConfiguration
+        val resolved = configuration.resolvedConfiguration.lenientConfiguration
 
         val topLevelMetadata = resolved.firstLevelModuleDependencies
             .flatMap { resolveMetadata(it.moduleGroup, it.moduleName, it.moduleVersion) }
 
-        val allArtifacts = resolved.resolvedArtifacts
+        val allArtifacts = resolved.artifacts
             .filter { it.id.componentIdentifier is ModuleComponentIdentifier }
             .flatMap(::resolve)
 
@@ -205,7 +205,7 @@ internal class ConfigurationResolver(
         val seen = mutableSetOf<ComponentArtifactIdentifier>()
         return generateSequence(listOf(this)) { descs ->
             val parents = descs.flatMap { it.parentDescriptors(seen) }
-            seen.addAll(parents.map(ResolvedArtifactResult::id))
+            seen.addAll(parents.map(ResolvedArtifactResult::getId))
             parents.takeUnless { it.isEmpty() }
         }.flatten().distinct().toList()
     }

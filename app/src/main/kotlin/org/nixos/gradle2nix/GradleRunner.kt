@@ -24,7 +24,6 @@ fun ProjectConnection.getBuildModel(config: Config, path: String): DefaultBuild 
         if (config.gradleArgs != null) addArguments(config.gradleArgs)
         if (path.isNotEmpty()) addArguments("--project-dir=$path")
         if (!config.quiet) {
-            setColorOutput(true)
             setStandardOutput(System.err)
             setStandardError(System.err)
         }

@@ -1727,6 +1727,38 @@
       "project": [
         {
           "id": {
+            "group": "com.christophsturm",
+            "name": "filepeek",
+            "version": "0.1.2",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "filepeek-0.1.2.jar",
+          "path": "com/christophsturm/filepeek/0.1.2",
+          "urls": [
+            "https://jcenter.bintray.com/com/christophsturm/filepeek/0.1.2/filepeek-0.1.2.jar",
+            "https://repo.gradle.org/gradle/libs-releases/com/christophsturm/filepeek/0.1.2/filepeek-0.1.2.jar"
+          ],
+          "sha256": "29a5735255bb1f3652a4e2592a2bd8ca754717f8d62eb4a65680c992b98af4b0"
+        },
+        {
+          "id": {
+            "group": "com.christophsturm",
+            "name": "filepeek",
+            "version": "0.1.2",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "filepeek-0.1.2.pom",
+          "path": "com/christophsturm/filepeek/0.1.2",
+          "urls": [
+            "https://jcenter.bintray.com/com/christophsturm/filepeek/0.1.2/filepeek-0.1.2.pom",
+            "https://repo.gradle.org/gradle/libs-releases/com/christophsturm/filepeek/0.1.2/filepeek-0.1.2.pom"
+          ],
+          "sha256": "a01fcc97303305918b3c8e943bc208c5a0d915b8f8fb9c963cddf27cd89e3e57"
+        },
+        {
+          "id": {
             "group": "com.github.ajalt",
             "name": "clikt",
             "version": "2.6.0",
@@ -2143,6 +2175,70 @@
         },
         {
           "id": {
+            "group": "io.github.classgraph",
+            "name": "classgraph",
+            "version": "4.8.37",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "classgraph-4.8.37.jar",
+          "path": "io/github/classgraph/classgraph/4.8.37",
+          "urls": [
+            "https://jcenter.bintray.com/io/github/classgraph/classgraph/4.8.37/classgraph-4.8.37.jar",
+            "https://repo.gradle.org/gradle/libs-releases/io/github/classgraph/classgraph/4.8.37/classgraph-4.8.37.jar"
+          ],
+          "sha256": "7d1d3e8828c1eef549d41ef1ece73d2c5c58cfb951b3f220cf0cf1dd25558173"
+        },
+        {
+          "id": {
+            "group": "io.github.classgraph",
+            "name": "classgraph",
+            "version": "4.8.37",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "classgraph-4.8.37.pom",
+          "path": "io/github/classgraph/classgraph/4.8.37",
+          "urls": [
+            "https://jcenter.bintray.com/io/github/classgraph/classgraph/4.8.37/classgraph-4.8.37.pom",
+            "https://repo.gradle.org/gradle/libs-releases/io/github/classgraph/classgraph/4.8.37/classgraph-4.8.37.pom"
+          ],
+          "sha256": "a49055d06125786650be33eed77ae985009138b84d39603bc1eb2ed3c8085b34"
+        },
+        {
+          "id": {
+            "group": "io.strikt",
+            "name": "strikt-core",
+            "version": "0.25.0",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "strikt-core-0.25.0.jar",
+          "path": "io/strikt/strikt-core/0.25.0",
+          "urls": [
+            "https://jcenter.bintray.com/io/strikt/strikt-core/0.25.0/strikt-core-0.25.0.jar",
+            "https://repo.gradle.org/gradle/libs-releases/io/strikt/strikt-core/0.25.0/strikt-core-0.25.0.jar"
+          ],
+          "sha256": "111235bef112a049f587104a936c57c79ac9295e55f87e448d3de0ce17b57bc5"
+        },
+        {
+          "id": {
+            "group": "io.strikt",
+            "name": "strikt-core",
+            "version": "0.25.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "strikt-core-0.25.0.pom",
+          "path": "io/strikt/strikt-core/0.25.0",
+          "urls": [
+            "https://jcenter.bintray.com/io/strikt/strikt-core/0.25.0/strikt-core-0.25.0.pom",
+            "https://repo.gradle.org/gradle/libs-releases/io/strikt/strikt-core/0.25.0/strikt-core-0.25.0.pom"
+          ],
+          "sha256": "a0f5a066febae2d800e4189df910a8df9fc3917e7293b140ca2a57f5a12b870c"
+        },
+        {
+          "id": {
             "group": "net.swiftzer.semver",
             "name": "semver",
             "version": "1.1.1",
@@ -2172,6 +2268,38 @@
             "https://repo.gradle.org/gradle/libs-releases/net/swiftzer/semver/semver/1.1.1/semver-1.1.1.pom"
           ],
           "sha256": "5d65513ed1a37cc927e4261a1c9f198ea4b033dbf88930358c37b61fe63c00e7"
+        },
+        {
+          "id": {
+            "group": "org.apiguardian",
+            "name": "apiguardian-api",
+            "version": "1.1.0",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "apiguardian-api-1.1.0.jar",
+          "path": "org/apiguardian/apiguardian-api/1.1.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar",
+            "https://repo.gradle.org/gradle/libs-releases/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar"
+          ],
+          "sha256": "a9aae9ff8ae3e17a2a18f79175e82b16267c246fbbd3ca9dfbbb290b08dcfdd4"
+        },
+        {
+          "id": {
+            "group": "org.apiguardian",
+            "name": "apiguardian-api",
+            "version": "1.1.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "apiguardian-api-1.1.0.pom",
+          "path": "org/apiguardian/apiguardian-api/1.1.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.pom",
+            "https://repo.gradle.org/gradle/libs-releases/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.pom"
+          ],
+          "sha256": "a945b9cb5cd9b77b2c711844e659c43ec070ef59d9f509fa9f4c1861b4862711"
         },
         {
           "id": {
@@ -2445,6 +2573,38 @@
         {
           "id": {
             "group": "org.jetbrains.kotlin",
+            "name": "kotlin-reflect",
+            "version": "1.3.71",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "kotlin-reflect-1.3.71.jar",
+          "path": "org/jetbrains/kotlin/kotlin-reflect/1.3.71",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.3.71/kotlin-reflect-1.3.71.jar",
+            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-reflect/1.3.71/kotlin-reflect-1.3.71.jar"
+          ],
+          "sha256": "59c57ab609494d2a30d6ea3737428a56918ff0b8031081ea73b8472fdec06e44"
+        },
+        {
+          "id": {
+            "group": "org.jetbrains.kotlin",
+            "name": "kotlin-reflect",
+            "version": "1.3.71",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "kotlin-reflect-1.3.71.pom",
+          "path": "org/jetbrains/kotlin/kotlin-reflect/1.3.71",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.3.71/kotlin-reflect-1.3.71.pom",
+            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-reflect/1.3.71/kotlin-reflect-1.3.71.pom"
+          ],
+          "sha256": "4df94aaeee8d900be431386e31ef44e82a66e57c3ae30866aec2875aff01fe70"
+        },
+        {
+          "id": {
+            "group": "org.jetbrains.kotlin",
             "name": "kotlin-script-runtime",
             "version": "1.3.70",
             "type": "jar",
@@ -2669,6 +2829,38 @@
         {
           "id": {
             "group": "org.jetbrains.kotlin",
+            "name": "kotlin-stdlib",
+            "version": "1.3.71",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "kotlin-stdlib-1.3.71.jar",
+          "path": "org/jetbrains/kotlin/kotlin-stdlib/1.3.71",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.3.71/kotlin-stdlib-1.3.71.jar",
+            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib/1.3.71/kotlin-stdlib-1.3.71.jar"
+          ],
+          "sha256": "5ace22b102a96425e4ac44e0558b927f3857b56a33cbc289cf1b70aee645e6a7"
+        },
+        {
+          "id": {
+            "group": "org.jetbrains.kotlin",
+            "name": "kotlin-stdlib",
+            "version": "1.3.71",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "kotlin-stdlib-1.3.71.pom",
+          "path": "org/jetbrains/kotlin/kotlin-stdlib/1.3.71",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.3.71/kotlin-stdlib-1.3.71.pom",
+            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib/1.3.71/kotlin-stdlib-1.3.71.pom"
+          ],
+          "sha256": "ff03e9989faa2d40fa4a9098aaad71e247f27ea4d24b0754da642eb0924bd8c5"
+        },
+        {
+          "id": {
+            "group": "org.jetbrains.kotlin",
             "name": "kotlin-stdlib-common",
             "version": "1.3.50",
             "type": "jar",
@@ -2729,6 +2921,38 @@
             "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.70/kotlin-stdlib-common-1.3.70.pom"
           ],
           "sha256": "76162bfcaa756897fd3f631019353e13b128df2318cdad5baecb7e7d428a28e3"
+        },
+        {
+          "id": {
+            "group": "org.jetbrains.kotlin",
+            "name": "kotlin-stdlib-common",
+            "version": "1.3.71",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "kotlin-stdlib-common-1.3.71.jar",
+          "path": "org/jetbrains/kotlin/kotlin-stdlib-common/1.3.71",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.71/kotlin-stdlib-common-1.3.71.jar",
+            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.71/kotlin-stdlib-common-1.3.71.jar"
+          ],
+          "sha256": "974f8a9b7bfce3d730a86efe0eab219a72621e8530f91e30c89f400ba98092ec"
+        },
+        {
+          "id": {
+            "group": "org.jetbrains.kotlin",
+            "name": "kotlin-stdlib-common",
+            "version": "1.3.71",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "kotlin-stdlib-common-1.3.71.pom",
+          "path": "org/jetbrains/kotlin/kotlin-stdlib-common/1.3.71",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.71/kotlin-stdlib-common-1.3.71.pom",
+            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.71/kotlin-stdlib-common-1.3.71.pom"
+          ],
+          "sha256": "93f5cb50148dee7da746ed487e6278ee8d94da9a99b670f9f5248456c2f66341"
         },
         {
           "id": {
@@ -2797,6 +3021,38 @@
         {
           "id": {
             "group": "org.jetbrains.kotlin",
+            "name": "kotlin-stdlib-jdk7",
+            "version": "1.3.71",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "kotlin-stdlib-jdk7-1.3.71.jar",
+          "path": "org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.71",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.71/kotlin-stdlib-jdk7-1.3.71.jar",
+            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.71/kotlin-stdlib-jdk7-1.3.71.jar"
+          ],
+          "sha256": "b046a5ef54c7006db852e48e547aaff525a9e7a0a5909ffe5fe2c966c1a3a72e"
+        },
+        {
+          "id": {
+            "group": "org.jetbrains.kotlin",
+            "name": "kotlin-stdlib-jdk7",
+            "version": "1.3.71",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "kotlin-stdlib-jdk7-1.3.71.pom",
+          "path": "org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.71",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.71/kotlin-stdlib-jdk7-1.3.71.pom",
+            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.71/kotlin-stdlib-jdk7-1.3.71.pom"
+          ],
+          "sha256": "7163f88887d050f76f86ad2304f84a9d79c39a96178bf02e4524bdeacc5bb149"
+        },
+        {
+          "id": {
+            "group": "org.jetbrains.kotlin",
             "name": "kotlin-stdlib-jdk8",
             "version": "1.3.70",
             "type": "jar",
@@ -2825,6 +3081,38 @@
             "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.70/kotlin-stdlib-jdk8-1.3.70.pom"
           ],
           "sha256": "559b089df136750907ec2e3eb0838f8f0892eb08d64e877064bffea62f0c467a"
+        },
+        {
+          "id": {
+            "group": "org.jetbrains.kotlin",
+            "name": "kotlin-stdlib-jdk8",
+            "version": "1.3.71",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "kotlin-stdlib-jdk8-1.3.71.jar",
+          "path": "org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.71",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.71/kotlin-stdlib-jdk8-1.3.71.jar",
+            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.71/kotlin-stdlib-jdk8-1.3.71.jar"
+          ],
+          "sha256": "a22192ac779ba8eff09d07084ae503e8be9e7c8ca1cb2b511ff8af4c68d83d66"
+        },
+        {
+          "id": {
+            "group": "org.jetbrains.kotlin",
+            "name": "kotlin-stdlib-jdk8",
+            "version": "1.3.71",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "kotlin-stdlib-jdk8-1.3.71.pom",
+          "path": "org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.71",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.71/kotlin-stdlib-jdk8-1.3.71.pom",
+            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.71/kotlin-stdlib-jdk8-1.3.71.pom"
+          ],
+          "sha256": "daa4f98393b7196473ac7b347618a244d3c7eaa3554b5f86f9cddcce6a4cded6"
         },
         {
           "id": {
@@ -2857,6 +3145,198 @@
             "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlinx/kotlinx-coroutines-core/1.2.1/kotlinx-coroutines-core-1.2.1.pom"
           ],
           "sha256": "6f7523ea8a56d7f12d11a004cfe5a4577bfba3ed6c84cc5ac48b72d54975552c"
+        },
+        {
+          "id": {
+            "group": "org.jetbrains.kotlinx",
+            "name": "kotlinx-coroutines-core",
+            "version": "1.3.5",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "kotlinx-coroutines-core-1.3.5.jar",
+          "path": "org/jetbrains/kotlinx/kotlinx-coroutines-core/1.3.5",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlinx/kotlinx-coroutines-core/1.3.5/kotlinx-coroutines-core-1.3.5.jar",
+            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlinx/kotlinx-coroutines-core/1.3.5/kotlinx-coroutines-core-1.3.5.jar"
+          ],
+          "sha256": "6d3ddc759cd2094b1495198a8501e22a51c4c3d011ec801f5fc45a2cd25b8f11"
+        },
+        {
+          "id": {
+            "group": "org.jetbrains.kotlinx",
+            "name": "kotlinx-coroutines-core",
+            "version": "1.3.5",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "kotlinx-coroutines-core-1.3.5.pom",
+          "path": "org/jetbrains/kotlinx/kotlinx-coroutines-core/1.3.5",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlinx/kotlinx-coroutines-core/1.3.5/kotlinx-coroutines-core-1.3.5.pom",
+            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlinx/kotlinx-coroutines-core/1.3.5/kotlinx-coroutines-core-1.3.5.pom"
+          ],
+          "sha256": "f4a306487c17b8cdca8d3e5da50369a2e5ac7c665200516d427726dff5a56f92"
+        },
+        {
+          "id": {
+            "group": "org.jetbrains.kotlinx",
+            "name": "kotlinx-coroutines-core-common",
+            "version": "1.3.3",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "kotlinx-coroutines-core-common-1.3.3.jar",
+          "path": "org/jetbrains/kotlinx/kotlinx-coroutines-core-common/1.3.3",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlinx/kotlinx-coroutines-core-common/1.3.3/kotlinx-coroutines-core-common-1.3.3.jar",
+            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlinx/kotlinx-coroutines-core-common/1.3.3/kotlinx-coroutines-core-common-1.3.3.jar"
+          ],
+          "sha256": "4152d951dc864ebec0dadc348ebc04344df34d7a1de89d59f12824f702b98d28"
+        },
+        {
+          "id": {
+            "group": "org.jetbrains.kotlinx",
+            "name": "kotlinx-coroutines-core-common",
+            "version": "1.3.3",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "kotlinx-coroutines-core-common-1.3.3.pom",
+          "path": "org/jetbrains/kotlinx/kotlinx-coroutines-core-common/1.3.3",
+          "urls": [
+            "https://jcenter.bintray.com/org/jetbrains/kotlinx/kotlinx-coroutines-core-common/1.3.3/kotlinx-coroutines-core-common-1.3.3.pom",
+            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlinx/kotlinx-coroutines-core-common/1.3.3/kotlinx-coroutines-core-common-1.3.3.pom"
+          ],
+          "sha256": "77c8b77af4dca3cf23b0bc9c1ae6196866f5e6a9bfced3345747dac85b76e5fa"
+        },
+        {
+          "id": {
+            "group": "org.junit.platform",
+            "name": "junit-platform-commons",
+            "version": "1.6.0",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "junit-platform-commons-1.6.0.jar",
+          "path": "org/junit/platform/junit-platform-commons/1.6.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/platform/junit-platform-commons/1.6.0/junit-platform-commons-1.6.0.jar",
+            "https://repo.gradle.org/gradle/libs-releases/org/junit/platform/junit-platform-commons/1.6.0/junit-platform-commons-1.6.0.jar"
+          ],
+          "sha256": "18accffaf3f1fe66daf9f13daa7d59b2ac6d06396f816a73b4d733d82d28ace6"
+        },
+        {
+          "id": {
+            "group": "org.junit.platform",
+            "name": "junit-platform-commons",
+            "version": "1.6.0",
+            "type": "module",
+            "extension": "module"
+          },
+          "name": "junit-platform-commons-1.6.0.module",
+          "path": "org/junit/platform/junit-platform-commons/1.6.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/platform/junit-platform-commons/1.6.0/junit-platform-commons-1.6.0.module",
+            "https://repo.gradle.org/gradle/libs-releases/org/junit/platform/junit-platform-commons/1.6.0/junit-platform-commons-1.6.0.module"
+          ],
+          "sha256": "16e0f6f7893159b21a156b818f32f0a4fdb909d2bdc850ed0c57582500578b4c"
+        },
+        {
+          "id": {
+            "group": "org.junit.platform",
+            "name": "junit-platform-commons",
+            "version": "1.6.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "junit-platform-commons-1.6.0.pom",
+          "path": "org/junit/platform/junit-platform-commons/1.6.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/platform/junit-platform-commons/1.6.0/junit-platform-commons-1.6.0.pom",
+            "https://repo.gradle.org/gradle/libs-releases/org/junit/platform/junit-platform-commons/1.6.0/junit-platform-commons-1.6.0.pom"
+          ],
+          "sha256": "5751484ae2a6f661bba84fa8c2aae7d4912c693fe25eb3e0adff4d93824c0a9c"
+        },
+        {
+          "id": {
+            "group": "org.junit.platform",
+            "name": "junit-platform-engine",
+            "version": "1.6.0",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "junit-platform-engine-1.6.0.jar",
+          "path": "org/junit/platform/junit-platform-engine/1.6.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/platform/junit-platform-engine/1.6.0/junit-platform-engine-1.6.0.jar",
+            "https://repo.gradle.org/gradle/libs-releases/org/junit/platform/junit-platform-engine/1.6.0/junit-platform-engine-1.6.0.jar"
+          ],
+          "sha256": "7aed5424cb31a8255daecb1fcb0c173b0b64b1262e1eb2eaf87bbc7aec5e6d76"
+        },
+        {
+          "id": {
+            "group": "org.junit.platform",
+            "name": "junit-platform-engine",
+            "version": "1.6.0",
+            "type": "module",
+            "extension": "module"
+          },
+          "name": "junit-platform-engine-1.6.0.module",
+          "path": "org/junit/platform/junit-platform-engine/1.6.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/platform/junit-platform-engine/1.6.0/junit-platform-engine-1.6.0.module",
+            "https://repo.gradle.org/gradle/libs-releases/org/junit/platform/junit-platform-engine/1.6.0/junit-platform-engine-1.6.0.module"
+          ],
+          "sha256": "9fab5f84f549fa7925289ddfe5b7dd88f30e6086a5df1de07ebf508a2df25741"
+        },
+        {
+          "id": {
+            "group": "org.junit.platform",
+            "name": "junit-platform-engine",
+            "version": "1.6.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "junit-platform-engine-1.6.0.pom",
+          "path": "org/junit/platform/junit-platform-engine/1.6.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/junit/platform/junit-platform-engine/1.6.0/junit-platform-engine-1.6.0.pom",
+            "https://repo.gradle.org/gradle/libs-releases/org/junit/platform/junit-platform-engine/1.6.0/junit-platform-engine-1.6.0.pom"
+          ],
+          "sha256": "55ed9236c3415cbe1d7b06e76f45508647ecb94bafedb99c3bf395f0913bf3d6"
+        },
+        {
+          "id": {
+            "group": "org.opentest4j",
+            "name": "opentest4j",
+            "version": "1.2.0",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "opentest4j-1.2.0.jar",
+          "path": "org/opentest4j/opentest4j/1.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar",
+            "https://repo.gradle.org/gradle/libs-releases/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar"
+          ],
+          "sha256": "58812de60898d976fb81ef3b62da05c6604c18fd4a249f5044282479fc286af2"
+        },
+        {
+          "id": {
+            "group": "org.opentest4j",
+            "name": "opentest4j",
+            "version": "1.2.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "opentest4j-1.2.0.pom",
+          "path": "org/opentest4j/opentest4j/1.2.0",
+          "urls": [
+            "https://jcenter.bintray.com/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.pom",
+            "https://repo.gradle.org/gradle/libs-releases/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.pom"
+          ],
+          "sha256": "a96e671816c1ff8803bdec74c9241f025bdfb277da5d2b4ee02266405936f994"
         },
         {
           "id": {
@@ -2956,35 +3436,99 @@
         },
         {
           "id": {
-            "group": "com.christophsturm",
-            "name": "filepeek",
-            "version": "0.1.2",
+            "group": "org.spekframework.spek2",
+            "name": "spek-dsl-jvm",
+            "version": "2.0.10",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "filepeek-0.1.2.jar",
-          "path": "com/christophsturm/filepeek/0.1.2",
+          "name": "spek-dsl-jvm-2.0.10.jar",
+          "path": "org/spekframework/spek2/spek-dsl-jvm/2.0.10",
           "urls": [
-            "https://jcenter.bintray.com/com/christophsturm/filepeek/0.1.2/filepeek-0.1.2.jar",
-            "https://repo.gradle.org/gradle/libs-releases/com/christophsturm/filepeek/0.1.2/filepeek-0.1.2.jar"
+            "https://jcenter.bintray.com/org/spekframework/spek2/spek-dsl-jvm/2.0.10/spek-dsl-jvm-2.0.10.jar",
+            "https://repo.gradle.org/gradle/libs-releases/org/spekframework/spek2/spek-dsl-jvm/2.0.10/spek-dsl-jvm-2.0.10.jar"
           ],
-          "sha256": "29a5735255bb1f3652a4e2592a2bd8ca754717f8d62eb4a65680c992b98af4b0"
+          "sha256": "3663509e0868d61ad652225369d1733e450bf8df548511a2f3be7dc1aab6219c"
         },
         {
           "id": {
-            "group": "com.christophsturm",
-            "name": "filepeek",
-            "version": "0.1.2",
+            "group": "org.spekframework.spek2",
+            "name": "spek-dsl-jvm",
+            "version": "2.0.10",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "filepeek-0.1.2.pom",
-          "path": "com/christophsturm/filepeek/0.1.2",
+          "name": "spek-dsl-jvm-2.0.10.pom",
+          "path": "org/spekframework/spek2/spek-dsl-jvm/2.0.10",
           "urls": [
-            "https://jcenter.bintray.com/com/christophsturm/filepeek/0.1.2/filepeek-0.1.2.pom",
-            "https://repo.gradle.org/gradle/libs-releases/com/christophsturm/filepeek/0.1.2/filepeek-0.1.2.pom"
+            "https://jcenter.bintray.com/org/spekframework/spek2/spek-dsl-jvm/2.0.10/spek-dsl-jvm-2.0.10.pom",
+            "https://repo.gradle.org/gradle/libs-releases/org/spekframework/spek2/spek-dsl-jvm/2.0.10/spek-dsl-jvm-2.0.10.pom"
           ],
-          "sha256": "a01fcc97303305918b3c8e943bc208c5a0d915b8f8fb9c963cddf27cd89e3e57"
+          "sha256": "a26f77f7078960926e9a67058226b97190d4ad715adaee4d15927c3058fa6e4e"
+        },
+        {
+          "id": {
+            "group": "org.spekframework.spek2",
+            "name": "spek-runner-junit5",
+            "version": "2.0.10",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "spek-runner-junit5-2.0.10.jar",
+          "path": "org/spekframework/spek2/spek-runner-junit5/2.0.10",
+          "urls": [
+            "https://jcenter.bintray.com/org/spekframework/spek2/spek-runner-junit5/2.0.10/spek-runner-junit5-2.0.10.jar",
+            "https://repo.gradle.org/gradle/libs-releases/org/spekframework/spek2/spek-runner-junit5/2.0.10/spek-runner-junit5-2.0.10.jar"
+          ],
+          "sha256": "3457afe8fb46361e22bd63b699555c1dbe193d32adaa0f87b41d1d91fbd2885e"
+        },
+        {
+          "id": {
+            "group": "org.spekframework.spek2",
+            "name": "spek-runner-junit5",
+            "version": "2.0.10",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "spek-runner-junit5-2.0.10.pom",
+          "path": "org/spekframework/spek2/spek-runner-junit5/2.0.10",
+          "urls": [
+            "https://jcenter.bintray.com/org/spekframework/spek2/spek-runner-junit5/2.0.10/spek-runner-junit5-2.0.10.pom",
+            "https://repo.gradle.org/gradle/libs-releases/org/spekframework/spek2/spek-runner-junit5/2.0.10/spek-runner-junit5-2.0.10.pom"
+          ],
+          "sha256": "e75ac3b12905c591fa55578f4ed0233505cc63eaa51df1a1d0543626124100f2"
+        },
+        {
+          "id": {
+            "group": "org.spekframework.spek2",
+            "name": "spek-runtime-jvm",
+            "version": "2.0.10",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "spek-runtime-jvm-2.0.10.jar",
+          "path": "org/spekframework/spek2/spek-runtime-jvm/2.0.10",
+          "urls": [
+            "https://jcenter.bintray.com/org/spekframework/spek2/spek-runtime-jvm/2.0.10/spek-runtime-jvm-2.0.10.jar",
+            "https://repo.gradle.org/gradle/libs-releases/org/spekframework/spek2/spek-runtime-jvm/2.0.10/spek-runtime-jvm-2.0.10.jar"
+          ],
+          "sha256": "fcc8cb3922950bc50af0bb598241b80cb94547dbeb504b2c5c9a58c9d407d9ce"
+        },
+        {
+          "id": {
+            "group": "org.spekframework.spek2",
+            "name": "spek-runtime-jvm",
+            "version": "2.0.10",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "spek-runtime-jvm-2.0.10.pom",
+          "path": "org/spekframework/spek2/spek-runtime-jvm/2.0.10",
+          "urls": [
+            "https://jcenter.bintray.com/org/spekframework/spek2/spek-runtime-jvm/2.0.10/spek-runtime-jvm-2.0.10.pom",
+            "https://repo.gradle.org/gradle/libs-releases/org/spekframework/spek2/spek-runtime-jvm/2.0.10/spek-runtime-jvm-2.0.10.pom"
+          ],
+          "sha256": "405bee7923aec86d53377a44843a12392df3f043357ebd21b551c0145953df7d"
         },
         {
           "id": {
@@ -3049,38 +3593,6 @@
             "https://repo.gradle.org/gradle/libs-releases/io/github/classgraph/classgraph/4.8.28/classgraph-4.8.28.pom"
           ],
           "sha256": "75d61da98c46d79a3a548a952bd806020f808c75ccd21958a6c791cfbfa0481e"
-        },
-        {
-          "id": {
-            "group": "io.strikt",
-            "name": "strikt-core",
-            "version": "0.25.0",
-            "type": "jar",
-            "extension": "jar"
-          },
-          "name": "strikt-core-0.25.0.jar",
-          "path": "io/strikt/strikt-core/0.25.0",
-          "urls": [
-            "https://jcenter.bintray.com/io/strikt/strikt-core/0.25.0/strikt-core-0.25.0.jar",
-            "https://repo.gradle.org/gradle/libs-releases/io/strikt/strikt-core/0.25.0/strikt-core-0.25.0.jar"
-          ],
-          "sha256": "111235bef112a049f587104a936c57c79ac9295e55f87e448d3de0ce17b57bc5"
-        },
-        {
-          "id": {
-            "group": "io.strikt",
-            "name": "strikt-core",
-            "version": "0.25.0",
-            "type": "pom",
-            "extension": "pom"
-          },
-          "name": "strikt-core-0.25.0.pom",
-          "path": "io/strikt/strikt-core/0.25.0",
-          "urls": [
-            "https://jcenter.bintray.com/io/strikt/strikt-core/0.25.0/strikt-core-0.25.0.pom",
-            "https://repo.gradle.org/gradle/libs-releases/io/strikt/strikt-core/0.25.0/strikt-core-0.25.0.pom"
-          ],
-          "sha256": "a0f5a066febae2d800e4189df910a8df9fc3917e7293b140ca2a57f5a12b870c"
         },
         {
           "id": {
@@ -3209,38 +3721,6 @@
             "https://repo.gradle.org/gradle/libs-releases/org/apache/maven/maven-repository-metadata/3.6.3/maven-repository-metadata-3.6.3.pom"
           ],
           "sha256": "5398b22da433ace2c836f76773d8ff48fa53fa09e2e7a1eba65ff922b03c665e"
-        },
-        {
-          "id": {
-            "group": "org.apiguardian",
-            "name": "apiguardian-api",
-            "version": "1.1.0",
-            "type": "jar",
-            "extension": "jar"
-          },
-          "name": "apiguardian-api-1.1.0.jar",
-          "path": "org/apiguardian/apiguardian-api/1.1.0",
-          "urls": [
-            "https://jcenter.bintray.com/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar",
-            "https://repo.gradle.org/gradle/libs-releases/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar"
-          ],
-          "sha256": "a9aae9ff8ae3e17a2a18f79175e82b16267c246fbbd3ca9dfbbb290b08dcfdd4"
-        },
-        {
-          "id": {
-            "group": "org.apiguardian",
-            "name": "apiguardian-api",
-            "version": "1.1.0",
-            "type": "pom",
-            "extension": "pom"
-          },
-          "name": "apiguardian-api-1.1.0.pom",
-          "path": "org/apiguardian/apiguardian-api/1.1.0",
-          "urls": [
-            "https://jcenter.bintray.com/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.pom",
-            "https://repo.gradle.org/gradle/libs-releases/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.pom"
-          ],
-          "sha256": "a945b9cb5cd9b77b2c711844e659c43ec070ef59d9f509fa9f4c1861b4862711"
         },
         {
           "id": {
@@ -3389,38 +3869,6 @@
         {
           "id": {
             "group": "org.jetbrains.kotlin",
-            "name": "kotlin-reflect",
-            "version": "1.3.71",
-            "type": "jar",
-            "extension": "jar"
-          },
-          "name": "kotlin-reflect-1.3.71.jar",
-          "path": "org/jetbrains/kotlin/kotlin-reflect/1.3.71",
-          "urls": [
-            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.3.71/kotlin-reflect-1.3.71.jar",
-            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-reflect/1.3.71/kotlin-reflect-1.3.71.jar"
-          ],
-          "sha256": "59c57ab609494d2a30d6ea3737428a56918ff0b8031081ea73b8472fdec06e44"
-        },
-        {
-          "id": {
-            "group": "org.jetbrains.kotlin",
-            "name": "kotlin-reflect",
-            "version": "1.3.71",
-            "type": "pom",
-            "extension": "pom"
-          },
-          "name": "kotlin-reflect-1.3.71.pom",
-          "path": "org/jetbrains/kotlin/kotlin-reflect/1.3.71",
-          "urls": [
-            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.3.71/kotlin-reflect-1.3.71.pom",
-            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-reflect/1.3.71/kotlin-reflect-1.3.71.pom"
-          ],
-          "sha256": "4df94aaeee8d900be431386e31ef44e82a66e57c3ae30866aec2875aff01fe70"
-        },
-        {
-          "id": {
-            "group": "org.jetbrains.kotlin",
             "name": "kotlin-sam-with-receiver",
             "version": "1.3.70",
             "type": "jar",
@@ -3449,134 +3897,6 @@
             "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-sam-with-receiver/1.3.70/kotlin-sam-with-receiver-1.3.70.pom"
           ],
           "sha256": "081f909f3b1803f0e65886a33d318939f82a26da47b001a3453cf104ca7a0fad"
-        },
-        {
-          "id": {
-            "group": "org.jetbrains.kotlin",
-            "name": "kotlin-stdlib",
-            "version": "1.3.71",
-            "type": "jar",
-            "extension": "jar"
-          },
-          "name": "kotlin-stdlib-1.3.71.jar",
-          "path": "org/jetbrains/kotlin/kotlin-stdlib/1.3.71",
-          "urls": [
-            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.3.71/kotlin-stdlib-1.3.71.jar",
-            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib/1.3.71/kotlin-stdlib-1.3.71.jar"
-          ],
-          "sha256": "5ace22b102a96425e4ac44e0558b927f3857b56a33cbc289cf1b70aee645e6a7"
-        },
-        {
-          "id": {
-            "group": "org.jetbrains.kotlin",
-            "name": "kotlin-stdlib",
-            "version": "1.3.71",
-            "type": "pom",
-            "extension": "pom"
-          },
-          "name": "kotlin-stdlib-1.3.71.pom",
-          "path": "org/jetbrains/kotlin/kotlin-stdlib/1.3.71",
-          "urls": [
-            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.3.71/kotlin-stdlib-1.3.71.pom",
-            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib/1.3.71/kotlin-stdlib-1.3.71.pom"
-          ],
-          "sha256": "ff03e9989faa2d40fa4a9098aaad71e247f27ea4d24b0754da642eb0924bd8c5"
-        },
-        {
-          "id": {
-            "group": "org.jetbrains.kotlin",
-            "name": "kotlin-stdlib-common",
-            "version": "1.3.71",
-            "type": "jar",
-            "extension": "jar"
-          },
-          "name": "kotlin-stdlib-common-1.3.71.jar",
-          "path": "org/jetbrains/kotlin/kotlin-stdlib-common/1.3.71",
-          "urls": [
-            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.71/kotlin-stdlib-common-1.3.71.jar",
-            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.71/kotlin-stdlib-common-1.3.71.jar"
-          ],
-          "sha256": "974f8a9b7bfce3d730a86efe0eab219a72621e8530f91e30c89f400ba98092ec"
-        },
-        {
-          "id": {
-            "group": "org.jetbrains.kotlin",
-            "name": "kotlin-stdlib-common",
-            "version": "1.3.71",
-            "type": "pom",
-            "extension": "pom"
-          },
-          "name": "kotlin-stdlib-common-1.3.71.pom",
-          "path": "org/jetbrains/kotlin/kotlin-stdlib-common/1.3.71",
-          "urls": [
-            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.71/kotlin-stdlib-common-1.3.71.pom",
-            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib-common/1.3.71/kotlin-stdlib-common-1.3.71.pom"
-          ],
-          "sha256": "93f5cb50148dee7da746ed487e6278ee8d94da9a99b670f9f5248456c2f66341"
-        },
-        {
-          "id": {
-            "group": "org.jetbrains.kotlin",
-            "name": "kotlin-stdlib-jdk7",
-            "version": "1.3.71",
-            "type": "jar",
-            "extension": "jar"
-          },
-          "name": "kotlin-stdlib-jdk7-1.3.71.jar",
-          "path": "org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.71",
-          "urls": [
-            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.71/kotlin-stdlib-jdk7-1.3.71.jar",
-            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.71/kotlin-stdlib-jdk7-1.3.71.jar"
-          ],
-          "sha256": "b046a5ef54c7006db852e48e547aaff525a9e7a0a5909ffe5fe2c966c1a3a72e"
-        },
-        {
-          "id": {
-            "group": "org.jetbrains.kotlin",
-            "name": "kotlin-stdlib-jdk7",
-            "version": "1.3.71",
-            "type": "pom",
-            "extension": "pom"
-          },
-          "name": "kotlin-stdlib-jdk7-1.3.71.pom",
-          "path": "org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.71",
-          "urls": [
-            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.71/kotlin-stdlib-jdk7-1.3.71.pom",
-            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.3.71/kotlin-stdlib-jdk7-1.3.71.pom"
-          ],
-          "sha256": "7163f88887d050f76f86ad2304f84a9d79c39a96178bf02e4524bdeacc5bb149"
-        },
-        {
-          "id": {
-            "group": "org.jetbrains.kotlin",
-            "name": "kotlin-stdlib-jdk8",
-            "version": "1.3.71",
-            "type": "jar",
-            "extension": "jar"
-          },
-          "name": "kotlin-stdlib-jdk8-1.3.71.jar",
-          "path": "org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.71",
-          "urls": [
-            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.71/kotlin-stdlib-jdk8-1.3.71.jar",
-            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.71/kotlin-stdlib-jdk8-1.3.71.jar"
-          ],
-          "sha256": "a22192ac779ba8eff09d07084ae503e8be9e7c8ca1cb2b511ff8af4c68d83d66"
-        },
-        {
-          "id": {
-            "group": "org.jetbrains.kotlin",
-            "name": "kotlin-stdlib-jdk8",
-            "version": "1.3.71",
-            "type": "pom",
-            "extension": "pom"
-          },
-          "name": "kotlin-stdlib-jdk8-1.3.71.pom",
-          "path": "org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.71",
-          "urls": [
-            "https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.71/kotlin-stdlib-jdk8-1.3.71.pom",
-            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.3.71/kotlin-stdlib-jdk8-1.3.71.pom"
-          ],
-          "sha256": "daa4f98393b7196473ac7b347618a244d3c7eaa3554b5f86f9cddcce6a4cded6"
         },
         {
           "id": {
@@ -3737,38 +4057,6 @@
             "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlin/kotlin-util-io/1.3.70/kotlin-util-io-1.3.70.pom"
           ],
           "sha256": "6636d13600e4d19b5866c182111cc83e716556588bf1ef2f6141b8693495fab6"
-        },
-        {
-          "id": {
-            "group": "org.jetbrains.kotlinx",
-            "name": "kotlinx-coroutines-core",
-            "version": "1.3.5",
-            "type": "jar",
-            "extension": "jar"
-          },
-          "name": "kotlinx-coroutines-core-1.3.5.jar",
-          "path": "org/jetbrains/kotlinx/kotlinx-coroutines-core/1.3.5",
-          "urls": [
-            "https://jcenter.bintray.com/org/jetbrains/kotlinx/kotlinx-coroutines-core/1.3.5/kotlinx-coroutines-core-1.3.5.jar",
-            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlinx/kotlinx-coroutines-core/1.3.5/kotlinx-coroutines-core-1.3.5.jar"
-          ],
-          "sha256": "6d3ddc759cd2094b1495198a8501e22a51c4c3d011ec801f5fc45a2cd25b8f11"
-        },
-        {
-          "id": {
-            "group": "org.jetbrains.kotlinx",
-            "name": "kotlinx-coroutines-core",
-            "version": "1.3.5",
-            "type": "pom",
-            "extension": "pom"
-          },
-          "name": "kotlinx-coroutines-core-1.3.5.pom",
-          "path": "org/jetbrains/kotlinx/kotlinx-coroutines-core/1.3.5",
-          "urls": [
-            "https://jcenter.bintray.com/org/jetbrains/kotlinx/kotlinx-coroutines-core/1.3.5/kotlinx-coroutines-core-1.3.5.pom",
-            "https://repo.gradle.org/gradle/libs-releases/org/jetbrains/kotlinx/kotlinx-coroutines-core/1.3.5/kotlinx-coroutines-core-1.3.5.pom"
-          ],
-          "sha256": "f4a306487c17b8cdca8d3e5da50369a2e5ac7c665200516d427726dff5a56f92"
         },
         {
           "id": {
@@ -4057,38 +4345,6 @@
             "https://repo.gradle.org/gradle/libs-releases/org/junit/platform/junit-platform-launcher/1.7.0-M1/junit-platform-launcher-1.7.0-M1.pom"
           ],
           "sha256": "29f48a8da87672b5b94b77fa2ce50a0e715e33a510db5f2bff3b29bf4fb8794c"
-        },
-        {
-          "id": {
-            "group": "org.opentest4j",
-            "name": "opentest4j",
-            "version": "1.2.0",
-            "type": "jar",
-            "extension": "jar"
-          },
-          "name": "opentest4j-1.2.0.jar",
-          "path": "org/opentest4j/opentest4j/1.2.0",
-          "urls": [
-            "https://jcenter.bintray.com/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar",
-            "https://repo.gradle.org/gradle/libs-releases/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar"
-          ],
-          "sha256": "58812de60898d976fb81ef3b62da05c6604c18fd4a249f5044282479fc286af2"
-        },
-        {
-          "id": {
-            "group": "org.opentest4j",
-            "name": "opentest4j",
-            "version": "1.2.0",
-            "type": "pom",
-            "extension": "pom"
-          },
-          "name": "opentest4j-1.2.0.pom",
-          "path": "org/opentest4j/opentest4j/1.2.0",
-          "urls": [
-            "https://jcenter.bintray.com/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.pom",
-            "https://repo.gradle.org/gradle/libs-releases/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.pom"
-          ],
-          "sha256": "a96e671816c1ff8803bdec74c9241f025bdfb277da5d2b4ee02266405936f994"
         },
         {
           "id": {

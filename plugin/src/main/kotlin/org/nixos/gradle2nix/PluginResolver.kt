@@ -10,8 +10,9 @@ internal open class PluginResolver @Inject constructor(
 ) {
     private val configurations = pluginDependencyResolutionServices.configurationContainer
 
-    private val resolver = ConfigurationResolverFactory(pluginDependencyResolutionServices.resolveRepositoryHandler)
-        .create(pluginDependencyResolutionServices.dependencyHandler)
+    private val resolver = ConfigurationResolverFactory(
+        pluginDependencyResolutionServices.resolveRepositoryHandler
+    ).create(pluginDependencyResolutionServices.dependencyHandler)
 
     fun resolve(pluginRequests: List<PluginRequest>): List<DefaultArtifact> {
         val markerDependencies = pluginRequests.map {

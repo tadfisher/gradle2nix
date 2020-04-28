@@ -4,6 +4,7 @@ plugins {
     kotlin("jvm")
     kotlin("kapt")
     application
+    idea
 }
 
 dependencies {
@@ -18,6 +19,11 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:latest.release")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:latest.release")
     implementation("com.squareup.okio:okio:latest.release")
+
+    testRuntimeOnly(kotlin("reflect"))
+    testImplementation("org.spekframework.spek2:spek-dsl-jvm:latest.release")
+    testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:latest.release")
+    testImplementation("io.strikt:strikt-core:latest.release")
 }
 
 application {
@@ -30,11 +36,19 @@ application {
         .rename("plugin.*\\.jar", "plugin.jar")
 }
 
+sourceSets {
+    test {
+        resources {
+            srcDir("$rootDir/fixtures")
+        }
+    }
+}
+
 tasks {
     (run) {
         dependsOn(installDist)
         doFirst {
-            jvmArgs = listOf("-Dorg.nixos.gradle2nix.share=${installDist.get().destinationDir.resolve("share")}")
+            systemProperties("org.nixos.gradle2nix.share" to installDist.get().destinationDir.resolve("share"))
         }
     }
 
@@ -45,9 +59,28 @@ tasks {
         }
     }
 
+    test {
+        dependsOn(installDist)
+        doFirst {
+            systemProperties("org.nixos.gradle2nix.share" to installDist.get().destinationDir.resolve("share"))
+        }
+        useJUnitPlatform {
+            includeEngines("spek2")
+        }
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+
     withType<KotlinCompile> {
         kotlinOptions {
             jvmTarget = "1.8"
+        }
+    }
+
+    idea {
+        module {
+
         }
     }
 }
