@@ -254,13 +254,18 @@ in stdenv.mkDerivation (args // {
 
     (
     set -x
+
+    # use the init script here
+    TMPHOME=$(mktemp -d)
+    mkdir -p $TMPHOME/init.d
+    cp ${projectEnv.initScript} $TMPHOME/init.d
+
     env \
-      "GRADLE_USER_HOME=$(mktemp -d)" \
+      "GRADLE_USER_HOME=$TMPHOME" \
       gradle --offline --no-daemon --no-build-cache \
         --info --full-stacktrace --warning-mode=all \
         ${optionalString enableParallelBuilding "--parallel"} \
         ${optionalString enableDebug "-Dorg.gradle.debug=true"} \
-        --init-script ${projectEnv.initScript} \
         ${concatStringsSep " " gradleFlags}
     )
 
