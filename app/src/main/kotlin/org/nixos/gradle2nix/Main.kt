@@ -12,7 +12,6 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
-import com.github.ajalt.clikt.parameters.options.split
 import com.github.ajalt.clikt.parameters.options.validate
 import com.github.ajalt.clikt.parameters.types.file
 import com.squareup.moshi.Moshi
@@ -55,7 +54,7 @@ class Main : CliktCommand(
     private val includes: List<File> by option("--include", "-i",
         metavar = "DIR",
         help = "Add an additional project to include")
-        .file(exists = true, fileOkay = false, folderOkay = true, readable = true)
+        .file(mustExist = true, canBeFile = false, canBeDir = true, mustBeReadable = true)
         .multiple()
         .validate { files ->
             val failures = files.filterNot { it.isProjectRoot() }
@@ -79,12 +78,12 @@ class Main : CliktCommand(
             }
         }
 
-    private val outDir: File? by option("--out-dir", "-o",
+    val outDir: File? by option("--out-dir", "-o",
         metavar = "DIR",
         help = "Path to write generated files (default: PROJECT-DIR)")
-        .file(fileOkay = false, folderOkay = true)
+        .file(canBeFile = false, canBeDir = true)
 
-    private val envFile: String by option("--env", "-e",
+    val envFile: String by option("--env", "-e",
         metavar = "FILENAME",
         help = "Prefix for environment files (.json and .nix)")
         .default("gradle-env")
@@ -105,8 +104,11 @@ class Main : CliktCommand(
         }
     }
 
+    // Visible for testing
+    lateinit var config: Config
+
     override fun run() {
-        val config = Config(
+        config = Config(
             gradleVersion,
             gradleArgs,
             configurations,

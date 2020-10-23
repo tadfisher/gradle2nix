@@ -200,7 +200,7 @@ private fun fetchDistSha256(url: String): String {
     }
 }
 
-private val nativePlatformJarRegex = Regex("""native-platform-([\d.]+)\.jar""")
+private val nativePlatformJarRegex = Regex("""native-platform-([\d.]+(-(alpha|beta|milestone)-\d+)?)\.jar""")
 
 private val Wrapper.sha256: String
     get() {

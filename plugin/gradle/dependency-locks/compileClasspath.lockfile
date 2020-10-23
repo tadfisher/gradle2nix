@@ -6,10 +6,11 @@ com.squareup.okio:okio:1.16.0
 org.apache.ivy:ivy:2.5.0
 org.apache.maven:maven-repository-metadata:3.6.3
 org.codehaus.plexus:plexus-utils:3.2.1
-org.gradle:gradle-tooling-api:6.1
-org.jetbrains.kotlin:kotlin-reflect:1.3.61
-org.jetbrains.kotlin:kotlin-stdlib-common:1.3.61
-org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61
-org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.61
-org.jetbrains.kotlin:kotlin-stdlib:1.3.61
+org.gradle:gradle-tooling-api:6.3
+org.jetbrains.kotlin:kotlin-reflect:1.3.70
+org.jetbrains.kotlin:kotlin-stdlib-common:1.3.70
+org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.70
+org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.70
+org.jetbrains.kotlin:kotlin-stdlib:1.3.70
 org.jetbrains:annotations:13.0
+org.slf4j:slf4j-api:1.7.28
