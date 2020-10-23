@@ -4,7 +4,7 @@
 #
 #     with (import <nixpkgs> {});
 #     let
-#       buildGradle = callPackage ./gradleEnv.nix {};
+#       buildGradle = callPackage ./gradle-env.nix {};
 #     in
 #       buildGradle {
 #         envSpec = ./gradle-env.json;
