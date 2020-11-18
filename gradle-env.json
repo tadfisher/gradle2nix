@@ -25,142 +25,142 @@
           "urls": [
             "https://plugins.gradle.org/m2/com/fasterxml/oss-parent/38/oss-parent-38.pom"
           ],
-          "sha256": "c83f8f45dfdca8d0b6b3661c60b3f84780f671b12e06f91ad5d1c1a1d1f966e8"
+          "sha256": "495c3a5c4a23a29de8dab93ea332e1dfbef3b040e565f217a8d3319913cc1057"
         },
         {
           "id": {
             "group": "com.fasterxml.jackson",
             "name": "jackson-base",
-            "version": "2.11.0.rc1",
+            "version": "2.10.1",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "jackson-base-2.11.0.rc1.pom",
-          "path": "com/fasterxml/jackson/jackson-base/2.11.0.rc1",
+          "name": "jackson-base-2.10.1.pom",
+          "path": "com/fasterxml/jackson/jackson-base/2.10.1",
           "urls": [
-            "https://plugins.gradle.org/m2/com/fasterxml/jackson/jackson-base/2.11.0.rc1/jackson-base-2.11.0.rc1.pom"
+            "https://plugins.gradle.org/m2/com/fasterxml/jackson/jackson-base/2.10.1/jackson-base-2.10.1.pom"
           ],
-          "sha256": "eb02b936b9fd5ba85c274bac2f0237ed92d6ce2a69c4be54e851c46d703db3a7"
+          "sha256": "7549f209bc484ceead1b4304f97b4f7e2e5b5ce9804527d0d97170dc5177ae2f"
         },
         {
           "id": {
             "group": "com.fasterxml.jackson",
             "name": "jackson-bom",
-            "version": "2.11.0.rc1",
+            "version": "2.10.1",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "jackson-bom-2.11.0.rc1.pom",
-          "path": "com/fasterxml/jackson/jackson-bom/2.11.0.rc1",
+          "name": "jackson-bom-2.10.1.pom",
+          "path": "com/fasterxml/jackson/jackson-bom/2.10.1",
           "urls": [
-            "https://plugins.gradle.org/m2/com/fasterxml/jackson/jackson-bom/2.11.0.rc1/jackson-bom-2.11.0.rc1.pom"
+            "https://plugins.gradle.org/m2/com/fasterxml/jackson/jackson-bom/2.10.1/jackson-bom-2.10.1.pom"
           ],
-          "sha256": "0d4a24468ca1e20c6a18b808e9e0a279c937fcab633aa4ccbb0ca8e8d0b1307a"
+          "sha256": "1fdda1c1be6a2e4ac6f0c30bdff0bbc9d02d62470a80823025c17abb6972d5e4"
         },
         {
           "id": {
             "group": "com.fasterxml.jackson",
             "name": "jackson-parent",
-            "version": "2.11",
+            "version": "2.10",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "jackson-parent-2.11.pom",
-          "path": "com/fasterxml/jackson/jackson-parent/2.11",
+          "name": "jackson-parent-2.10.pom",
+          "path": "com/fasterxml/jackson/jackson-parent/2.10",
           "urls": [
-            "https://plugins.gradle.org/m2/com/fasterxml/jackson/jackson-parent/2.11/jackson-parent-2.11.pom"
+            "https://plugins.gradle.org/m2/com/fasterxml/jackson/jackson-parent/2.10/jackson-parent-2.10.pom"
           ],
-          "sha256": "c1b0a13d8cfe63b40b0fae8458b99463169ed0c60f7fc963ef3f05257150cbe8"
+          "sha256": "2d2d930a980bbd3401af425db480b183dda1b53830ce1646d5415a5416965177"
         },
         {
           "id": {
             "group": "com.fasterxml.jackson.core",
             "name": "jackson-annotations",
-            "version": "2.11.0.rc1",
+            "version": "2.10.1",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "jackson-annotations-2.11.0.rc1.jar",
-          "path": "com/fasterxml/jackson/core/jackson-annotations/2.11.0.rc1",
+          "name": "jackson-annotations-2.10.1.jar",
+          "path": "com/fasterxml/jackson/core/jackson-annotations/2.10.1",
           "urls": [
-            "https://plugins.gradle.org/m2/com/fasterxml/jackson/core/jackson-annotations/2.11.0.rc1/jackson-annotations-2.11.0.rc1.jar"
+            "https://plugins.gradle.org/m2/com/fasterxml/jackson/core/jackson-annotations/2.10.1/jackson-annotations-2.10.1.jar"
           ],
-          "sha256": "ef1ae64280fd818b84ebea11bf644f6075b6ff665e91a271dd4684e6fdb8c73b"
+          "sha256": "673f8ae16becea4fa937404b3a851417faf42df3bbc592028bbe2bfe0cc9d8cb"
         },
         {
           "id": {
             "group": "com.fasterxml.jackson.core",
             "name": "jackson-annotations",
-            "version": "2.11.0.rc1",
+            "version": "2.10.1",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "jackson-annotations-2.11.0.rc1.pom",
-          "path": "com/fasterxml/jackson/core/jackson-annotations/2.11.0.rc1",
+          "name": "jackson-annotations-2.10.1.pom",
+          "path": "com/fasterxml/jackson/core/jackson-annotations/2.10.1",
           "urls": [
-            "https://plugins.gradle.org/m2/com/fasterxml/jackson/core/jackson-annotations/2.11.0.rc1/jackson-annotations-2.11.0.rc1.pom"
+            "https://plugins.gradle.org/m2/com/fasterxml/jackson/core/jackson-annotations/2.10.1/jackson-annotations-2.10.1.pom"
           ],
-          "sha256": "cde43cbebb7081d35c871d1364c6450030470686f01884aaec406e70539f81d9"
+          "sha256": "ece51103667e8811f0ff7458986af2171862e54b9813c1708cf937904487f95c"
         },
         {
           "id": {
             "group": "com.fasterxml.jackson.core",
             "name": "jackson-core",
-            "version": "2.11.0.rc1",
+            "version": "2.10.1",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "jackson-core-2.11.0.rc1.jar",
-          "path": "com/fasterxml/jackson/core/jackson-core/2.11.0.rc1",
+          "name": "jackson-core-2.10.1.jar",
+          "path": "com/fasterxml/jackson/core/jackson-core/2.10.1",
           "urls": [
-            "https://plugins.gradle.org/m2/com/fasterxml/jackson/core/jackson-core/2.11.0.rc1/jackson-core-2.11.0.rc1.jar"
+            "https://plugins.gradle.org/m2/com/fasterxml/jackson/core/jackson-core/2.10.1/jackson-core-2.10.1.jar"
           ],
-          "sha256": "c21fd055bf3d96820a34d0a298da792ac6a8fe80e6acc88a479d80228901253b"
+          "sha256": "79bffbdcd349f69a5ac252e2b4096131704386af4fa14d95395ea9a0e423cf33"
         },
         {
           "id": {
             "group": "com.fasterxml.jackson.core",
             "name": "jackson-core",
-            "version": "2.11.0.rc1",
+            "version": "2.10.1",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "jackson-core-2.11.0.rc1.pom",
-          "path": "com/fasterxml/jackson/core/jackson-core/2.11.0.rc1",
+          "name": "jackson-core-2.10.1.pom",
+          "path": "com/fasterxml/jackson/core/jackson-core/2.10.1",
           "urls": [
-            "https://plugins.gradle.org/m2/com/fasterxml/jackson/core/jackson-core/2.11.0.rc1/jackson-core-2.11.0.rc1.pom"
+            "https://plugins.gradle.org/m2/com/fasterxml/jackson/core/jackson-core/2.10.1/jackson-core-2.10.1.pom"
           ],
-          "sha256": "664a9aaa16ed1ff2d6dceb9f574eb6e708703ae7bf770ab3a99334da7cbca8cb"
+          "sha256": "dc8df347985692527285d892d0923d531950c026827b0925e1eb225989e35d19"
         },
         {
           "id": {
             "group": "com.fasterxml.jackson.core",
             "name": "jackson-databind",
-            "version": "2.11.0.rc1",
+            "version": "2.10.1",
             "type": "jar",
             "extension": "jar"
           },
-          "name": "jackson-databind-2.11.0.rc1.jar",
-          "path": "com/fasterxml/jackson/core/jackson-databind/2.11.0.rc1",
+          "name": "jackson-databind-2.10.1.jar",
+          "path": "com/fasterxml/jackson/core/jackson-databind/2.10.1",
           "urls": [
-            "https://plugins.gradle.org/m2/com/fasterxml/jackson/core/jackson-databind/2.11.0.rc1/jackson-databind-2.11.0.rc1.jar"
+            "https://plugins.gradle.org/m2/com/fasterxml/jackson/core/jackson-databind/2.10.1/jackson-databind-2.10.1.jar"
           ],
-          "sha256": "58d5ba95d42c4858f55b5f77706982ec33a56c1ce4c1fa2203549400164f72ab"
+          "sha256": "2d23f47001492233565adf5a34f225f2ae89564cee08024873ec36b7842ede46"
         },
         {
           "id": {
             "group": "com.fasterxml.jackson.core",
             "name": "jackson-databind",
-            "version": "2.11.0.rc1",
+            "version": "2.10.1",
             "type": "pom",
             "extension": "pom"
           },
-          "name": "jackson-databind-2.11.0.rc1.pom",
-          "path": "com/fasterxml/jackson/core/jackson-databind/2.11.0.rc1",
+          "name": "jackson-databind-2.10.1.pom",
+          "path": "com/fasterxml/jackson/core/jackson-databind/2.10.1",
           "urls": [
-            "https://plugins.gradle.org/m2/com/fasterxml/jackson/core/jackson-databind/2.11.0.rc1/jackson-databind-2.11.0.rc1.pom"
+            "https://plugins.gradle.org/m2/com/fasterxml/jackson/core/jackson-databind/2.10.1/jackson-databind-2.10.1.pom"
           ],
-          "sha256": "fd3ac8dc705607658c013fcdc2b02e07b1be68bb2a583ddcf64da09a6536cc45"
+          "sha256": "6b5c290577dee6b3888cf52a3127a8c070fe6c1032902bbd906fc7a522c3e1f3"
         },
         {
           "id": {
@@ -2027,7 +2027,7 @@
             "https://jcenter.bintray.com/com/squareup/moshi/moshi-parent/1.9.2/moshi-parent-1.9.2.pom",
             "https://repo.gradle.org/gradle/libs-releases/com/squareup/moshi/moshi-parent/1.9.2/moshi-parent-1.9.2.pom"
           ],
-          "sha256": "20065081c581782668f6523da4582dec2e87bc753c7ed0bfff3ae7e1b5db641a"
+          "sha256": "0b820477647e89a256447989cd619d550bf18cca707b581b0adf38835b91b1ce"
         },
         {
           "id": {
