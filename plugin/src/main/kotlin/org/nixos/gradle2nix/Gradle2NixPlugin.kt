@@ -18,7 +18,7 @@ import org.gradle.tooling.provider.model.ToolingModelBuilder
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
 import org.gradle.util.GradleVersion
 import java.net.URL
-import java.util.Locale
+import java.util.*
 
 @Suppress("unused")
 open class Gradle2NixPlugin : Plugin<Gradle> {
@@ -127,7 +127,7 @@ private fun Project.buildGradle(): DefaultGradle =
     }
 
 private fun Project.buildPlugins(pluginRequests: List<PluginRequest>): List<DefaultArtifact> {
-    return objects.newInstance<PluginResolver>().resolve(pluginRequests).distinct().sorted()
+    return objects.newInstance<PluginResolver>(this).resolve(pluginRequests).distinct().sorted()
 }
 
 private fun Project.includedBuilds(): List<DefaultIncludedBuild> =
@@ -141,37 +141,64 @@ private fun Project.buildProject(
     pluginArtifacts: List<DefaultArtifact>
 ): DefaultProject {
     logger.lifecycle("    Subproject: $path")
+
+    val (buildscriptDependencies, buildscriptUnresolved) = buildscriptDependencies(pluginArtifacts)
+
+    if (buildscriptUnresolved.isNotEmpty()) {
+        logger.warn(buildString {
+            append("        Failed to resolve buildscript dependencies:\n")
+            for (id in buildscriptUnresolved) {
+                append("        - $id\n")
+            }
+        })
+    }
+
+    val (projectDependencies, projectUnresolved) = projectDependencies(explicitConfigurations)
+
+    if (projectUnresolved.isNotEmpty()) {
+        logger.warn(buildString {
+            append("        Failed to resolve project dependencies:\n")
+            for (id in projectUnresolved) {
+                append("        - $id\n")
+            }
+        })
+    }
+
     return DefaultProject(
         name = name,
         version = version.toString(),
         path = path,
         projectDir = projectDir.toRelativeString(rootProject.projectDir),
-        buildscriptDependencies = buildscriptDependencies(pluginArtifacts),
-        projectDependencies = projectDependencies(explicitConfigurations),
+        buildscriptDependencies = buildscriptDependencies,
+        projectDependencies = projectDependencies,
         children = explicitSubprojects.map {
             it.buildProject(explicitConfigurations, emptyList(), pluginArtifacts)
         }
     )
 }
 
-private fun Project.buildscriptDependencies(pluginArtifacts: List<DefaultArtifact>): List<DefaultArtifact> {
-    val resolverFactory = ConfigurationResolverFactory(buildscript.repositories)
+private fun Project.buildscriptDependencies(
+    pluginArtifacts: List<DefaultArtifact>
+): Pair<List<DefaultArtifact>, List<ArtifactIdentifier>> {
+    val resolverFactory = ConfigurationResolverFactory(this, ConfigurationScope.BUILDSCRIPT, buildscript.repositories)
     val resolver = resolverFactory.create(buildscript.dependencies)
     val pluginIds = pluginArtifacts.map(DefaultArtifact::id)
     return buildscript.configurations
         .flatMap(resolver::resolve)
         .distinct()
         .filter { it.id !in pluginIds }
-        .sorted()
+        .sorted() to resolver.unresolved
 }
 
-private fun Project.projectDependencies(explicitConfigurations: List<String>): List<DefaultArtifact> {
-    val resolverFactory = ConfigurationResolverFactory(repositories)
+private fun Project.projectDependencies(
+    explicitConfigurations: List<String>
+): Pair<List<DefaultArtifact>, List<ArtifactIdentifier>> {
+    val resolverFactory = ConfigurationResolverFactory(this, ConfigurationScope.PROJECT, repositories)
     val resolver = resolverFactory.create(dependencies)
     return collectConfigurations(explicitConfigurations)
         .flatMap(resolver::resolve)
         .distinct()
-        .sorted()
+        .sorted() to resolver.unresolved
 }
 
 private fun Project.dependentSubprojects(explicitConfigurations: List<String>): Set<Project> {

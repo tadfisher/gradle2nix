@@ -1,0 +1,11 @@
+plugins {
+    java
+}
+
+repositories {
+    maven { url = uri("http://localhost:9999") }
+}
+
+dependencies {
+    "implementation"("org.apache:test-SNAPSHOT1:2.0.2-SNAPSHOT")
+}

@@ -3,7 +3,12 @@ package org.nixos.gradle2nix
 import com.squareup.moshi.Moshi
 import dev.minutest.ContextBuilder
 import dev.minutest.MinutestFixture
+import dev.minutest.Node
 import dev.minutest.TestContextBuilder
+import dev.minutest.closeableFixture
+import dev.minutest.experimental.SKIP
+import dev.minutest.experimental.TransformingAnnotation
+import io.javalin.Javalin
 import okio.buffer
 import okio.source
 import org.gradle.internal.classpath.DefaultClassPath
@@ -13,26 +18,29 @@ import org.gradle.util.GradleVersion
 import org.junit.jupiter.api.Assumptions.assumeTrue
 import strikt.api.Assertion
 import strikt.assertions.map
+import java.io.Closeable
 import java.io.File
 import java.io.StringWriter
-import java.nio.file.Files
-import java.nio.file.Path
 import java.nio.file.Paths
-import kotlin.streams.toList
-
-const val SONATYPE_OSS_URL = "https://oss.sonatype.org/content/repositories/snapshots/"
 
 private val moshi = Moshi.Builder().build()
 
-private val gradleVersion = GradleVersion.version(System.getProperty("compat.gradle.version"))
+val gradleVersion = System.getProperty("compat.gradle.version")
+    ?.let(GradleVersion::version)
+    ?: GradleVersion.current()
 
 val GRADLE_4_5 = GradleVersion.version("4.5")
+
+fun GRADLE_MIN(version: String) = object : TransformingAnnotation() {
+    override fun <F> transform(node: Node<F>): Node<F> =
+        if (gradleVersion < GradleVersion.version(version)) SKIP.transform(node) else node
+}
 
 private fun File.initscript() = resolve("init.gradle").also {
     it.writer().use { out ->
         val classpath = DefaultClassPath.of(PluginUnderTestMetadataReading.readImplementationClasspath())
             .asFiles.joinToString { n -> "'$n'" }
-        out.appendln("""
+        out.append("""
             initscript {
                 dependencies {
                     classpath files($classpath)
@@ -40,6 +48,7 @@ private fun File.initscript() = resolve("init.gradle").also {
             }
 
             apply plugin: org.nixos.gradle2nix.Gradle2NixPlugin
+            
         """.trimIndent())
      }
 }
@@ -78,6 +87,9 @@ private fun File.build(
         System.err.print(log)
         throw error
     }
+
+    print(log)
+
     return resolve("build/nix/model.json").run {
         println(readText())
         source().buffer().use { src ->
@@ -89,44 +101,96 @@ private fun File.build(
 val <T : Iterable<Artifact>> Assertion.Builder<T>.ids: Assertion.Builder<Iterable<String>>
     get() = map { it.id.toString() }
 
-@MinutestFixture
-class Fixture(val testRoots: List<Path>)
+private fun File.parents() = generateSequence(parentFile) { it.parentFile }
 
 @MinutestFixture
-class ProjectFixture(val testRoot: Path) {
+class RepositoryFixture(private val server: Javalin) : Closeable {
+    override fun close() {
+        server.stop()
+    }
+}
+
+@MinutestFixture
+class TestFixture(val name: String, val source: File) : Closeable {
+    val dest: File
+
+    init {
+        require(source.exists() && source.isDirectory) {
+            "$name: Test fixture not found: $source}"
+        }
+        dest = createTempDir(prefix = name, suffix = "")
+    }
+
+    override fun close() {
+        dest.deleteRecursively()
+    }
+}
+
+@MinutestFixture
+class ProjectFixture(private val parent: TestFixture, private val source: File) : Closeable {
+    private val dest: File
+
+    init {
+        require(source.exists() && source.isDirectory && parent.source in source.parents()) {
+            "${parent.name}: Test project not found: $source"
+        }
+        val rel = source.toRelativeString(parent.source)
+        dest = parent.dest.resolve(rel)
+    }
+
+    fun copy() {
+        source.copyRecursively(dest, true)
+    }
+
     fun build(
         configurations: List<String> = emptyList(),
         subprojects: List<String> = emptyList()
-    ) = testRoot.toFile().build(configurations, subprojects)
+    ) = dest.build(configurations, subprojects)
+
+    override fun close() {
+        dest.deleteRecursively()
+    }
 }
 
-fun ContextBuilder<Fixture>.withFixture(
+fun ContextBuilder<*>.withRepository(
     name: String,
-    block: TestContextBuilder<Fixture, ProjectFixture>.() -> Unit
-) = context(name) {
-    val url = checkNotNull(Thread.currentThread().contextClassLoader.getResource(name)?.toURI()) {
-        "$name: No test fixture found"
-    }
-    val fixtureRoot = Paths.get(url)
-    val dest = createTempDir("gradle2nix").toPath()
-    val src = checkNotNull(fixtureRoot.takeIf(Files::exists)) {
-        "$name: Test fixture not found: $fixtureRoot}"
-    }
-    src.toFile().copyRecursively(dest.toFile())
-    val testRoots = Files.list(dest).filter { Files.isDirectory(it) }.toList()
-
-    fixture {
-        Fixture(testRoots)
+    block: TestContextBuilder<*, RepositoryFixture>.() -> Unit
+) = derivedContext<RepositoryFixture>("with repository: ${name}") {
+    closeableFixture {
+        RepositoryFixture(Javalin.create { config ->
+            config.addStaticFiles("/repositories/$name")
+        }.start(9999))
     }
 
-    afterAll {
-        dest.toFile().deleteRecursively()
-    }
+    block()
+}
 
-    testRoots.forEach { testRoot ->
-        derivedContext<ProjectFixture>(testRoot.fileName.toString()) {
-            deriveFixture { ProjectFixture(testRoot) }
-            block()
+fun ContextBuilder<*>.withFixture(
+    name: String,
+    block: TestContextBuilder<*, ProjectFixture>.() -> Unit
+) {
+    derivedContext<TestFixture>(name) {
+        val url = checkNotNull(Thread.currentThread().contextClassLoader.getResource(name)?.toURI()) {
+            "$name: No test fixture found"
+        }
+        val fixtureRoot = Paths.get(url).toFile().absoluteFile
+
+        deriveFixture {
+            TestFixture(name, fixtureRoot)
+        }
+
+        val testRoots = fixtureRoot.listFiles()!!
+            .filter { it.isDirectory }
+            .map { it.absoluteFile }
+            .toList()
+
+        testRoots.forEach { testRoot ->
+            derivedContext<ProjectFixture>(testRoot.name) {
+                deriveFixture { ProjectFixture(this, testRoot) }
+                before { copy() }
+                after { close() }
+                block()
+            }
         }
     }
 }

@@ -3,7 +3,7 @@
 with pkgs;
 
 let
-  buildGradle = pkgs.callPackage ./gradle-env.nix {};
+  buildGradle = callPackage ./gradle-env.nix {};
 
   gradle2nix = buildGradle {
     envSpec = ./gradle-env.json;

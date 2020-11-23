@@ -17,7 +17,7 @@ import strikt.assertions.startsWith
 
 class SubprojectsTest : JUnit5Minutests {
     @Tests
-    fun tests() = rootContext<Fixture>("subproject tests") {
+    fun tests() = rootContext("subproject tests") {
         withFixture("subprojects/multi-module") {
             test("builds multi-module project") {
                 expectThat(build().rootProject) {

@@ -1,6 +1,0 @@
-# This is a Gradle generated file for dependency locking.
-# Manual edits can break the build and are not advised.
-# This file is expected to be part of source control.
-com.squareup.moshi:moshi:1.9.2
-com.squareup.okio:okio:1.16.0
-net.swiftzer.semver:semver:1.1.1

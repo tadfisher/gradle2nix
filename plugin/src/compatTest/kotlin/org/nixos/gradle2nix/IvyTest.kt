@@ -12,7 +12,7 @@ import strikt.assertions.startsWith
 
 class IvyTest : JUnit5Minutests {
     @Tests
-    fun tests() = rootContext<Fixture>("ivy tests") {
+    fun tests() = rootContext("ivy tests") {
         withFixture("ivy/basic") {
             test("resolves ivy dependencies") {
                 expectThat(build()) {

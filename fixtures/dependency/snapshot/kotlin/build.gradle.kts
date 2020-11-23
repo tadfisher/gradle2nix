@@ -3,10 +3,9 @@ plugins {
 }
 
 repositories {
-    mavenCentral()
-    maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
+    maven { url = uri("http://localhost:9999") }
 }
 
 dependencies {
-    "implementation"("com.squareup.okio:okio:2.5.0-SNAPSHOT")
+    "implementation"("org.apache:test-SNAPSHOT2:2.0.2-SNAPSHOT")
 }

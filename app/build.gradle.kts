@@ -27,7 +27,7 @@ dependencies {
 }
 
 application {
-    mainClassName = "org.nixos.gradle2nix.MainKt"
+    mainClass.set("org.nixos.gradle2nix.MainKt")
     applicationName = "gradle2nix"
     applicationDefaultJvmArgs += "-Dorg.nixos.gradle2nix.share=@APP_HOME@/share"
     applicationDistribution

@@ -6,6 +6,7 @@ import org.apache.ivy.plugins.parser.m2.PomReader
 import org.apache.ivy.plugins.parser.xml.XmlModuleDescriptorParser
 import org.apache.ivy.plugins.repository.url.URLResource
 import org.apache.ivy.plugins.resolver.ChainResolver
+import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ModuleIdentifier
 import org.gradle.api.artifacts.ResolvedArtifact
@@ -23,12 +24,21 @@ import org.gradle.kotlin.dsl.withArtifacts
 import org.gradle.maven.MavenModule
 import org.gradle.maven.MavenPomArtifact
 import org.gradle.util.GradleVersion
-import java.io.File
 
-internal class ConfigurationResolverFactory(repositories: RepositoryHandler) {
+enum class ConfigurationScope {
+    BUILDSCRIPT,
+    PLUGIN,
+    PROJECT
+}
+
+internal class ConfigurationResolverFactory(
+    project: Project,
+    scope: ConfigurationScope,
+    repositories: RepositoryHandler
+) {
     private val ivySettings = IvySettings().apply {
         defaultInit()
-        setDefaultRepositoryCacheBasedir(createTempDir("gradle2nix-cache").apply(File::deleteOnExit).absolutePath)
+        defaultRepositoryCacheManager = null
         setDictatorResolver(ChainResolver().also { chain ->
             chain.settings = this@apply
             for (resolver in resolvers) chain.add(resolver)
@@ -38,7 +48,7 @@ internal class ConfigurationResolverFactory(repositories: RepositoryHandler) {
     private val resolvers = repositories
         .filterIsInstance<ResolutionAwareRepository>()
         .filterNot { it.createResolver().isLocal }
-        .mapNotNull { it.repositoryResolver(ivySettings) }
+        .mapNotNull { it.repositoryResolver(project, scope, ivySettings) }
 
     fun create(dependencies: DependencyHandler): ConfigurationResolver =
         ConfigurationResolver(ivySettings, resolvers, dependencies)
@@ -49,10 +59,22 @@ internal class ConfigurationResolver(
     private val resolvers: List<RepositoryResolver>,
     private val dependencies: DependencyHandler
 ) {
+    private val failed = mutableListOf<ArtifactIdentifier>()
     private val ivy = Ivy.newInstance(ivySettings)
+
+    val unresolved: List<ArtifactIdentifier> = failed.toList()
 
     fun resolve(configuration: Configuration): List<DefaultArtifact> {
         val resolved = configuration.resolvedConfiguration.lenientConfiguration
+
+        failed.addAll(resolved.unresolvedModuleDependencies.map {
+            DefaultArtifactIdentifier(
+                group = it.selector.group,
+                name = it.selector.name,
+                version = it.selector.version ?: "",
+                type = "module"
+            )
+        })
 
         val topLevelMetadata = resolved.firstLevelModuleDependencies
             .flatMap { resolveMetadata(it.moduleGroup, it.moduleName, it.moduleVersion) }
@@ -78,6 +100,7 @@ internal class ConfigurationResolver(
 
         val sha256 = resolvedArtifact.file.sha256()
         val artifacts = resolvers.mapNotNull { it.resolve(artifactId, sha256) }.merge()
+        if (artifacts.isEmpty()) failed.add(artifactId)
         return artifacts + componentId.run { resolveMetadata(group, module, version) }
     }
 
@@ -113,7 +136,9 @@ internal class ConfigurationResolver(
                     type = "pom"
                 )
                 val sha256 = resolvedPom.file.sha256()
-                resolvers.mapNotNull { it.resolve(artifactId, sha256) }.merge()
+                val artifacts = resolvers.mapNotNull { it.resolve(artifactId, sha256) }.merge()
+                if (artifacts.isEmpty()) failed.add(artifactId)
+                artifacts
             }
     }
 
@@ -140,7 +165,9 @@ internal class ConfigurationResolver(
                     extension = "xml"
                 )
                 val sha256 = resolvedDesc.file.sha256()
-                resolvers.mapNotNull { it.resolve(artifactId, sha256) }.merge()
+                val artifacts = resolvers.mapNotNull { it.resolve(artifactId, sha256) }.merge()
+                if (artifacts.isEmpty()) failed.add(artifactId)
+                artifacts
             }
     }
 
@@ -155,7 +182,9 @@ internal class ConfigurationResolver(
             version = version,
             type = "module"
         )
-        return resolvers.mapNotNull { it.resolve(artifactId) }.merge()
+        val artifacts = resolvers.mapNotNull { it.resolve(artifactId) }.merge()
+        if (artifacts.isEmpty()) failed.add(artifactId)
+        return artifacts
     }
 
     private fun ResolvedArtifactResult.parentPom(): ResolvedArtifactResult? {

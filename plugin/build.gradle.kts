@@ -47,6 +47,7 @@ dependencies {
     compatTestImplementation(project(":model"))
     compatTestImplementation("io.strikt:strikt-core:latest.release")
     compatTestImplementation("com.squareup.okio:okio:latest.release")
+    compatTestImplementation("io.javalin:javalin:latest.release")
 }
 
 gradlePlugin {
@@ -65,6 +66,7 @@ kotlinDslPluginOptions {
 }
 
 stutter {
+    isSparse = true
     java(8) {
         compatibleRange("4.4")
     }
@@ -79,6 +81,14 @@ tasks {
     }
 
     withType<Test> {
-        useJUnitPlatform()
+        useJUnitPlatform {
+            includeEngines("junit-jupiter")
+        }
+
+        afterTest(KotlinClosure2<TestDescriptor, TestResult, Any>({ descriptor, result ->
+            // work around a bug in Gradle versions before 6.1, see https://github.com/junit-team/junit5/issues/2041
+            val test = descriptor as org.gradle.api.internal.tasks.testing.TestDescriptorInternal
+            println("[${test.classDisplayName}] > [${test.displayName}]: ${result.resultType}")
+        }))
     }
 }

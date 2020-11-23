@@ -8,7 +8,7 @@ import strikt.assertions.contains
 
 class PluginTest : JUnit5Minutests {
     @Tests
-    fun tests() = rootContext<Fixture>("plugin tests") {
+    fun tests() = rootContext("plugin tests") {
         withFixture("plugin/resolves-from-default-repo") {
             test("resolves plugin from default repo") {
                 expectThat(build()) {

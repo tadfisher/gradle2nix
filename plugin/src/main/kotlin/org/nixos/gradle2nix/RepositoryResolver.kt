@@ -15,6 +15,7 @@ import org.apache.ivy.plugins.resolver.URLResolver
 import org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader
 import org.codehaus.plexus.util.ReaderFactory
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException
+import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.ArtifactRepository
 import org.gradle.api.artifacts.repositories.IvyArtifactRepository
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
@@ -27,10 +28,14 @@ import org.apache.ivy.core.module.descriptor.Artifact as IvyArtifact
 import org.apache.ivy.core.module.descriptor.DefaultArtifact as IvyDefaultArtifact
 import org.apache.ivy.plugins.resolver.RepositoryResolver as IvyRepositoryResolver
 
-internal fun ResolutionAwareRepository.repositoryResolver(ivySettings: IvySettings): RepositoryResolver? =
+internal fun ResolutionAwareRepository.repositoryResolver(
+    project: Project,
+    scope: ConfigurationScope,
+    ivySettings: IvySettings
+): RepositoryResolver? =
     when(this) {
-        is MavenArtifactRepository -> MavenResolver(ivySettings, this)
-        is IvyArtifactRepository -> IvyResolver(ivySettings, this)
+        is MavenArtifactRepository -> MavenResolver(project, scope, ivySettings, this)
+        is IvyArtifactRepository -> IvyResolver(project, scope, ivySettings, this)
         else -> null
     }
 
@@ -49,6 +54,8 @@ internal sealed class RepositoryResolver {
 }
 
 internal class MavenResolver(
+    project: Project,
+    scope: ConfigurationScope,
     ivySettings: IvySettings,
     repository: MavenArtifactRepository
 ) : RepositoryResolver() {
@@ -58,7 +65,7 @@ internal class MavenResolver(
         root = repository.url.toString()
         isM2compatible = true
         settings = ivySettings
-        setCache(cacheManager(ivySettings, repository).name)
+        setCache(cacheManager(project, scope, ivySettings, repository).name)
     }
 
     override fun resolve(artifactId: DefaultArtifactIdentifier, sha256: String?): DefaultArtifact? {
@@ -121,6 +128,8 @@ internal class MavenResolver(
 }
 
 internal class IvyResolver(
+    project: Project,
+    scope: ConfigurationScope,
     ivySettings: IvySettings,
     repository: IvyArtifactRepository
 ) : RepositoryResolver() {
@@ -132,7 +141,7 @@ internal class IvyResolver(
         for (p in ivyResolver.ivyPatterns) addIvyPattern(p)
         for (p in ivyResolver.artifactPatterns) addArtifactPattern(p)
         settings = ivySettings
-        setCache(cacheManager(ivySettings, repository).name)
+        setCache(cacheManager(project, scope, ivySettings, repository).name)
     }
 
     override fun resolve(artifactId: DefaultArtifactIdentifier, sha256: String?): DefaultArtifact? {
@@ -149,11 +158,16 @@ internal class IvyResolver(
     }
 }
 
-private fun cacheManager(ivySettings: IvySettings, repository: ArtifactRepository): RepositoryCacheManager {
+private fun cacheManager(
+    project: Project,
+    scope: ConfigurationScope,
+    ivySettings: IvySettings,
+    repository: ArtifactRepository
+): RepositoryCacheManager {
     return DefaultRepositoryCacheManager(
-        "${repository.name}-cache",
+        "${scope.name.toLowerCase()}-${repository.name}-cache",
         ivySettings,
-        createTempDir("gradle2nix-${repository.name}-cache")
+        project.buildDir.resolve("tmp/gradle2nix/${scope.name.toLowerCase()}/${repository.name}")
     ).also {
         ivySettings.addRepositoryCacheManager(it)
     }

@@ -36,12 +36,11 @@ allprojects {
             tasks.register("lock") {
                 doFirst {
                     assert(gradle.startParameter.isWriteDependencyLocks)
+                    file("buildscript-gradle.lockfile").delete()
+                    file("gradle.lockfile").delete()
                 }
                 doLast {
-                    sourceSets.all {
-                        configurations[compileClasspathConfigurationName].resolve()
-                        configurations[runtimeClasspathConfigurationName].resolve()
-                    }
+                    configurations.matching { it.isCanBeResolved}.all { resolve() }
                 }
             }
         }
@@ -50,7 +49,7 @@ allprojects {
 
 tasks {
     wrapper {
-        gradleVersion = "6.3"
+        gradleVersion = "6.8-milestone-3"
         distributionType = Wrapper.DistributionType.ALL
     }
 }

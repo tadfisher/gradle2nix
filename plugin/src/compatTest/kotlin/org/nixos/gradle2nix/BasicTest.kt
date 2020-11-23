@@ -1,6 +1,7 @@
 package org.nixos.gradle2nix
 
 import dev.minutest.Tests
+import dev.minutest.experimental.minus
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
 import org.gradle.api.internal.artifacts.dsl.DefaultRepositoryHandler.BINTRAY_JCENTER_URL
@@ -18,7 +19,7 @@ import strikt.assertions.startsWith
 
 class BasicTest : JUnit5Minutests {
     @Tests
-    fun tests() = rootContext<Fixture>("basic tests") {
+    fun tests() = rootContext("basic tests") {
         withFixture("basic/basic-java-project") {
             test("builds basic java project") {
                 expectThat(build()) {
@@ -57,12 +58,13 @@ class BasicTest : JUnit5Minutests {
         }
 
         withFixture("basic/basic-kotlin-project") {
-            test("excludes embedded kotlin repo") {
+            GRADLE_MIN("4.9") - test("excludes embedded kotlin repo") {
+
                 expectThat(build()) {
                     get("all dependencies") {
                         pluginDependencies +
-                            rootProject.buildscriptDependencies +
-                            rootProject.projectDependencies
+                                rootProject.buildscriptDependencies +
+                                rootProject.projectDependencies
                     }.flatMap { it.urls }.all { not { startsWith("file:") } }
                 }
             }

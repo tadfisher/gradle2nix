@@ -36,8 +36,8 @@ let
     concatStringsSep;
 
   inherit (stdenv.lib)
-    versionOlder unique mapAttrs last concatMapStringsSep removeSuffix
-    optionalString groupBy' readFile hasSuffix;
+    versionOlder unique mapAttrs mapAttrsToList last concatMapStringsSep
+    removeSuffix optionalString groupBy' readFile hasSuffix;
 
   mkDep = depSpec: stdenv.mkDerivation {
     inherit (depSpec) name;
@@ -230,7 +230,7 @@ let
     };
 
   mkProjectEnv = projectSpec: {
-    inherit (projectSpec) name version;
+    inherit (projectSpec) name path version;
     initScript = mkInitScript projectSpec;
     gradle = args.gradlePackage or mkGradle projectSpec.gradle;
   };
@@ -242,6 +242,23 @@ let
   projectEnv = gradleEnv."";
   pname = args.pname or projectEnv.name;
   version = args.version or projectEnv.version;
+
+  buildProject = env: flags: ''
+    gradle --offline --no-daemon --no-build-cache \
+      --info --full-stacktrace --warning-mode=all \
+      ${optionalString enableParallelBuilding "--parallel"} \
+      ${optionalString enableDebug "-Dorg.gradle.debug=true"} \
+      --init-script ${env.initScript} \
+      ${optionalString (env.path != "") ''-p "${env.path}"''} \
+      ${concatStringsSep " " flags}
+  '';
+
+  buildIncludedProjects =
+    concatStringsSep "\n" (mapAttrsToList
+      (_: env: buildProject env [ "build" ])
+      (removeAttrs gradleEnv [ "" ]));
+
+  buildRootProject = buildProject projectEnv gradleFlags;
 
 in stdenv.mkDerivation (args // {
 
@@ -260,13 +277,9 @@ in stdenv.mkDerivation (args // {
     mkdir -p $TMPHOME/init.d
     cp ${projectEnv.initScript} $TMPHOME/init.d
 
-    env \
-      "GRADLE_USER_HOME=$TMPHOME" \
-      gradle --offline --no-daemon --no-build-cache \
-        --info --full-stacktrace --warning-mode=all \
-        ${optionalString enableParallelBuilding "--parallel"} \
-        ${optionalString enableDebug "-Dorg.gradle.debug=true"} \
-        ${concatStringsSep " " gradleFlags}
+    export "GRADLE_USER_HOME=$TMPHOME"
+    ${buildIncludedProjects}
+    ${buildRootProject}
     )
 
     runHook postBuild
