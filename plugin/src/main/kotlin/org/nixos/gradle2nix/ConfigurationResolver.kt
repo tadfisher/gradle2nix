@@ -38,7 +38,9 @@ internal class ConfigurationResolverFactory(
 ) {
     private val ivySettings = IvySettings().apply {
         defaultInit()
-        defaultRepositoryCacheManager = null
+        // This doesn't appear to be used, but it's better to define it explicitly than to introduce
+        // impurities into artifact resolution.
+        setDefaultRepositoryCacheBasedir(project.buildDir.resolve("tmp/gradle2nix/_cache").absolutePath)
         setDictatorResolver(ChainResolver().also { chain ->
             chain.settings = this@apply
             for (resolver in resolvers) chain.add(resolver)
@@ -98,7 +100,7 @@ internal class ConfigurationResolver(
             classifier = resolvedArtifact.classifier
         )
 
-        val sha256 = resolvedArtifact.file.sha256()
+        val sha256 = resolvedArtifact.computeHash()
         val artifacts = resolvers.mapNotNull { it.resolve(artifactId, sha256) }.merge()
         if (artifacts.isEmpty()) failed.add(artifactId)
         return artifacts + componentId.run { resolveMetadata(group, module, version) }
@@ -135,8 +137,8 @@ internal class ConfigurationResolver(
                     version = componentId.version,
                     type = "pom"
                 )
-                val sha256 = resolvedPom.file.sha256()
-                val artifacts = resolvers.mapNotNull { it.resolve(artifactId, sha256) }.merge()
+                // Intentionally not computing hash from the cached result; see ResolvedArtifact.computeHash() below.
+                val artifacts = resolvers.mapNotNull { it.resolve(artifactId) }.merge()
                 if (artifacts.isEmpty()) failed.add(artifactId)
                 artifacts
             }
@@ -164,8 +166,8 @@ internal class ConfigurationResolver(
                     type = "ivy",
                     extension = "xml"
                 )
-                val sha256 = resolvedDesc.file.sha256()
-                val artifacts = resolvers.mapNotNull { it.resolve(artifactId, sha256) }.merge()
+                // Intentionally not computing hash from the cached result; see ResolvedArtifact.computeHash() below.
+                val artifacts = resolvers.mapNotNull { it.resolve(artifactId) }.merge()
                 if (artifacts.isEmpty()) failed.add(artifactId)
                 artifacts
             }
@@ -283,4 +285,19 @@ private fun List<DefaultArtifact>.merge(): List<DefaultArtifact> {
     return groupingBy { it.id }
         .reduce { _, dest, next -> dest.copy(urls = dest.urls + next.urls) }
         .values.toList()
+}
+
+private fun ResolvedArtifact.computeHash(): String? {
+    // Hack: Some POM files are served with CRLF line endings, e.g. javax.servlet:javax.servlet-api:3.1.0.
+    // Gradle stores these normalized with LF line endings, which will not match the eventual hash
+    // of the fixed-output derivation which produces the POM artifact.
+    //
+    // A similar issue can exist for Apache Ivy; see https://issues.apache.org/jira/browse/IVY-1156.
+    //
+    // Ignore these artifacts, and defer hash calculation to RepositoryResolver.
+    if (type == "pom" || type == "ivy") {
+        return null
+    }
+
+    return file.sha256()
 }
