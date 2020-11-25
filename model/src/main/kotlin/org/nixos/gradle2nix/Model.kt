@@ -2,6 +2,7 @@ package org.nixos.gradle2nix
 
 interface Build {
     val gradle: Gradle
+    val settingsDependencies: List<Artifact>
     val pluginDependencies: List<Artifact>
     val rootProject: Project
     val includedBuilds: List<IncludedBuild>

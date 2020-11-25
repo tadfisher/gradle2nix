@@ -28,7 +28,8 @@ import org.gradle.util.GradleVersion
 enum class ConfigurationScope {
     BUILDSCRIPT,
     PLUGIN,
-    PROJECT
+    PROJECT,
+    SETTINGS
 }
 
 internal class ConfigurationResolverFactory(

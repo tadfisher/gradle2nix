@@ -8,12 +8,14 @@ import java.lang.IllegalArgumentException
 @JsonClass(generateAdapter = true)
 data class DefaultBuild(
     override val gradle: DefaultGradle,
+    override val settingsDependencies: List<DefaultArtifact>,
     override val pluginDependencies: List<DefaultArtifact>,
     override val rootProject: DefaultProject,
     override val includedBuilds: List<DefaultIncludedBuild>
 ) : Build, Serializable {
     constructor(model: Build) : this(
         DefaultGradle(model.gradle),
+        model.settingsDependencies.map(::DefaultArtifact),
         model.pluginDependencies.map(::DefaultArtifact),
         DefaultProject(model.rootProject),
         model.includedBuilds.map(::DefaultIncludedBuild)

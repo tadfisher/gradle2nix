@@ -19,6 +19,7 @@ fun buildEnv(builds: Map<String, DefaultBuild>): Map<String, NixGradleEnv> =
             path = path,
             gradle = build.gradle,
             dependencies = mapOf(
+                "settings" to build.settingsDependencies,
                 "plugin" to build.pluginDependencies,
                 "buildscript" to build.rootProject.collectDependencies(DefaultProject::buildscriptDependencies),
                 "project" to build.rootProject.collectDependencies(DefaultProject::projectDependencies)

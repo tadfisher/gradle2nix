@@ -168,29 +168,27 @@ fun ContextBuilder<*>.withRepository(
 fun ContextBuilder<*>.withFixture(
     name: String,
     block: TestContextBuilder<*, ProjectFixture>.() -> Unit
-) {
-    derivedContext<TestFixture>(name) {
-        val url = checkNotNull(Thread.currentThread().contextClassLoader.getResource(name)?.toURI()) {
-            "$name: No test fixture found"
-        }
-        val fixtureRoot = Paths.get(url).toFile().absoluteFile
+) = derivedContext<TestFixture>(name) {
+    val url = checkNotNull(Thread.currentThread().contextClassLoader.getResource(name)?.toURI()) {
+        "$name: No test fixture found"
+    }
+    val fixtureRoot = Paths.get(url).toFile().absoluteFile
 
-        deriveFixture {
-            TestFixture(name, fixtureRoot)
-        }
+    deriveFixture {
+        TestFixture(name, fixtureRoot)
+    }
 
-        val testRoots = fixtureRoot.listFiles()!!
-            .filter { it.isDirectory }
-            .map { it.absoluteFile }
-            .toList()
+    val testRoots = fixtureRoot.listFiles()!!
+        .filter { it.isDirectory }
+        .map { it.absoluteFile }
+        .toList()
 
-        testRoots.forEach { testRoot ->
-            derivedContext<ProjectFixture>(testRoot.name) {
-                deriveFixture { ProjectFixture(this, testRoot) }
-                before { copy() }
-                after { close() }
-                block()
-            }
+    testRoots.forEach { testRoot ->
+        derivedContext<ProjectFixture>(testRoot.name) {
+            deriveFixture { ProjectFixture(this, testRoot) }
+            before { copy() }
+            after { close() }
+            block()
         }
     }
 }

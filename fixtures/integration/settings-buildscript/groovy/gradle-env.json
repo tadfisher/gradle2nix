@@ -1,0 +1,456 @@
+{
+  "": {
+    "name": "settings-buildscript",
+    "version": "1.1.0",
+    "path": "",
+    "gradle": {
+      "version": "5.0",
+      "type": "bin",
+      "url": "https://services.gradle.org/distributions/gradle-5.0-bin.zip",
+      "sha256": "6157ac9f3410bc63644625b3b3e9e96c963afd7910ae0697792db57813ee79a6",
+      "nativeVersion": "0.14"
+    },
+    "dependencies": {
+      "settings": [
+        {
+          "id": {
+            "group": "com.googlecode.javaewah",
+            "name": "JavaEWAH",
+            "version": "1.1.6",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "JavaEWAH-1.1.6.jar",
+          "path": "com/googlecode/javaewah/JavaEWAH/1.1.6",
+          "urls": [
+            "https://plugins.gradle.org/m2/com/googlecode/javaewah/JavaEWAH/1.1.6/JavaEWAH-1.1.6.jar"
+          ],
+          "sha256": "f78d44a1e3877f1ce748b4a85df5171e5e8e9a5c3c6f63bb9003db6f84cce952"
+        },
+        {
+          "id": {
+            "group": "com.googlecode.javaewah",
+            "name": "JavaEWAH",
+            "version": "1.1.6",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "JavaEWAH-1.1.6.pom",
+          "path": "com/googlecode/javaewah/JavaEWAH/1.1.6",
+          "urls": [
+            "https://plugins.gradle.org/m2/com/googlecode/javaewah/JavaEWAH/1.1.6/JavaEWAH-1.1.6.pom"
+          ],
+          "sha256": "7f4ff919b1ee17bf3776e058a3f20e6173db23a5e44cf2d107ec7570c186abf0"
+        },
+        {
+          "id": {
+            "group": "com.jcraft",
+            "name": "jsch",
+            "version": "0.1.54",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "jsch-0.1.54.jar",
+          "path": "com/jcraft/jsch/0.1.54",
+          "urls": [
+            "https://plugins.gradle.org/m2/com/jcraft/jsch/0.1.54/jsch-0.1.54.jar"
+          ],
+          "sha256": "92eb273a3316762478fdd4fe03a0ce1842c56f496c9c12fe1235db80450e1fdb"
+        },
+        {
+          "id": {
+            "group": "com.jcraft",
+            "name": "jsch",
+            "version": "0.1.54",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "jsch-0.1.54.pom",
+          "path": "com/jcraft/jsch/0.1.54",
+          "urls": [
+            "https://plugins.gradle.org/m2/com/jcraft/jsch/0.1.54/jsch-0.1.54.pom"
+          ],
+          "sha256": "ab8f512039be7f6ae20e18e743b4a9d8a20958494431917da58ae5aaef8a3478"
+        },
+        {
+          "id": {
+            "group": "commons-codec",
+            "name": "commons-codec",
+            "version": "1.6",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "commons-codec-1.6.jar",
+          "path": "commons-codec/commons-codec/1.6",
+          "urls": [
+            "https://plugins.gradle.org/m2/commons-codec/commons-codec/1.6/commons-codec-1.6.jar"
+          ],
+          "sha256": "54b34e941b8e1414bd3e40d736efd3481772dc26db3296f6aa45cec9f6203d86"
+        },
+        {
+          "id": {
+            "group": "commons-codec",
+            "name": "commons-codec",
+            "version": "1.6",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "commons-codec-1.6.pom",
+          "path": "commons-codec/commons-codec/1.6",
+          "urls": [
+            "https://plugins.gradle.org/m2/commons-codec/commons-codec/1.6/commons-codec-1.6.pom"
+          ],
+          "sha256": "a06e35d3fff3a6b813d94894ebf3e498f9540c864c5b39ae783907e3a6c72889"
+        },
+        {
+          "id": {
+            "group": "commons-logging",
+            "name": "commons-logging",
+            "version": "1.1.3",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "commons-logging-1.1.3.jar",
+          "path": "commons-logging/commons-logging/1.1.3",
+          "urls": [
+            "https://plugins.gradle.org/m2/commons-logging/commons-logging/1.1.3/commons-logging-1.1.3.jar"
+          ],
+          "sha256": "70903f6fc82e9908c8da9f20443f61d90f0870a312642991fe8462a0b9391784"
+        },
+        {
+          "id": {
+            "group": "commons-logging",
+            "name": "commons-logging",
+            "version": "1.1.3",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "commons-logging-1.1.3.pom",
+          "path": "commons-logging/commons-logging/1.1.3",
+          "urls": [
+            "https://plugins.gradle.org/m2/commons-logging/commons-logging/1.1.3/commons-logging-1.1.3.pom"
+          ],
+          "sha256": "3250ac3ac6bd60ed0631f5cd0335032b2993d63e405a6ae0555d27a7e4865849"
+        },
+        {
+          "id": {
+            "group": "gradle.plugin.net.vivin",
+            "name": "gradle-semantic-build-versioning",
+            "version": "4.0.0",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "gradle-semantic-build-versioning-4.0.0.jar",
+          "path": "gradle/plugin/net/vivin/gradle-semantic-build-versioning/4.0.0",
+          "urls": [
+            "https://plugins.gradle.org/m2/gradle/plugin/net/vivin/gradle-semantic-build-versioning/4.0.0/gradle-semantic-build-versioning-4.0.0.jar"
+          ],
+          "sha256": "5138e67ce8e019437800b93c9f6f9d0fcbebefadc96fbc4ebc0975c99a261ef8"
+        },
+        {
+          "id": {
+            "group": "gradle.plugin.net.vivin",
+            "name": "gradle-semantic-build-versioning",
+            "version": "4.0.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "gradle-semantic-build-versioning-4.0.0.pom",
+          "path": "gradle/plugin/net/vivin/gradle-semantic-build-versioning/4.0.0",
+          "urls": [
+            "https://plugins.gradle.org/m2/gradle/plugin/net/vivin/gradle-semantic-build-versioning/4.0.0/gradle-semantic-build-versioning-4.0.0.pom"
+          ],
+          "sha256": "4f2828741607ed102d95eb5f189d496c7840ed463acea89f1e51a60567714ef7"
+        },
+        {
+          "id": {
+            "group": "org.apache",
+            "name": "apache",
+            "version": "9",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "apache-9.pom",
+          "path": "org/apache/apache/9",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/apache/apache/9/apache-9.pom"
+          ],
+          "sha256": "4946e60a547c8eda69f3bc23c5b6f0dadcf8469ea49b1d1da7de34aecfcf18dd"
+        },
+        {
+          "id": {
+            "group": "org.apache",
+            "name": "apache",
+            "version": "13",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "apache-13.pom",
+          "path": "org/apache/apache/13",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/apache/apache/13/apache-13.pom"
+          ],
+          "sha256": "ff513db0361fd41237bef4784968bc15aae478d4ec0a9496f811072ccaf3841d"
+        },
+        {
+          "id": {
+            "group": "org.apache.commons",
+            "name": "commons-parent",
+            "version": "22",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "commons-parent-22.pom",
+          "path": "org/apache/commons/commons-parent/22",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/apache/commons/commons-parent/22/commons-parent-22.pom"
+          ],
+          "sha256": "fb8c5e55e30a7addb4ff210858a0e8d2494ed6757bbe19012da99d51586c3cbb"
+        },
+        {
+          "id": {
+            "group": "org.apache.commons",
+            "name": "commons-parent",
+            "version": "28",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "commons-parent-28.pom",
+          "path": "org/apache/commons/commons-parent/28",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/apache/commons/commons-parent/28/commons-parent-28.pom"
+          ],
+          "sha256": "14733a68e8b120b69de60cd96d222146dcf32f03c1c6cc6a750b1269bafe86c7"
+        },
+        {
+          "id": {
+            "group": "org.apache.httpcomponents",
+            "name": "httpclient",
+            "version": "4.3.6",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "httpclient-4.3.6.jar",
+          "path": "org/apache/httpcomponents/httpclient/4.3.6",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/apache/httpcomponents/httpclient/4.3.6/httpclient-4.3.6.jar"
+          ],
+          "sha256": "79838d9eaef73d4f852c63a480830c3a2d4b590f0ab3ae815a489463e4714004"
+        },
+        {
+          "id": {
+            "group": "org.apache.httpcomponents",
+            "name": "httpclient",
+            "version": "4.3.6",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "httpclient-4.3.6.pom",
+          "path": "org/apache/httpcomponents/httpclient/4.3.6",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/apache/httpcomponents/httpclient/4.3.6/httpclient-4.3.6.pom"
+          ],
+          "sha256": "d02634f6131e914961c02aa836711ebac72704b27e26c5bd223bbad89b1b64c3"
+        },
+        {
+          "id": {
+            "group": "org.apache.httpcomponents",
+            "name": "httpcomponents-client",
+            "version": "4.3.6",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "httpcomponents-client-4.3.6.pom",
+          "path": "org/apache/httpcomponents/httpcomponents-client/4.3.6",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/apache/httpcomponents/httpcomponents-client/4.3.6/httpcomponents-client-4.3.6.pom"
+          ],
+          "sha256": "4ada2827b496339826891c7c81dceba647029de6fc1888b16b3cab5650abcc63"
+        },
+        {
+          "id": {
+            "group": "org.apache.httpcomponents",
+            "name": "httpcomponents-core",
+            "version": "4.3.3",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "httpcomponents-core-4.3.3.pom",
+          "path": "org/apache/httpcomponents/httpcomponents-core/4.3.3",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/apache/httpcomponents/httpcomponents-core/4.3.3/httpcomponents-core-4.3.3.pom"
+          ],
+          "sha256": "c16e2fc0d49ba7a02cef5b5e2600585a9f673553328a6f9e58f24296df1dd031"
+        },
+        {
+          "id": {
+            "group": "org.apache.httpcomponents",
+            "name": "httpcore",
+            "version": "4.3.3",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "httpcore-4.3.3.jar",
+          "path": "org/apache/httpcomponents/httpcore/4.3.3",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/apache/httpcomponents/httpcore/4.3.3/httpcore-4.3.3.jar"
+          ],
+          "sha256": "5285de80af1651c489313b91a9f40c65a4cdcb6b3bde716fcc028d16869a5a93"
+        },
+        {
+          "id": {
+            "group": "org.apache.httpcomponents",
+            "name": "httpcore",
+            "version": "4.3.3",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "httpcore-4.3.3.pom",
+          "path": "org/apache/httpcomponents/httpcore/4.3.3",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/apache/httpcomponents/httpcore/4.3.3/httpcore-4.3.3.pom"
+          ],
+          "sha256": "b427f7cf67c75a4e3f9e2108d35bf45303573c145ec778fcadcffacef17a1264"
+        },
+        {
+          "id": {
+            "group": "org.apache.httpcomponents",
+            "name": "project",
+            "version": "7",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "project-7.pom",
+          "path": "org/apache/httpcomponents/project/7",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/apache/httpcomponents/project/7/project-7.pom"
+          ],
+          "sha256": "3d6eba428555a558de046b5d76eacc1f5a54b4f5f20b84d636ed7aff18aa48c3"
+        },
+        {
+          "id": {
+            "group": "org.eclipse.jgit",
+            "name": "org.eclipse.jgit",
+            "version": "4.8.0.201706111038-r",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "org.eclipse.jgit-4.8.0.201706111038-r.jar",
+          "path": "org/eclipse/jgit/org.eclipse.jgit/4.8.0.201706111038-r",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/eclipse/jgit/org.eclipse.jgit/4.8.0.201706111038-r/org.eclipse.jgit-4.8.0.201706111038-r.jar"
+          ],
+          "sha256": "49d912e8d5cce0dd08dca3d390189db8692a8f7e3363cdbbe182581462000aba"
+        },
+        {
+          "id": {
+            "group": "org.eclipse.jgit",
+            "name": "org.eclipse.jgit",
+            "version": "4.8.0.201706111038-r",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "org.eclipse.jgit-4.8.0.201706111038-r.pom",
+          "path": "org/eclipse/jgit/org.eclipse.jgit/4.8.0.201706111038-r",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/eclipse/jgit/org.eclipse.jgit/4.8.0.201706111038-r/org.eclipse.jgit-4.8.0.201706111038-r.pom"
+          ],
+          "sha256": "a556a9f5adfc6af49b2a12e72dc3cd7e43db8fdc216c0f35885972a2f5ada27d"
+        },
+        {
+          "id": {
+            "group": "org.eclipse.jgit",
+            "name": "org.eclipse.jgit-parent",
+            "version": "4.8.0.201706111038-r",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "org.eclipse.jgit-parent-4.8.0.201706111038-r.pom",
+          "path": "org/eclipse/jgit/org.eclipse.jgit-parent/4.8.0.201706111038-r",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/eclipse/jgit/org.eclipse.jgit-parent/4.8.0.201706111038-r/org.eclipse.jgit-parent-4.8.0.201706111038-r.pom"
+          ],
+          "sha256": "396a4cc894206873ff107d066a996252b0b47f585b88cf57fc3b31e93d492878"
+        },
+        {
+          "id": {
+            "group": "org.slf4j",
+            "name": "slf4j-api",
+            "version": "1.7.2",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "slf4j-api-1.7.2.jar",
+          "path": "org/slf4j/slf4j-api/1.7.2",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/slf4j/slf4j-api/1.7.2/slf4j-api-1.7.2.jar"
+          ],
+          "sha256": "3bae789b401333b2a1d1603b7fa573e19908628191707203f6eb708cdee2c052"
+        },
+        {
+          "id": {
+            "group": "org.slf4j",
+            "name": "slf4j-api",
+            "version": "1.7.2",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "slf4j-api-1.7.2.pom",
+          "path": "org/slf4j/slf4j-api/1.7.2",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/slf4j/slf4j-api/1.7.2/slf4j-api-1.7.2.pom"
+          ],
+          "sha256": "2eaca71afe0a1516f4abd8e9ff907838d268f38c81c3a542cce8d7f3b87c5d4c"
+        },
+        {
+          "id": {
+            "group": "org.slf4j",
+            "name": "slf4j-parent",
+            "version": "1.7.2",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "slf4j-parent-1.7.2.pom",
+          "path": "org/slf4j/slf4j-parent/1.7.2",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/slf4j/slf4j-parent/1.7.2/slf4j-parent-1.7.2.pom"
+          ],
+          "sha256": "1d8e084a6f2384ade42685332b52a0ece090478641dc14c0fa8c52e1e2984425"
+        },
+        {
+          "id": {
+            "group": "org.sonatype.oss",
+            "name": "oss-parent",
+            "version": "5",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "oss-parent-5.pom",
+          "path": "org/sonatype/oss/oss-parent/5",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/sonatype/oss/oss-parent/5/oss-parent-5.pom"
+          ],
+          "sha256": "1678d4120a585d8a630131aeec4c524d928398583b7eab616ee7d5a87f520d3d"
+        },
+        {
+          "id": {
+            "group": "org.sonatype.oss",
+            "name": "oss-parent",
+            "version": "6",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "oss-parent-6.pom",
+          "path": "org/sonatype/oss/oss-parent/6",
+          "urls": [
+            "https://plugins.gradle.org/m2/org/sonatype/oss/oss-parent/6/oss-parent-6.pom"
+          ],
+          "sha256": "b4306d13e8f5392458a1b30866f1cff161b3d2e6999a88d059eea3932c8a8499"
+        }
+      ],
+      "plugin": [],
+      "buildscript": [],
+      "project": []
+    }
+  }
+}

@@ -6,6 +6,7 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ProjectDependency
+import org.gradle.api.internal.GradleInternal
 import org.gradle.api.invocation.Gradle
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.wrapper.Wrapper
@@ -85,6 +86,7 @@ private fun Project.buildModel(
     modelProperties: ModelProperties,
     pluginRequests: List<PluginRequest>
 ): DefaultBuild {
+    val settingsDependencies = settingsDependencies()
     val plugins = buildPlugins(pluginRequests)
 
     val subprojects = if (modelProperties.subprojects.isEmpty()) {
@@ -99,6 +101,7 @@ private fun Project.buildModel(
 
     return DefaultBuild(
         gradle = buildGradle(),
+        settingsDependencies = settingsDependencies,
         pluginDependencies = plugins,
         rootProject = buildProject(modelProperties.configurations, subprojects, plugins),
         includedBuilds = includedBuilds()
@@ -125,6 +128,31 @@ private fun Project.buildGradle(): DefaultGradle =
                 )
         )
     }
+
+private fun Project.settingsDependencies(): List<DefaultArtifact> {
+    val buildscript = (gradle as GradleInternal).settings.buildscript
+
+    val resolverFactory = ConfigurationResolverFactory(this, ConfigurationScope.SETTINGS, buildscript.repositories)
+    val resolver = resolverFactory.create(buildscript.dependencies)
+
+    logger.lifecycle("    Settings script")
+
+    val dependencies = buildscript.configurations
+        .flatMap(resolver::resolve)
+        .distinct()
+        .sorted()
+
+    if (resolver.unresolved.isNotEmpty()) {
+        logger.warn(buildString {
+            append("        Failed to resolve settings script dependencies:\n")
+            for (id in resolver.unresolved) {
+                append("        - $id\n")
+            }
+        })
+    }
+
+    return dependencies
+}
 
 private fun Project.buildPlugins(pluginRequests: List<PluginRequest>): List<DefaultArtifact> {
     return objects.newInstance<PluginResolver>(this).resolve(pluginRequests).distinct().sorted()
