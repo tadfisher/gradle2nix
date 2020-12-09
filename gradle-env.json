@@ -26,7 +26,7 @@
           "urls": [
             "https://plugins.gradle.org/m2/com/fasterxml/oss-parent/41/oss-parent-41.pom"
           ],
-          "sha256": "119cc9462003b4ad5ad4d244c95cd3fd62f13ca4021330dbe76d21dd39e21c17"
+          "sha256": "af650fa4dd400bc5769320bcef08ed93813f349cabe8213d469acafbbd945d8a"
         },
         {
           "id": {
@@ -56,7 +56,7 @@
           "urls": [
             "https://plugins.gradle.org/m2/com/fasterxml/jackson/jackson-bom/2.12.0/jackson-bom-2.12.0.pom"
           ],
-          "sha256": "3886dab66cdd1735d629ad2f78b6a9b2e988500843d4392326e4d70369535620"
+          "sha256": "f367b2fdbf61185a4ff8d15cbb31025dcc5a2c8ea39e8a59ed8d496f65791b39"
         },
         {
           "id": {
@@ -71,7 +71,7 @@
           "urls": [
             "https://plugins.gradle.org/m2/com/fasterxml/jackson/jackson-parent/2.12/jackson-parent-2.12.pom"
           ],
-          "sha256": "67be3dafaaf8ce1717e7a7de7db92ba433df923b697a40c9743a54cc9fc53637"
+          "sha256": "62aa1c1679ade09f173dbf1b6c32d35c55e75800238fd5e48f13aa4337c0875b"
         },
         {
           "id": {
@@ -116,7 +116,7 @@
           "urls": [
             "https://plugins.gradle.org/m2/com/fasterxml/jackson/core/jackson-annotations/2.12.0/jackson-annotations-2.12.0.pom"
           ],
-          "sha256": "a82e074d99be066c708dbf0ae09cf9932723034b997ae5d284375a776dce1ef5"
+          "sha256": "5c50a03603ca4041bc82b762eb095cfa6c53f2b16f14d3c990c41cff054b0296"
         },
         {
           "id": {
@@ -161,7 +161,7 @@
           "urls": [
             "https://plugins.gradle.org/m2/com/fasterxml/jackson/core/jackson-core/2.12.0/jackson-core-2.12.0.pom"
           ],
-          "sha256": "afbb00d15dcc88bfd3895573d852b8fe151ddf0970264ba25b775690e01fa324"
+          "sha256": "5d0ad1c2caa1149bd96006598f7071b3efd798d42e21bb584a145adedde0e248"
         },
         {
           "id": {
@@ -206,7 +206,7 @@
           "urls": [
             "https://plugins.gradle.org/m2/com/fasterxml/jackson/core/jackson-databind/2.12.0/jackson-databind-2.12.0.pom"
           ],
-          "sha256": "e66a9056e8805d3289f1d58b8192a07bb40615f389bc8ea5e7c492d01f6a8164"
+          "sha256": "cba985a8712ee74fdc0c098c8c8f2147a092b3090fa4e74c22a0dc96a788ee39"
         },
         {
           "id": {
@@ -3858,7 +3858,7 @@
             "https://jcenter.bintray.com/io/javalin/javalin-parent/3.12.0/javalin-parent-3.12.0.pom",
             "https://repo.gradle.org/gradle/libs-releases/io/javalin/javalin-parent/3.12.0/javalin-parent-3.12.0.pom"
           ],
-          "sha256": "f3137d4a61ca8a8b314de573eecf70c77cd96863beb0b793b8ee81eef5de350d"
+          "sha256": "9f674d43dcacb6f8695fb0c8f3bcc614b1d20193742048e1df782771f60ac957"
         },
         {
           "id": {
@@ -3890,7 +3890,7 @@
             "https://jcenter.bintray.com/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.pom",
             "https://repo.gradle.org/gradle/libs-releases/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.pom"
           ],
-          "sha256": "6fad2ae0a3a00c145ba5774d67196678291cc200bd09bd0626ef11ff20b4dc1a"
+          "sha256": "b31109e22ea3f2df1ad7955432e718a35def50ae6c19698034afa8a0cf9e9069"
         },
         {
           "id": {
