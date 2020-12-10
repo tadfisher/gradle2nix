@@ -80,6 +80,16 @@ nix-env -if "https://github.com/tadfisher/gradle2nix/archive/master.tar.gz"
 =gradle2nix= is not yet packaged in =nixpkgs= itself, but work is
 [[https://github.com/NixOS/nixpkgs/pull/77422][in progress]].
 
+*** Flake (experimental)
+
+A [[./flake.nix][flake.nix]] is provided for those using [[https://nixos.wiki/wiki/Flakes][Nix flakes]]. For example, the
+following will build and run =gradle2nix= with the arguments provided
+after =--=:
+
+#+begin_example
+nix run github:tadfisher/gradle2nix -- --help
+#+end_example
+
 ** Usage
 
 #+begin_example
