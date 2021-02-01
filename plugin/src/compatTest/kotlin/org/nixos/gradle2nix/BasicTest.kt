@@ -4,6 +4,7 @@ import dev.minutest.Tests
 import dev.minutest.experimental.minus
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
+import dev.minutest.test
 import org.gradle.api.internal.artifacts.dsl.DefaultRepositoryHandler.BINTRAY_JCENTER_URL
 import org.gradle.api.internal.artifacts.dsl.DefaultRepositoryHandler.MAVEN_CENTRAL_URL
 import strikt.api.expectThat

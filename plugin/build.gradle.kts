@@ -48,6 +48,13 @@ dependencies {
     compatTestImplementation("io.strikt:strikt-core:latest.release")
     compatTestImplementation("com.squareup.okio:okio:latest.release")
     compatTestImplementation("io.javalin:javalin:latest.release")
+
+    testImplementation("io.findify:s3mock_2.12:latest.release")
+    testImplementation("io.strikt:strikt-core:latest.release")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:latest.release")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:latest.release")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:latest.release")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:latest.release")
 }
 
 gradlePlugin {

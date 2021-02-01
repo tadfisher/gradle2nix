@@ -12,6 +12,8 @@ import strikt.assertions.toPath
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import kotlin.io.path.ExperimentalPathApi
+import kotlin.io.path.createTempDirectory
 
 private val moshi = Moshi.Builder().build()
 
@@ -36,6 +38,7 @@ class Fixture(val project: Path) {
     }
 }
 
+@OptIn(ExperimentalPathApi::class)
 fun Root.fixture(name: String) {
     val fixture by memoized(
         factory = {
@@ -43,7 +46,7 @@ fun Root.fixture(name: String) {
                 "$name: No test fixture found"
             }
             val fixtureRoot = Paths.get(url)
-            val dest = createTempDir("gradle2nix").toPath()
+            val dest = createTempDirectory("gradle2nix")
             val src = checkNotNull(fixtureRoot.takeIf { Files.exists(it) }) {
                 "$name: Test fixture not found: $fixtureRoot"
             }

@@ -5,9 +5,13 @@ import dev.minutest.ContextBuilder
 import dev.minutest.MinutestFixture
 import dev.minutest.Node
 import dev.minutest.TestContextBuilder
-import dev.minutest.closeableFixture
+import dev.minutest.afterEach
+import dev.minutest.beforeEach
 import dev.minutest.experimental.SKIP
 import dev.minutest.experimental.TransformingAnnotation
+import dev.minutest.given
+import dev.minutest.givenClosable
+import dev.minutest.given_
 import io.javalin.Javalin
 import okio.buffer
 import okio.source
@@ -155,8 +159,8 @@ class ProjectFixture(private val parent: TestFixture, private val source: File) 
 fun ContextBuilder<*>.withRepository(
     name: String,
     block: TestContextBuilder<*, RepositoryFixture>.() -> Unit
-) = derivedContext<RepositoryFixture>("with repository: ${name}") {
-    closeableFixture {
+) = derivedContext<RepositoryFixture>("with repository: $name") {
+    givenClosable {
         RepositoryFixture(Javalin.create { config ->
             config.addStaticFiles("/repositories/$name")
         }.start(9999))
@@ -174,9 +178,7 @@ fun ContextBuilder<*>.withFixture(
     }
     val fixtureRoot = Paths.get(url).toFile().absoluteFile
 
-    deriveFixture {
-        TestFixture(name, fixtureRoot)
-    }
+    given { TestFixture(name, fixtureRoot) }
 
     val testRoots = fixtureRoot.listFiles()!!
         .filter { it.isDirectory }
@@ -185,9 +187,9 @@ fun ContextBuilder<*>.withFixture(
 
     testRoots.forEach { testRoot ->
         derivedContext<ProjectFixture>(testRoot.name) {
-            deriveFixture { ProjectFixture(this, testRoot) }
-            before { copy() }
-            after { close() }
+            given_ { ProjectFixture(it, testRoot) }
+            beforeEach { copy() }
+            afterEach { close() }
             block()
         }
     }

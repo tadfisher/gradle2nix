@@ -3,6 +3,7 @@ package org.nixos.gradle2nix
 import dev.minutest.Tests
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
+import dev.minutest.test
 import strikt.api.expectThat
 import strikt.assertions.containsExactly
 

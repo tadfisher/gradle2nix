@@ -9,7 +9,11 @@ import org.apache.ivy.core.module.id.ArtifactRevisionId
 import org.apache.ivy.core.module.id.ModuleRevisionId
 import org.apache.ivy.core.resolve.DownloadOptions
 import org.apache.ivy.core.settings.IvySettings
+import org.apache.ivy.core.settings.TimeoutConstraint
+import org.apache.ivy.plugins.repository.Repository
+import org.apache.ivy.plugins.repository.url.URLRepository
 import org.apache.ivy.plugins.repository.url.URLResource
+import org.apache.ivy.plugins.resolver.AbstractResolver
 import org.apache.ivy.plugins.resolver.IBiblioResolver
 import org.apache.ivy.plugins.resolver.URLResolver
 import org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader
@@ -17,13 +21,20 @@ import org.codehaus.plexus.util.ReaderFactory
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.ArtifactRepository
+import org.gradle.api.artifacts.repositories.AuthenticationContainer
+import org.gradle.api.artifacts.repositories.AuthenticationSupported
 import org.gradle.api.artifacts.repositories.IvyArtifactRepository
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
+import org.gradle.api.artifacts.repositories.UrlArtifactRepository
+import org.gradle.api.credentials.AwsCredentials
 import org.gradle.api.internal.artifacts.repositories.ResolutionAwareRepository
 import org.gradle.api.internal.artifacts.repositories.resolver.IvyResolver
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
+import org.gradle.authentication.aws.AwsImAuthentication
+import org.gradle.internal.authentication.AllSchemesAuthentication
 import java.io.IOException
+import java.net.URI
 import org.apache.ivy.core.module.descriptor.Artifact as IvyArtifact
 import org.apache.ivy.core.module.descriptor.DefaultArtifact as IvyDefaultArtifact
 import org.apache.ivy.plugins.resolver.RepositoryResolver as IvyRepositoryResolver
@@ -66,6 +77,7 @@ internal class MavenResolver(
         isM2compatible = true
         settings = ivySettings
         setCache(cacheManager(project, scope, ivySettings, repository).name)
+        setRepository(resolverRepository(repository))
     }
 
     override fun resolve(artifactId: DefaultArtifactIdentifier, sha256: String?): DefaultArtifact? {
@@ -142,6 +154,7 @@ internal class IvyResolver(
         for (p in ivyResolver.artifactPatterns) addArtifactPattern(p)
         settings = ivySettings
         setCache(cacheManager(project, scope, ivySettings, repository).name)
+        setRepository(resolverRepository(repository))
     }
 
     override fun resolve(artifactId: DefaultArtifactIdentifier, sha256: String?): DefaultArtifact? {
@@ -224,3 +237,38 @@ private fun ArtifactIdentifier.filename(
 }
 
 private val downloadOptions = DownloadOptions().apply { log = LogOptions.LOG_QUIET }
+
+private fun <T> AbstractResolver.resolverRepository(
+    repository: T
+) : Repository
+where T : UrlArtifactRepository,
+      T : AuthenticationSupported =
+    when (val scheme = repository.url.scheme) {
+        "s3" -> s3Repository(repository.authentication, LazyTimeoutConstraint(this))
+        "http", "https" -> URLRepository(LazyTimeoutConstraint(this))
+        else -> throw IllegalStateException("Unknown repository URL scheme: $scheme")
+    }
+
+private fun s3Repository(
+    authContainer: AuthenticationContainer,
+    timeoutConstraint: TimeoutConstraint
+): Repository {
+    val auth = authContainer.firstOrNull { auth ->
+        auth is AllSchemesAuthentication || auth is AwsImAuthentication
+    }
+    checkNotNull(auth) { "S3 resource should either specify AwsImAuthentication or provide some AwsCredentials." }
+    return S3Repository(
+        credentials = (auth as? AllSchemesAuthentication)?.credentials as? AwsCredentials,
+        endpoint = System.getProperty("org.gradle.s3.endpoint")?.let { URI(it) }
+    )
+}
+
+private class LazyTimeoutConstraint(
+    private val resolver: AbstractResolver
+) : TimeoutConstraint {
+    override fun getConnectionTimeout(): Int =
+        resolver.timeoutConstraint?.connectionTimeout ?: -1
+
+    override fun getReadTimeout(): Int =
+        resolver.timeoutConstraint?.readTimeout ?: -1
+}

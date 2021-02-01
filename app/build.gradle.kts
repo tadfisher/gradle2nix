@@ -4,12 +4,10 @@ plugins {
     kotlin("jvm")
     kotlin("kapt")
     application
-    idea
 }
 
 dependencies {
     implementation(project(":model"))
-    implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
     implementation("org.gradle:gradle-tooling-api:${gradle.gradleVersion}")
     implementation("com.github.ajalt:clikt:latest.release")
@@ -75,12 +73,7 @@ tasks {
     withType<KotlinCompile> {
         kotlinOptions {
             jvmTarget = "1.8"
-        }
-    }
-
-    idea {
-        module {
-
+            freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
         }
     }
 }
