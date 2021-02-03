@@ -7,6 +7,7 @@ import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.internal.GradleInternal
+import org.gradle.api.internal.artifacts.repositories.ResolutionAwareRepository
 import org.gradle.api.invocation.Gradle
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.wrapper.Wrapper
@@ -132,7 +133,11 @@ private fun Project.buildGradle(): DefaultGradle =
 private fun Project.settingsDependencies(): List<DefaultArtifact> {
     val buildscript = (gradle as GradleInternal).settings.buildscript
 
-    val resolverFactory = ConfigurationResolverFactory(this, ConfigurationScope.SETTINGS, buildscript.repositories)
+    val resolverFactory = ConfigurationResolverFactory(
+        this,
+        ConfigurationScope.SETTINGS,
+        buildscript.repositories.filterIsInstance<ResolutionAwareRepository>()
+    )
     val resolver = resolverFactory.create(buildscript.dependencies)
 
     logger.lifecycle("    Settings script")
@@ -208,7 +213,11 @@ private fun Project.buildProject(
 private fun Project.buildscriptDependencies(
     pluginArtifacts: List<DefaultArtifact>
 ): Pair<List<DefaultArtifact>, List<ArtifactIdentifier>> {
-    val resolverFactory = ConfigurationResolverFactory(this, ConfigurationScope.BUILDSCRIPT, buildscript.repositories)
+    val resolverFactory = ConfigurationResolverFactory(
+        this,
+        ConfigurationScope.BUILDSCRIPT,
+        buildscript.repositories.filterIsInstance<ResolutionAwareRepository>()
+    )
     val resolver = resolverFactory.create(buildscript.dependencies)
     val pluginIds = pluginArtifacts.map(DefaultArtifact::id)
     return buildscript.configurations
@@ -221,8 +230,11 @@ private fun Project.buildscriptDependencies(
 private fun Project.projectDependencies(
     explicitConfigurations: List<String>
 ): Pair<List<DefaultArtifact>, List<ArtifactIdentifier>> {
-    val resolverFactory = ConfigurationResolverFactory(this, ConfigurationScope.PROJECT, repositories)
-    val resolver = resolverFactory.create(dependencies)
+    val resolver = ConfigurationResolverFactory(
+        this,
+        ConfigurationScope.PROJECT,
+        RepositoriesCollector.create(project).collectRepositories()
+    ).create(dependencies)
     return collectConfigurations(explicitConfigurations)
         .flatMap(resolver::resolve)
         .distinct()
