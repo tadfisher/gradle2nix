@@ -62,7 +62,7 @@ internal class ConfigurationResolver(
     private val resolvers: List<RepositoryResolver>,
     private val dependencies: DependencyHandler
 ) {
-    private val failed = mutableListOf<ArtifactIdentifier>()
+    private val failed = mutableSetOf<ArtifactIdentifier>()
     private val ivy = Ivy.newInstance(ivySettings)
 
     val unresolved: List<ArtifactIdentifier> = failed.toList()

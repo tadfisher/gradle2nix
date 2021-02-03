@@ -1,6 +1,7 @@
 package org.nixos.gradle2nix
 
 import java.io.File
+import java.net.URI
 import java.net.URL
 import java.security.MessageDigest
 
@@ -19,3 +20,5 @@ private fun ByteArray.sha256() = buildString {
 }
 
 internal fun String.toUrl(): URL = URL(this)
+
+internal fun String.toUri(): URI = URI(this)

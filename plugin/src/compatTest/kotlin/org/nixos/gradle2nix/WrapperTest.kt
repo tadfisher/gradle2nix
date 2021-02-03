@@ -1,6 +1,7 @@
 package org.nixos.gradle2nix
 
 import dev.minutest.Tests
+import dev.minutest.given
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
 import dev.minutest.test
@@ -11,7 +12,7 @@ import java.io.File
 class WrapperTest : JUnit5Minutests {
     @Tests
     fun tests() = rootContext<File>("wrapper tests") {
-        fixture { createTempDir("gradle2nix") }
+        given { createTempDir("gradle2nix") }
 
         test("resolves gradle wrapper version") {
             expectThat(buildKotlin("""

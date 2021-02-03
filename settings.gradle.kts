@@ -31,12 +31,6 @@ dependencyResolutionManagement {
     repositories {
         jcenter()
         maven { url = uri("https://repo.gradle.org/gradle/libs-releases") }
-        maven {
-            url = uri("https://dl.bintray.com/ohnosequences/maven")
-            content {
-                includeGroup("ohnosequences")
-            }
-        }
     }
     repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
 }
@@ -47,4 +41,4 @@ buildscript {
     }
 }
 
-include(":app", ":model", ":plugin")
+include(":app", ":ivy", ":model", ":plugin")

@@ -1,0 +1,17 @@
+plugins {
+    id('java')
+}
+
+repositories {
+    maven {
+        url "s3://repositories/m2"
+        credentials(AwsCredentials) {
+            accessKey "foo"
+            secretKey "bar"
+        }
+    }
+}
+
+dependencies {
+    implementation("org.apache:test:1.0.0")
+}

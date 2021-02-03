@@ -1,5 +1,8 @@
 package org.nixos.gradle2nix
 
+import com.adobe.testing.s3mock.S3MockApplication
+import com.adobe.testing.s3mock.junit5.S3MockExtension
+import com.adobe.testing.s3mock.testsupport.common.S3MockStarter
 import com.squareup.moshi.Moshi
 import dev.minutest.ContextBuilder
 import dev.minutest.MinutestFixture
@@ -13,6 +16,7 @@ import dev.minutest.given
 import dev.minutest.givenClosable
 import dev.minutest.given_
 import io.javalin.Javalin
+import io.javalin.http.staticfiles.Location
 import okio.buffer
 import okio.source
 import org.gradle.internal.classpath.DefaultClassPath
@@ -25,9 +29,11 @@ import strikt.assertions.map
 import java.io.Closeable
 import java.io.File
 import java.io.StringWriter
-import java.nio.file.Paths
+import java.util.concurrent.atomic.AtomicBoolean
 
 private val moshi = Moshi.Builder().build()
+
+val fixtureRoot = File(System.getProperty("fixtures"))
 
 val gradleVersion = System.getProperty("compat.gradle.version")
     ?.let(GradleVersion::version)
@@ -69,7 +75,8 @@ fun File.buildKotlin(
 
 private fun File.build(
     configurations: List<String>,
-    subprojects: List<String>
+    subprojects: List<String>,
+    extraArguments: List<String> = emptyList()
 ): DefaultBuild {
     val log = StringWriter()
 
@@ -83,7 +90,8 @@ private fun File.build(
             "--init-script=${initscript()}",
             "--stacktrace",
             "-Porg.nixos.gradle2nix.configurations=${configurations.joinToString(",")}",
-            "-Porg.nixos.gradle2nix.subprojects=${subprojects.joinToString(",")}"
+            "-Porg.nixos.gradle2nix.subprojects=${subprojects.joinToString(",")}",
+            *(extraArguments.toTypedArray())
         )
         .runCatching { build() }
 
@@ -107,15 +115,64 @@ val <T : Iterable<Artifact>> Assertion.Builder<T>.ids: Assertion.Builder<Iterabl
 
 private fun File.parents() = generateSequence(parentFile) { it.parentFile }
 
+abstract class ArgumentsSupplier(private val parent: ArgumentsSupplier? = null) {
+    open val arguments: List<String> = emptyList()
+
+    val extraArguments: List<String> get() = (parent?.extraArguments ?: emptyList()) + arguments
+}
+
 @MinutestFixture
-class RepositoryFixture(private val server: Javalin) : Closeable {
+class RepositoryFixture(
+    private val server: Javalin,
+    parent: ArgumentsSupplier? = null
+) : ArgumentsSupplier(parent), Closeable {
     override fun close() {
         server.stop()
     }
 }
 
 @MinutestFixture
-class TestFixture(val name: String, val source: File) : Closeable {
+class S3Fixture(
+    private val name: String,
+    parent: ArgumentsSupplier? = null
+) : ArgumentsSupplier(parent), Closeable {
+    private val s3mock = S3Mock(
+        initialBuckets = listOf(name),
+        secureConnection = false
+    )
+
+    override val arguments: List<String> get() = listOf(
+        "-Dorg.gradle.s3.endpoint=${s3mock.serviceEndpoint}",
+        "-Dorg.nixos.gradle2nix.s3test=true"
+    )
+
+    init {
+        s3mock.startServer()
+
+        val s3root = fixtureRoot.resolve(name)
+        val s3client = s3mock.createS3Client()
+        require(s3root.exists() && s3root.isDirectory) {
+            "$name: S3 fixture not found: $s3root"
+        }
+        s3root.walkTopDown()
+            .filter { it.isFile }
+            .forEach { file ->
+                val key = file.toRelativeString(s3root)
+                s3client.putObject(name, key, file)
+            }
+    }
+
+    override fun close() {
+        s3mock.stopServer()
+    }
+}
+
+@MinutestFixture
+class TestFixture(
+    val name: String,
+    val source: File,
+    parent: ArgumentsSupplier? = null
+) : ArgumentsSupplier(parent), Closeable {
     val dest: File
 
     init {
@@ -131,7 +188,10 @@ class TestFixture(val name: String, val source: File) : Closeable {
 }
 
 @MinutestFixture
-class ProjectFixture(private val parent: TestFixture, private val source: File) : Closeable {
+data class ProjectFixture(
+    private val parent: TestFixture,
+    private val source: File
+) : Closeable {
     private val dest: File
 
     init {
@@ -142,29 +202,47 @@ class ProjectFixture(private val parent: TestFixture, private val source: File) 
         dest = parent.dest.resolve(rel)
     }
 
-    fun copy() {
+    fun copySource() {
         source.copyRecursively(dest, true)
     }
 
     fun build(
         configurations: List<String> = emptyList(),
         subprojects: List<String> = emptyList()
-    ) = dest.build(configurations, subprojects)
+    ) = dest.build(configurations, subprojects, parent.extraArguments)
 
     override fun close() {
         dest.deleteRecursively()
     }
 }
 
+fun ContextBuilder<*>.withBucket(
+    name: String,
+    block: TestContextBuilder<*, S3Fixture>.() -> Unit
+) = derivedContext<S3Fixture>("with s3 bucket: $name") {
+    given_ { parent ->
+        S3Fixture(name, parent as? ArgumentsSupplier)
+    }
+
+    afterEach { it.close() }
+
+    block()
+}
+
 fun ContextBuilder<*>.withRepository(
     name: String,
     block: TestContextBuilder<*, RepositoryFixture>.() -> Unit
 ) = derivedContext<RepositoryFixture>("with repository: $name") {
-    givenClosable {
-        RepositoryFixture(Javalin.create { config ->
-            config.addStaticFiles("/repositories/$name")
-        }.start(9999))
+    given_ { parent ->
+        RepositoryFixture(
+            server = Javalin.create { config ->
+                config.addStaticFiles("${fixtureRoot}/repositories/$name", Location.EXTERNAL)
+            }.start(9999),
+            parent = parent as? ArgumentsSupplier
+        )
     }
+
+    afterEach { it.close() }
 
     block()
 }
@@ -173,24 +251,50 @@ fun ContextBuilder<*>.withFixture(
     name: String,
     block: TestContextBuilder<*, ProjectFixture>.() -> Unit
 ) = derivedContext<TestFixture>(name) {
-    val url = checkNotNull(Thread.currentThread().contextClassLoader.getResource(name)?.toURI()) {
-        "$name: No test fixture found"
+
+    val projectRoot = fixtureRoot.resolve(name).also {
+        check(it.exists()) { "$name: project fixture not found: $it" }
     }
-    val fixtureRoot = Paths.get(url).toFile().absoluteFile
 
-    given { TestFixture(name, fixtureRoot) }
+    given_ { parent ->
+        TestFixture(name, projectRoot, parent as? ArgumentsSupplier)
+    }
 
-    val testRoots = fixtureRoot.listFiles()!!
+    val testRoots = projectRoot.listFiles()!!
         .filter { it.isDirectory }
         .map { it.absoluteFile }
         .toList()
 
     testRoots.forEach { testRoot ->
         derivedContext<ProjectFixture>(testRoot.name) {
-            given_ { ProjectFixture(it, testRoot) }
-            beforeEach { copy() }
+            given_ { parent -> ProjectFixture(parent, testRoot) }
+            beforeEach { copySource() }
             afterEach { close() }
             block()
+        }
+    }
+}
+
+class S3Mock(
+    initialBuckets: List<String> = emptyList(),
+    secureConnection: Boolean = true
+) : S3MockStarter(
+    mapOf(
+        S3MockApplication.PROP_INITIAL_BUCKETS to initialBuckets.joinToString(","),
+        S3MockApplication.PROP_SECURE_CONNECTION to secureConnection
+    )
+) {
+    private val running = AtomicBoolean()
+
+    fun startServer() {
+        if (running.compareAndSet(false, true)) {
+            start()
+        }
+    }
+
+    fun stopServer() {
+        if (running.compareAndSet(true, false)) {
+            stop()
         }
     }
 }
