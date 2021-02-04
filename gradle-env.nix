@@ -190,6 +190,19 @@ let
     let
       repos = mapAttrs (mkRepo projectSpec.name) projectSpec.dependencies;
       hasDependencies = mapAttrs (type: deps: deps != []) projectSpec.dependencies;
+
+      inSettings = pred: script:
+        optionalString pred (
+          if versionAtLeast gradle.version "6.0" then ''
+            gradle.beforeSettings {
+              ${script}
+            }
+          '' else ''
+            gradle.settingsEvaluated {
+              ${script}
+            }
+          ''
+        );
     in
       assert (assertMsg (hasDependencies.settings -> versionAtLeast gradle.version "6.0") ''
         Project `${projectSpec.name}' has settings script dependencies, such as settings
@@ -224,16 +237,12 @@ let
             }
         }
 
-        ${optionalString (hasDependencies.settings && (versionAtLeast gradle.version "6.0")) ''
-          gradle.beforeSettings {
-              offlineRepo(it.buildscript.repositories, "settings", "${repos.settings}")
-          }
+        ${inSettings (hasDependencies.settings && (versionAtLeast gradle.version "6.0")) ''
+          offlineRepo(it.buildscript.repositories, "settings", "${repos.settings}")
         ''}
 
-        ${optionalString (hasDependencies.plugin) ''
-          gradle.settingsEvaluated {
-              offlineRepo(it.pluginManagement.repositories, "plugin", "${repos.plugin}")
-          }
+        ${inSettings (hasDependencies.plugin) ''
+            offlineRepo(it.pluginManagement.repositories, "plugin", "${repos.plugin}")
         ''}
 
         ${optionalString (hasDependencies.buildscript) ''
@@ -246,13 +255,24 @@ let
           }
         ''}
 
-        ${optionalString (hasDependencies.project) ''
-          gradle.projectsLoaded {
-              allprojects {
-                  offlineRepo(repositories, "project", "${repos.project}")
-              }
-          }
-        ''}
+        ${optionalString (hasDependencies.project) (
+          if versionAtLeast gradle.version "6.8"
+          then ''
+            gradle.beforeSettings {
+                it.dependencyResolutionManagement {
+                    offlineRepo(repositories, "project", "${repos.project}")
+                    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+                }
+            }
+          ''
+          else ''
+            gradle.projectsLoaded {
+                allprojects {
+                    offlineRepo(repositories, "project", "${repos.project}")
+                }
+            }
+          ''
+        )}
 
         ${extraInit}
       '';
@@ -285,6 +305,8 @@ let
   version = args.version or projectEnv.version;
 
   buildProject = env: flags: ''
+    cp ${env.initScript} "$GRADLE_USER_HOME/init.d"
+
     gradle --offline --no-daemon --no-build-cache \
       --info --full-stacktrace --warning-mode=all \
       ${optionalString enableParallelBuilding "--parallel"} \
@@ -314,12 +336,11 @@ in stdenv.mkDerivation (args // {
     (
     set -eux
 
-    # use the init script here
-    TMPHOME=$(mktemp -d)
-    mkdir -p $TMPHOME/init.d
-    cp ${projectEnv.initScript} $TMPHOME/init.d
+    # Work around https://github.com/gradle/gradle/issues/1055
+    TMPHOME="$(mktemp -d)"
+    mkdir -p "$TMPHOME/init.d"
+    export GRADLE_USER_HOME="$TMPHOME"
 
-    export "GRADLE_USER_HOME=$TMPHOME"
     ${buildIncludedProjects}
     ${buildRootProject}
     )
