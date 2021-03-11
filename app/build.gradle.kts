@@ -4,12 +4,10 @@ plugins {
     kotlin("jvm")
     kotlin("kapt")
     application
-    idea
 }
 
 dependencies {
     implementation(project(":model"))
-    implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
     implementation("org.gradle:gradle-tooling-api:${gradle.gradleVersion}")
     implementation("com.github.ajalt:clikt:latest.release")
@@ -31,7 +29,7 @@ application {
     applicationName = "gradle2nix"
     applicationDefaultJvmArgs += "-Dorg.nixos.gradle2nix.share=@APP_HOME@/share"
     applicationDistribution
-        .from(tasks.getByPath(":plugin:shadowJar"))
+        .from(tasks.getByPath(":plugin:shadowJar"), "$rootDir/gradle-env.nix")
         .into("share")
         .rename("plugin.*\\.jar", "plugin.jar")
 }
@@ -75,12 +73,7 @@ tasks {
     withType<KotlinCompile> {
         kotlinOptions {
             jvmTarget = "1.8"
-        }
-    }
-
-    idea {
-        module {
-
+            freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
         }
     }
 }

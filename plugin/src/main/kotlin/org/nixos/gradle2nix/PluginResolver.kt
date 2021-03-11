@@ -1,6 +1,7 @@
 package org.nixos.gradle2nix
 
 import org.gradle.api.Project
+import org.gradle.api.internal.artifacts.repositories.ResolutionAwareRepository
 import org.gradle.plugin.management.PluginRequest
 import org.gradle.plugin.use.internal.PluginDependencyResolutionServices
 import javax.inject.Inject
@@ -14,7 +15,7 @@ internal open class PluginResolver @Inject constructor(
     private val resolver = ConfigurationResolverFactory(
         project,
         ConfigurationScope.PLUGIN,
-        pluginDependencyResolutionServices.resolveRepositoryHandler
+        pluginDependencyResolutionServices.resolveRepositoryHandler.filterIsInstance<ResolutionAwareRepository>()
     ).create(pluginDependencyResolutionServices.dependencyHandler)
 
     fun resolve(pluginRequests: List<PluginRequest>): List<DefaultArtifact> {
@@ -28,4 +29,3 @@ internal open class PluginResolver @Inject constructor(
         return resolver.resolve(configurations.detachedConfiguration(*markerDependencies.toTypedArray()))
     }
 }
-

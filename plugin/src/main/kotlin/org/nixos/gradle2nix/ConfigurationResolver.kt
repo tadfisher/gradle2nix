@@ -35,7 +35,7 @@ enum class ConfigurationScope {
 internal class ConfigurationResolverFactory(
     project: Project,
     scope: ConfigurationScope,
-    repositories: RepositoryHandler
+    repositories: List<ResolutionAwareRepository>
 ) {
     private val ivySettings = IvySettings().apply {
         defaultInit()
@@ -49,7 +49,6 @@ internal class ConfigurationResolverFactory(
     }
 
     private val resolvers = repositories
-        .filterIsInstance<ResolutionAwareRepository>()
         .filterNot { it.createResolver().isLocal }
         .mapNotNull { it.repositoryResolver(project, scope, ivySettings) }
 
@@ -62,7 +61,7 @@ internal class ConfigurationResolver(
     private val resolvers: List<RepositoryResolver>,
     private val dependencies: DependencyHandler
 ) {
-    private val failed = mutableListOf<ArtifactIdentifier>()
+    private val failed = mutableSetOf<ArtifactIdentifier>()
     private val ivy = Ivy.newInstance(ivySettings)
 
     val unresolved: List<ArtifactIdentifier> = failed.toList()

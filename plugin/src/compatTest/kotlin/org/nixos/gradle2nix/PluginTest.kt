@@ -5,6 +5,7 @@ import dev.minutest.experimental.FOCUS
 import dev.minutest.experimental.minus
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
+import dev.minutest.test
 import strikt.api.expectThat
 import strikt.assertions.contains
 import strikt.assertions.containsExactly

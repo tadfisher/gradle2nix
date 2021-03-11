@@ -1,5 +1,7 @@
 package org.nixos.gradle2nix
 
+import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.auth.BasicSessionCredentials
 import org.apache.ivy.core.LogOptions
 import org.apache.ivy.core.cache.ArtifactOrigin
 import org.apache.ivy.core.cache.CacheResourceOptions
@@ -9,7 +11,12 @@ import org.apache.ivy.core.module.id.ArtifactRevisionId
 import org.apache.ivy.core.module.id.ModuleRevisionId
 import org.apache.ivy.core.resolve.DownloadOptions
 import org.apache.ivy.core.settings.IvySettings
+import org.apache.ivy.core.settings.TimeoutConstraint
+import org.apache.ivy.plugins.repository.Repository
+import org.apache.ivy.plugins.repository.Resource
+import org.apache.ivy.plugins.repository.url.URLRepository
 import org.apache.ivy.plugins.repository.url.URLResource
+import org.apache.ivy.plugins.resolver.AbstractResolver
 import org.apache.ivy.plugins.resolver.IBiblioResolver
 import org.apache.ivy.plugins.resolver.URLResolver
 import org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader
@@ -17,13 +24,21 @@ import org.codehaus.plexus.util.ReaderFactory
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.ArtifactRepository
+import org.gradle.api.artifacts.repositories.AuthenticationContainer
+import org.gradle.api.artifacts.repositories.AuthenticationSupported
 import org.gradle.api.artifacts.repositories.IvyArtifactRepository
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
+import org.gradle.api.artifacts.repositories.UrlArtifactRepository
+import org.gradle.api.credentials.AwsCredentials
 import org.gradle.api.internal.artifacts.repositories.ResolutionAwareRepository
 import org.gradle.api.internal.artifacts.repositories.resolver.IvyResolver
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
+import org.gradle.authentication.aws.AwsImAuthentication
+import org.gradle.internal.authentication.AllSchemesAuthentication
+import org.gradle.kotlin.dsl.getCredentials
 import java.io.IOException
+import java.net.URI
 import org.apache.ivy.core.module.descriptor.Artifact as IvyArtifact
 import org.apache.ivy.core.module.descriptor.DefaultArtifact as IvyDefaultArtifact
 import org.apache.ivy.plugins.resolver.RepositoryResolver as IvyRepositoryResolver
@@ -66,12 +81,23 @@ internal class MavenResolver(
         isM2compatible = true
         settings = ivySettings
         setCache(cacheManager(project, scope, ivySettings, repository).name)
+        setRepository(resolverRepository(repository))
     }
 
     override fun resolve(artifactId: DefaultArtifactIdentifier, sha256: String?): DefaultArtifact? {
         val ivyArtifact: IvyArtifact = artifactId.toArtifact()
-        val origin = ivyResolver.locate(ivyArtifact)?.takeIf(ArtifactOrigin::isExists) ?: return null
-        val hash = sha256 ?: ivyResolver.download(origin, downloadOptions).localFile?.sha256() ?: return null
+        val origin = ivyResolver.locate(ivyArtifact)
+        if (origin == null || !origin.isExists) return null
+        val hash = if (sha256 != null) sha256 else {
+            val report = ivyResolver.download(origin, downloadOptions)
+            report.localFile?.sha256().also {
+                if (it == null) log.error(report.toString())
+            }
+        }
+        if (hash == null) {
+            log.error("Failed to download '$artifactId' from repository '${ivyResolver.repository.name}'")
+            return null
+        }
         val snapshotVersion: SnapshotVersion? = artifactId.version.snapshotVersion()?.let {
             findSnapshotVersion(artifactId, it)
         }
@@ -91,9 +117,9 @@ internal class MavenResolver(
         snapshotVersion: SnapshotVersion
     ): SnapshotVersion {
         if (snapshotVersion.timestamp != null) return snapshotVersion
-        val metadataLocation = "${ivyResolver.root}${artifactId.repoPath()}/maven-metadata.xml".toUrl()
+        val metadataLocation = "${ivyResolver.root}${artifactId.repoPath()}/maven-metadata.xml"
         val metadataFile = ivyResolver.repositoryCacheManager.downloadRepositoryResource(
-            URLResource(metadataLocation, ivyResolver.timeoutConstraint),
+            ivyResolver.repository.getResource(metadataLocation),
             "maven-metadata",
             "maven-metadata",
             "xml",
@@ -142,12 +168,22 @@ internal class IvyResolver(
         for (p in ivyResolver.artifactPatterns) addArtifactPattern(p)
         settings = ivySettings
         setCache(cacheManager(project, scope, ivySettings, repository).name)
+        setRepository(resolverRepository(repository))
     }
 
     override fun resolve(artifactId: DefaultArtifactIdentifier, sha256: String?): DefaultArtifact? {
         val ivyArtifact: IvyArtifact = artifactId.toArtifact()
         val origin = ivyResolver.locate(ivyArtifact)?.takeIf(ArtifactOrigin::isExists) ?: return null
-        val hash = sha256 ?: ivyResolver.download(origin, downloadOptions).localFile?.sha256() ?: return null
+        val hash = if (sha256 != null) sha256 else {
+            val report = ivyResolver.download(origin, downloadOptions)
+            report.localFile?.sha256().also {
+                if (it == null) log.error(report.toString())
+            }
+        }
+        if (hash == null) {
+            log.error("Failed to download '$artifactId' from repository '${ivyResolver.repository.name}'")
+            return null
+        }
         return DefaultArtifact(
             id = DefaultArtifactIdentifier(artifactId),
             name = artifactId.filename(null),
@@ -167,7 +203,9 @@ private fun cacheManager(
     return DefaultRepositoryCacheManager(
         "${scope.name.toLowerCase()}-${repository.name}-cache",
         ivySettings,
-        project.buildDir.resolve("tmp/gradle2nix/${scope.name.toLowerCase()}/${repository.name}")
+        project.buildDir.resolve("tmp/gradle2nix/${repository.name}").also {
+            it.mkdirs()
+        }
     ).also {
         ivySettings.addRepositoryCacheManager(it)
     }
@@ -223,4 +261,57 @@ private fun ArtifactIdentifier.filename(
     append(".", extension)
 }
 
-private val downloadOptions = DownloadOptions().apply { log = LogOptions.LOG_QUIET }
+private val downloadOptions = DownloadOptions().apply {
+    log = LogOptions.LOG_DEFAULT
+}
+
+private fun <T> AbstractResolver.resolverRepository(
+    repository: T
+) : Repository
+where T : ArtifactRepository,
+      T : AuthenticationSupported =
+    when (val scheme = repository.url.scheme) {
+        "s3" -> s3Repository(
+            repository.getCredentials(AwsCredentials::class),
+            LazyTimeoutConstraint(this)
+        )
+        "http", "https" -> URLRepository(LazyTimeoutConstraint(this))
+        else -> throw IllegalStateException("Unknown repository URL scheme: $scheme")
+    }
+
+private fun s3Repository(
+    credentials: AwsCredentials?,
+    timeoutConstraint: TimeoutConstraint
+): Repository {
+    val awsCredentials = credentials?.let {
+        if (it.sessionToken == null) {
+            BasicAWSCredentials(it.accessKey, it.secretKey)
+        } else {
+            BasicSessionCredentials(it.accessKey, it.secretKey, it.sessionToken)
+        }
+    }
+    return S3Repository(
+        credentials = awsCredentials,
+        endpoint = System.getProperty("org.gradle.s3.endpoint")?.let { URI(it) },
+        timeoutConstraint = timeoutConstraint
+    ).apply {
+        name = "AWS S3"
+    }
+}
+
+private class LazyTimeoutConstraint(
+    private val resolver: AbstractResolver
+) : TimeoutConstraint {
+    override fun getConnectionTimeout(): Int =
+        resolver.timeoutConstraint?.connectionTimeout ?: -1
+
+    override fun getReadTimeout(): Int =
+        resolver.timeoutConstraint?.readTimeout ?: -1
+}
+
+// Compatibility shim as UrlArtifactRepository was added in Gradle 6.0
+private val ArtifactRepository.url: URI get() = when (this) {
+    is MavenArtifactRepository -> url
+    is IvyArtifactRepository -> url
+    else -> throw IllegalStateException("Unhandled repository type: ${this::class.simpleName}")
+}
