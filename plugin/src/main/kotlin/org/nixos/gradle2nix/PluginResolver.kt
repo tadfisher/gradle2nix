@@ -7,7 +7,7 @@ import org.gradle.plugin.use.internal.PluginDependencyResolutionServices
 import javax.inject.Inject
 
 internal open class PluginResolver @Inject constructor(
-    project: Project,
+    private val project: Project,
     pluginDependencyResolutionServices: PluginDependencyResolutionServices
 ) {
     private val configurations = pluginDependencyResolutionServices.configurationContainer
@@ -26,6 +26,8 @@ internal open class PluginResolver @Inject constructor(
                 ApiHack.defaultExternalModuleDependency(id, "$id.gradle.plugin", request.version)
             }
         }
-        return resolver.resolve(configurations.detachedConfiguration(*markerDependencies.toTypedArray()))
+        return resolver.resolve(configurations.detachedConfiguration(*markerDependencies.toTypedArray()).apply {
+            dependencyConstraints.addAll(project.buildscript.configurations.flatMap { it.allDependencyConstraints })
+        })
     }
 }
