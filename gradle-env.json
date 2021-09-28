@@ -408,21 +408,6 @@
             "group": "org.ajoberstar",
             "name": "gradle-stutter",
             "version": "0.6.0",
-            "type": "module",
-            "extension": "module"
-          },
-          "name": "gradle-stutter-0.6.0.module",
-          "path": "org/ajoberstar/gradle-stutter/0.6.0",
-          "urls": [
-            "https://plugins.gradle.org/m2/org/ajoberstar/gradle-stutter/0.6.0/gradle-stutter-0.6.0.module"
-          ],
-          "sha256": "7bf156a3df907eea5f750fe4ad0204878a18344da4fd65577c1e8f1c97f1283e"
-        },
-        {
-          "id": {
-            "group": "org.ajoberstar",
-            "name": "gradle-stutter",
-            "version": "0.6.0",
             "type": "pom",
             "extension": "pom"
           },
