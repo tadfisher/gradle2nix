@@ -7,7 +7,7 @@
       "version": "6.8.1",
       "type": "all",
       "url": "https://services.gradle.org/distributions/gradle-6.8.1-all.zip",
-      "sha256": "3db89524a3981819ff28c3f979236c1274a726e146ced0c8a2020417f9bc0782",
+      "sha256": "sha256-/VkaNK9zhXMJcDmfRzr6vbiyjVf9l9ZiXDiNCQA51v0=",
       "nativeVersion": "0.22-milestone-9"
     },
     "dependencies": {
@@ -71,7 +71,7 @@
           "urls": [
             "https://plugins.gradle.org/m2/com/fasterxml/jackson/jackson-parent/2.12/jackson-parent-2.12.pom"
           ],
-          "sha256": "62aa1c1679ade09f173dbf1b6c32d35c55e75800238fd5e48f13aa4337c0875b"
+          "sha256": "67be3dafaaf8ce1717e7a7de7db92ba433df923b697a40c9743a54cc9fc53637"
         },
         {
           "id": {
