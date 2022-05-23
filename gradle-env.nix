@@ -25,6 +25,7 @@
 , fetchs3
 , fetchurl
 , gradleGen
+, callPackage
 , writeText
 , writeTextDir
 }:
@@ -325,17 +326,9 @@ let
       '';
 
   mkGradle = gradleSpec:
-    gradleGen.gradleGen {
-      inherit (gradleSpec) nativeVersion;
-
-      name = "gradle-${gradleSpec.version}-${gradleSpec.type}";
-
-      src = fetchurl {
-        inherit (gradleSpec) url sha256;
-      };
-    } // {
-      inherit (gradleSpec) version;
-    };
+    callPackage (gradleGen {
+      inherit (gradleSpec) nativeVersion version sha256;
+    }) {};
 
   mkProjectEnv = projectSpec: rec {
     inherit (projectSpec) name path version;
