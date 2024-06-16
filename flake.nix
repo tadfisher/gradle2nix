@@ -17,27 +17,26 @@
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+        scope = pkgs.callPackage ./nix { };
         inherit (nixpkgs) lib;
       in
       {
         builders = {
-          inherit (self.packages.${system}.gradle2nix) buildGradlePackage buildMavenRepo;
+          inherit (scope) buildGradlePackage buildMavenRepo;
           default = self.packages.${system}.buildGradlePackage;
         };
 
         packages = {
-          inherit (self.packages.${system}.gradle2nix) gradleSetupHook;
-          gradle2nix = pkgs.callPackage ./default.nix { };
+          inherit (scope) gradle2nix gradleSetupHook;
           default = self.packages.${system}.gradle2nix;
         };
 
-        apps = rec {
+        apps = {
           gradle2nix = {
             type = "app";
-            program = lib.getExe self.packages.${system}.default;
+            program = lib.getExe self.packages.${system}.gradle2nix;
           };
-
-          default = gradle2nix;
+          default = self.apps.${system}.gradle2nix;
         };
 
         formatter = pkgs.writeShellScriptBin "gradle2nix-fmt" ''
