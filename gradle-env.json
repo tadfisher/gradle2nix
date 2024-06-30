@@ -71,7 +71,7 @@
           "urls": [
             "https://plugins.gradle.org/m2/com/fasterxml/jackson/jackson-parent/2.12/jackson-parent-2.12.pom"
           ],
-          "sha256": "Z749r6r4zhcX56fefbkrpDPfkjtpekDJdDpUzJ/FNjc="
+          "sha256": "62aa1c1679ade09f173dbf1b6c32d35c55e75800238fd5e48f13aa4337c0875b"
         },
         {
           "id": {
@@ -1643,9 +1643,7 @@
           },
           "name": "ow2-1.5.pom",
           "path": "org/ow2/ow2/1.5",
-          "urls": [
-            "https://plugins.gradle.org/m2/org/ow2/ow2/1.5/ow2-1.5.pom"
-          ],
+          "urls": ["https://plugins.gradle.org/m2/org/ow2/ow2/1.5/ow2-1.5.pom"],
           "sha256": "0f8a1b116e760b8fe6389c51b84e4b07a70fc11082d4f936e453b583dd50b43b"
         },
         {
