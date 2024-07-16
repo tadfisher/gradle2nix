@@ -441,38 +441,38 @@
       "hash": "sha256-00QQSm7mGdplmEA8JdA6qqrw9U6WRv01EkWN9Xyarrg="
     }
   },
-  "org.gradle:gradle-tooling-api:8.7": {
-    "gradle-tooling-api-8.7.jar": {
-      "url": "https://repo.gradle.org/gradle/libs-releases/org/gradle/gradle-tooling-api/8.7/gradle-tooling-api-8.7.jar",
-      "hash": "sha256-UjAREw062qfdwR14e/363TmgBDIAzGd7cJtPrATLhrM="
+  "org.gradle:gradle-tooling-api:8.8": {
+    "gradle-tooling-api-8.8.jar": {
+      "url": "https://repo.gradle.org/gradle/libs-releases/org/gradle/gradle-tooling-api/8.8/gradle-tooling-api-8.8.jar",
+      "hash": "sha256-h0ENaDk2pqUFQ24x1kDWaokZwNhTzhtQGJCidL101kU="
     },
-    "gradle-tooling-api-8.7.module": {
-      "url": "https://repo.gradle.org/gradle/libs-releases/org/gradle/gradle-tooling-api/8.7/gradle-tooling-api-8.7.module",
-      "hash": "sha256-c08g/Bo2leG74FuBK7m7un/wNzQ8lCp5THbpiBdpNCg="
+    "gradle-tooling-api-8.8.module": {
+      "url": "https://repo.gradle.org/gradle/libs-releases/org/gradle/gradle-tooling-api/8.8/gradle-tooling-api-8.8.module",
+      "hash": "sha256-24tAcT2JWjPrNdZfPoM4nExfAQ2oUoz3Bx2xw9sAjWg="
     },
-    "gradle-tooling-api-8.7.pom": {
-      "url": "https://repo.gradle.org/gradle/libs-releases/org/gradle/gradle-tooling-api/8.7/gradle-tooling-api-8.7.pom",
-      "hash": "sha256-Js9ia+mlUYCUZg1Vkot+NEGrQxuSkHTHc7+fL3V28/s="
+    "gradle-tooling-api-8.8.pom": {
+      "url": "https://repo.gradle.org/gradle/libs-releases/org/gradle/gradle-tooling-api/8.8/gradle-tooling-api-8.8.pom",
+      "hash": "sha256-5yDLd4bGXyamMrSmvcM0t0K4F5v8aZf78npJF0IPSaQ="
     }
   },
-  "org.gradle.kotlin:gradle-kotlin-dsl-plugins:4.3.0": {
-    "gradle-kotlin-dsl-plugins-4.3.0.jar": {
-      "url": "https://plugins.gradle.org/m2/org/gradle/kotlin/gradle-kotlin-dsl-plugins/4.3.0/gradle-kotlin-dsl-plugins-4.3.0.jar",
-      "hash": "sha256-+IsyeBRxXRfiD4to/wCbmrGo+8GjyRLDO4TfucEVn78="
+  "org.gradle.kotlin:gradle-kotlin-dsl-plugins:4.3.1": {
+    "gradle-kotlin-dsl-plugins-4.3.1.jar": {
+      "url": "https://plugins.gradle.org/m2/org/gradle/kotlin/gradle-kotlin-dsl-plugins/4.3.1/gradle-kotlin-dsl-plugins-4.3.1.jar",
+      "hash": "sha256-j8X5xgrEWoeaQXdoEbWf0s5cWtXkJW8S18i+rFCkHcg="
     },
-    "gradle-kotlin-dsl-plugins-4.3.0.module": {
-      "url": "https://plugins.gradle.org/m2/org/gradle/kotlin/gradle-kotlin-dsl-plugins/4.3.0/gradle-kotlin-dsl-plugins-4.3.0.module",
-      "hash": "sha256-wDF/LfYjmTSfi1NHpsZme9yjHMt1meBsKG/IOPxM7c0="
+    "gradle-kotlin-dsl-plugins-4.3.1.module": {
+      "url": "https://plugins.gradle.org/m2/org/gradle/kotlin/gradle-kotlin-dsl-plugins/4.3.1/gradle-kotlin-dsl-plugins-4.3.1.module",
+      "hash": "sha256-k+eJyXjl4QG8QXfLsnmFQSvMtpNtsA7MQeYoG4QD/F4="
     },
-    "gradle-kotlin-dsl-plugins-4.3.0.pom": {
-      "url": "https://plugins.gradle.org/m2/org/gradle/kotlin/gradle-kotlin-dsl-plugins/4.3.0/gradle-kotlin-dsl-plugins-4.3.0.pom",
-      "hash": "sha256-d1G9LyTDRdGbRhGy5+1NZfT1YIA2iuNqpyT5X63VbDw="
+    "gradle-kotlin-dsl-plugins-4.3.1.pom": {
+      "url": "https://plugins.gradle.org/m2/org/gradle/kotlin/gradle-kotlin-dsl-plugins/4.3.1/gradle-kotlin-dsl-plugins-4.3.1.pom",
+      "hash": "sha256-Fr3gZfWofPRP3FD5xbYNMS9xOgwbyq4AixJItHhojAo="
     }
   },
-  "org.gradle.kotlin.kotlin-dsl:org.gradle.kotlin.kotlin-dsl.gradle.plugin:4.3.0": {
-    "org.gradle.kotlin.kotlin-dsl.gradle.plugin-4.3.0.pom": {
-      "url": "https://plugins.gradle.org/m2/org/gradle/kotlin/kotlin-dsl/org.gradle.kotlin.kotlin-dsl.gradle.plugin/4.3.0/org.gradle.kotlin.kotlin-dsl.gradle.plugin-4.3.0.pom",
-      "hash": "sha256-hgR9KoSpaXsVkXDj1rLL9Cpv5UCQTYdZzJ8JUsmUnXw="
+  "org.gradle.kotlin.kotlin-dsl:org.gradle.kotlin.kotlin-dsl.gradle.plugin:4.3.1": {
+    "org.gradle.kotlin.kotlin-dsl.gradle.plugin-4.3.1.pom": {
+      "url": "https://plugins.gradle.org/m2/org/gradle/kotlin/kotlin-dsl/org.gradle.kotlin.kotlin-dsl.gradle.plugin/4.3.1/org.gradle.kotlin.kotlin-dsl.gradle.plugin-4.3.1.pom",
+      "hash": "sha256-Oispc8Afy2j0kx8ZbNeLAzctoWrBYmqOPWMYVkNqlOc="
     }
   },
   "org.jdom:jdom2:2.0.6.1": {
