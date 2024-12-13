@@ -1,12 +1,12 @@
 [versions]
-gradle = "8.8"
+gradle = "8.10.2"
 junit = "5.8.2"
 # Intentionally using the version embedded in Gradle to reduce dependency count
 # See https://docs.gradle.org/current/userguide/compatibility.html#kotlin
-kotlin = { strictly = "1.9.22" }
-ktor = "2.3.11"
+kotlin = { strictly = "1.9.24" }
+ktor = "3.0.2"
 kotest = "5.9.0"
-shadow = "8.1.7"
+shadow = "8.1.8"
 
 [libraries]
 clikt = "com.github.ajalt.clikt:clikt:4.4.0"
@@ -22,7 +22,7 @@ kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "
 kotlinx-coroutines-core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1"
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
-okio = "com.squareup.okio:okio:3.9.0"
+okio = "com.squareup.okio:okio:3.9.1"
 serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3"
 slf4j-simple = "org.slf4j:slf4j-simple:1.7.36"
 

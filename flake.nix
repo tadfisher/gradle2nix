@@ -46,6 +46,10 @@
           [ $fail -eq 0 ] || echo "Formatting failed." >&2
           exit $fail
         '';
+
+        checks = {
+          traccar = scope.callPackage ./fixtures/external/traccar { };
+        };
       }
     );
 }
