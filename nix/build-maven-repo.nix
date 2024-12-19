@@ -1,6 +1,7 @@
 {
   lib,
-  stdenv,
+  stdenvNoCC,
+  coreutils,
   fetchurl,
   substitute,
   symlinkJoin,
@@ -87,7 +88,7 @@ let
     replaceStrings
     ;
 
-  inherit (lib) mapAttrsToList readFile;
+  inherit (lib) readFile;
 
   inherit (lib.strings) sanitizeDerivationName;
 
@@ -123,13 +124,13 @@ let
   } // fetchers;
 
   fetch =
-    coords: overrides: name:
+    overrides: path:
     { url, hash }:
     let
       scheme = head (builtins.match "([a-z0-9+.-]+)://.*" url);
       fetch' = getAttr scheme fetchers';
       artifact = fetch' { inherit url hash; };
-      override = overrides.${name} or lib.id;
+      override = overrides.${path} or lib.id;
     in
     override artifact;
 
@@ -139,12 +140,17 @@ let
       coords = toCoordinates id;
       modulePath = "${replaceStrings [ "." ] [ "/" ] coords.group}/${coords.module}/${coords.version}";
       moduleOverrides = overrides.${id} or { };
+      fetchArtifact = fetch moduleOverrides;
     in
-    stdenv.mkDerivation {
+    stdenvNoCC.mkDerivation {
       pname = sanitizeDerivationName "${coords.group}-${coords.module}";
       version = coords.uniqueVersion;
 
-      srcs = mapAttrsToList (fetch coords moduleOverrides) artifacts;
+      nativeBuildInputs = [ coreutils ];
+
+      __structuredAttrs = true;
+
+      srcs = mapAttrs fetchArtifact artifacts;
 
       dontPatch = true;
       dontConfigure = true;
@@ -152,12 +158,17 @@ let
       dontFixup = true;
       dontInstall = true;
 
-      preUnpack = ''
-        mkdir -p "$out/${modulePath}"
-      '';
-
-      unpackCmd = ''
-        cp "$curSrc" "$out/${modulePath}/$(stripHash "$curSrc")"
+      unpackPhase = ''
+        for path in "''${!srcs[@]}"; do
+          src="''${srcs[$path]}"
+          dst="$(${coreutils}/bin/realpath -s -m --relative-base='.' "$out/${modulePath}/$path")"
+          if [[ "$dst" == \\/* ]]; then
+            echo "${id}: artifact path is invalid: $path"
+            exit 1
+          fi
+          mkdir -p "$(dirname "$dst")"
+          cp "$src" "$dst"
+        done
       '';
 
       sourceRoot = ".";
