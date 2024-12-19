@@ -128,7 +128,7 @@ let
     let
       scheme = head (builtins.match "([a-z0-9+.-]+)://.*" url);
       fetch' = getAttr scheme fetchers';
-      artifact = fetch' { inherit url hash; };
+      artifact = fetch' { inherit url hash name; };
       override = overrides.${name} or lib.id;
     in
     override artifact;
