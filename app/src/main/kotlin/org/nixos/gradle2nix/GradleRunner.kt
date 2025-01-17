@@ -6,6 +6,7 @@ import org.gradle.tooling.GradleConnector
 import org.gradle.tooling.ProjectConnection
 import org.gradle.tooling.ResultHandler
 import org.gradle.tooling.model.gradle.GradleBuild
+import org.nixos.gradle2nix.model.ARTIFACTS_PROPERTY
 import org.nixos.gradle2nix.model.DependencySet
 import java.io.File
 import kotlin.coroutines.resume
@@ -50,13 +51,33 @@ suspend fun ProjectConnection.buildModel(): GradleBuild =
     }
 
 suspend fun ProjectConnection.build(
+    name: String,
     config: Config,
-    tasks: List<String>,
+    tasks: List<String> = config.tasks,
 ): DependencySet =
     suspendCancellableCoroutine { continuation ->
         val cancellationTokenSource = GradleConnector.newCancellationTokenSource()
 
         continuation.invokeOnCancellation { cancellationTokenSource.cancel() }
+
+        val systemProperties =
+            buildMap {
+                if (config.dumpEvents) {
+                    put(
+                        "org.gradle.internal.operations.trace",
+                        config.outDir
+                            .toPath()
+                            .resolve(name)
+                            .absolutePathString(),
+                    )
+                }
+                if (config.artifacts.isNotEmpty()) {
+                    put(
+                        ARTIFACTS_PROPERTY,
+                        config.artifacts.joinToString(",") { it.name.lowercase() },
+                    )
+                }
+            }
 
         action { controller -> controller.getModel(DependencySet::class.java) }
             .withCancellationToken(cancellationTokenSource.token())
@@ -75,16 +96,8 @@ suspend fun ProjectConnection.build(
                     setStandardOutput(System.err)
                     setStandardError(System.err)
                 }
-                if (config.dumpEvents) {
-                    withSystemProperties(
-                        mapOf(
-                            "org.gradle.internal.operations.trace" to
-                                config.outDir
-                                    .toPath()
-                                    .resolve("debug")
-                                    .absolutePathString(),
-                        ),
-                    )
+                if (systemProperties.isNotEmpty()) {
+                    withSystemProperties(systemProperties)
                 }
             }.run(
                 object : ResultHandler<DependencySet> {

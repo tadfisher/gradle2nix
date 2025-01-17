@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":plugin:gradle8"))
     compileOnly(libs.gradle.api.get80())
+    implementation(project(":plugin:gradle8"))
 }
 
 tasks.shadowJar {

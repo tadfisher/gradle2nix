@@ -81,6 +81,7 @@ tasks {
     // TODO Find out why this fails the configuration cache
     test {
         notCompatibleWithConfigurationCache("contains a Task reference")
+        dependsOn(installDist)
         val shareDir = layout.dir(installDist.map { it.destinationDir.resolve("share") })
         doFirst {
             if (updateGolden.isPresent) {

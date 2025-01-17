@@ -11,9 +11,8 @@ import io.kotest.core.spec.Spec
 import io.kotest.core.test.NestedTest
 import io.kotest.core.test.TestScope
 import io.kotest.core.test.TestType
-import io.kotest.matchers.equals.beEqual
 import io.kotest.matchers.file.shouldBeAFile
-import io.kotest.matchers.should
+import io.kotest.matchers.shouldBe
 import io.ktor.http.ContentType
 import io.ktor.http.Url
 import io.ktor.server.engine.embeddedServer
@@ -88,17 +87,18 @@ suspend fun TestScope.fixture(
                     Files.createFile(tempDir.resolve("settings.gradle").toPath())
                 }
                 app.main(
-                    listOf(
-                        "-p",
-                        tempDir.toString(),
-                        "--log",
-                        "debug",
-                        "--stacktrace",
-                        "--dump-events",
-                        "--",
-                        "-Dorg.nixos.gradle2nix.m2=$m2",
-                        "--info",
-                    ) + args,
+                    args.toList() +
+                        listOf(
+                            "-p",
+                            tempDir.toString(),
+                            "--log",
+                            "debug",
+                            "--stacktrace",
+                            "--dump-events",
+                            "--",
+                            "-Dorg.nixos.gradle2nix.m2=$m2",
+                            "--info",
+                        ),
                 )
                 val file = tempDir.resolve(app.lockFile)
                 file.shouldBeAFile()
@@ -137,7 +137,7 @@ suspend fun TestScope.golden(
                 } catch (e: SerializationException) {
                     fail("Failed to load golden data from '$filename'. Run with --update-golden to regenerate.")
                 }
-            json.encodeToString(env) should beEqual(goldenData)
+            json.encodeToString(env) shouldBe goldenData
         }
     }
 }
@@ -197,7 +197,7 @@ object MavenRepo : MountableExtension<MavenRepo.Config, NettyApplicationEngine>,
                     }
                 }
             coroutineScope.launch { s.start(wait = true) }
-            s
+            s.engine
         } catch (e: Throwable) {
             if (config.port == null && attempts > 0) tryStart(attempts - 1) else throw e
         }

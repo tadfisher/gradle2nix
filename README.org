@@ -165,11 +165,14 @@ Gradle installation:
   --gradle-wrapper=<value>  Gradle wrapper version
 
 Options:
-  -t, --task=<task>              Gradle tasks to run
+  -t, --task=<task>              Gradle tasks to run (default: [resolveAllArtifacts])
+  -a, --artifacts=<artifacts>    Comma-separated list of artifacts to download (artifacts:
+                                 doxygen,javadoc,samples,sources,usermanual) (default: [])
   -p, --project=<path>           Path to the project root (default: Current directory)
   -o, --out-dir=<dir>            Path to write generated files (default: <project>)
   -l, --lock-file=<filename>     Name of the generated lock file (default: gradle.lock)
-  -j, --gradle-jdk=<dir>         JDK home to use for launching Gradle (e.g. `nix eval --raw nixpkgs#openjdk.home`)
+  -j, --gradle-jdk=<dir>         JDK home to use for launching Gradle (e.g. `nix eval --raw
+                                 nixpkgs#openjdk.home`)
   --log=(debug|info|warn|error)  Print messages with this priority or higher (default: info)
   --dump-events                  Dump Gradle event logs to the output directory
   --stacktrace                   Print a stack trace on error

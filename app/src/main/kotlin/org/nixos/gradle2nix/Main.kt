@@ -12,8 +12,8 @@ import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.defaultLazy
 import com.github.ajalt.clikt.parameters.options.flag
-import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.split
 import com.github.ajalt.clikt.parameters.types.enum
 import com.github.ajalt.clikt.parameters.types.file
 import kotlinx.coroutines.runBlocking
@@ -21,6 +21,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToStream
 import org.gradle.tooling.model.gradle.GradleBuild
+import org.nixos.gradle2nix.model.ArtifactType
 import org.nixos.gradle2nix.model.DependencySet
 import org.nixos.gradle2nix.model.RESOLVE_ALL_TASK
 import java.io.File
@@ -35,6 +36,7 @@ data class Config(
     val outDir: File,
     val projectDir: File,
     val tasks: List<String>,
+    val artifacts: List<ArtifactType>,
     val logger: Logger,
     val dumpEvents: Boolean,
 )
@@ -79,7 +81,15 @@ class Gradle2Nix :
         "-t",
         metavar = "TASK",
         help = "Gradle tasks to run",
-    ).multiple(default = listOf(RESOLVE_ALL_TASK))
+    ).split(",").default(listOf(RESOLVE_ALL_TASK))
+
+    private val artifacts: List<ArtifactType> by option(
+        "--artifacts",
+        "-a",
+        metavar = "ARTIFACTS",
+        help = "Comma-separated list of artifacts to download",
+        helpTags = mapOf("artifacts" to "doxygen,javadoc,samples,sources,usermanual"),
+    ).enum<ArtifactType>(key = { it.name.lowercase() }).split(",").default(emptyList())
 
     private val projectDir: File by option(
         "--project",
@@ -184,6 +194,7 @@ class Gradle2Nix :
                 outDir ?: projectDir,
                 projectDir,
                 tasks,
+                artifacts,
                 logger,
                 dumpEvents,
             )
@@ -206,12 +217,20 @@ class Gradle2Nix :
         val dependencySets = mutableListOf<DependencySet>()
 
         connect(config).use { connection ->
-            dependencySets.add(runBlocking { connection.build(config, config.tasks) })
+            dependencySets.add(runBlocking { connection.build("project", config) })
         }
 
         for (buildSrc in buildSrcs) {
             connect(config, buildSrc).use { connection ->
-                dependencySets.add(runBlocking { connection.build(config, listOf(RESOLVE_ALL_TASK)) })
+                dependencySets.add(
+                    runBlocking {
+                        connection.build(
+                            buildSrc.toRelativeString(projectDir.absoluteFile).replace('/', '_'),
+                            config,
+                            listOf(RESOLVE_ALL_TASK),
+                        )
+                    },
+                )
             }
         }
 

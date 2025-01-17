@@ -7,6 +7,9 @@ class GoldenTest :
     FunSpec({
         install(MavenRepo)
 
+        context("artifacts") {
+            golden("artifacts/sources-javadoc", "-a", "sources,javadoc")
+        }
         context("basic") {
             golden("basic/basic-java-project")
             golden("basic/basic-kotlin-project")

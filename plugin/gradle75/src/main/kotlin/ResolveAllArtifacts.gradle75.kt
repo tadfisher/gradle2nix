@@ -8,7 +8,7 @@ import org.gradle.api.attributes.DocsType
 import org.gradle.api.file.FileCollection
 import org.nixos.gradle2nix.model.ArtifactType
 
-object ResolveAllArtifactsApplierG8 : AbstractResolveAllArtifactsApplier() {
+object ResolveAllArtifactsApplierG75 : AbstractResolveAllArtifactsApplier() {
     @Suppress("UnstableApiUsage")
     override fun Project.addConfigurationArtifactResolver(
         configuration: Configuration,
@@ -40,9 +40,7 @@ object ResolveAllArtifactsApplierG8 : AbstractResolveAllArtifactsApplier() {
                     }
                 }.files
 
-        configuration.incoming.afterResolve {
-            result.files.count()
-        }
+        configuration.incoming.afterResolve { result.files.count() }
 
         return result
     }

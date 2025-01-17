@@ -5,12 +5,13 @@ junit = "5.8.2"
 # See https://docs.gradle.org/current/userguide/compatibility.html#kotlin
 kotlin = { strictly = "1.9.24" }
 ktor = "3.0.2"
-kotest = "5.9.0"
+kotest = "6.0.0.M1"
 shadow = "8.1.8"
 
 [libraries]
 clikt = "com.github.ajalt.clikt:clikt:4.4.0"
 gradle-api-69 = "dev.gradleplugins:gradle-api:6.9"
+gradle-api-75 = "dev.gradleplugins:gradle-api:7.5"
 gradle-api-80 = "dev.gradleplugins:gradle-api:8.0"
 gradle-api-81 = "dev.gradleplugins:gradle-api:8.1"
 gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

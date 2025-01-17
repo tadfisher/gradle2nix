@@ -37,12 +37,14 @@ tasks {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         isPreserveFileTimestamps = false
         isReproducibleFileOrder = true
-        val mode644 = 0b110100100
-        val mode755 = 0b111101101
-        fileMode = mode644
-        dirMode = mode755
-        filesMatching("**/bin/*") { mode = mode755 }
-        filesMatching("**/bin/*.bat") { mode = mode644 }
+        filePermissions { unix("644") }
+        dirPermissions { unix("755") }
+        filesMatching("**/bin/*") {
+            filePermissions { unix("755") }
+        }
+        filesMatching("**/bin/*.bat") {
+            filePermissions { unix("644") }
+        }
 
         relocate("kotlinx", "${project.group}.shadow.kotlinx")
         relocate("org.intellij", "${project.group}.shadow.intellij")

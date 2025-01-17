@@ -6,6 +6,8 @@ initscript {
             classpath files("plugin-gradle81.jar")
         } else if (GradleVersion.current() >= GradleVersion.version("8.0")) {
             classpath files("plugin-gradle80.jar")
+        } else if (GradleVersion.current() >= GradleVersion.version("7.5")) {
+            classpath files("plugin-gradle75.jar")
         } else {
             classpath files("plugin-base.jar")
         }

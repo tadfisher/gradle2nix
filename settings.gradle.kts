@@ -13,6 +13,7 @@ include(
     ":model",
     ":plugin:base",
     ":plugin:common",
+    ":plugin:gradle75",
     ":plugin:gradle8",
     ":plugin:gradle80",
     ":plugin:gradle81",
