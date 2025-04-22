@@ -165,7 +165,7 @@ class Gradle2Nix :
 
     private val gradleArgs: List<String> by argument(
         name = "ARGS",
-        help = "Extra arguments to pass to Gradle",
+        help = "Extra arguments to pass to Gradle. Hint: Prefix with arg --",
     ).multiple()
 
     init {
