@@ -101,7 +101,7 @@ let
       nativeBuildInputs = (args.nativeBuildInputs or [ ]) ++ [ finalAttrs.gradleSetupHook ];
 
       gradleFlags =
-        [ "--console=plain" ]
+        [ "-Dorg.gradle.console=plain" ]
         ++ lib.optional (finalAttrs.buildJdk != null) "-Dorg.gradle.java.home=${finalAttrs.buildJdk.home}";
 
       passthru =
