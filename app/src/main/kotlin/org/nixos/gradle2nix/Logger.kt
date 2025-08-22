@@ -1,20 +1,61 @@
 package org.nixos.gradle2nix
 
 import java.io.PrintStream
+import kotlin.system.exitProcess
 
 class Logger(
     val out: PrintStream = System.err,
-    val verbose: Boolean
+    val logLevel: LogLevel = LogLevel.WARN,
+    val stacktrace: Boolean = false,
 ) {
-
-    val log: (String) -> Unit = { if (verbose) out.println(it) }
-    val warn: (String) -> Unit = { out.println("Warning: $it")}
-    val error: (String) -> Unit = {
-        out.println("Error: $it")
-        System.exit(1)
+    fun debug(
+        message: String,
+        error: Throwable? = null,
+    ) {
+        if (logLevel <= LogLevel.DEBUG) {
+            out.println("[DEBUG] $message")
+            printError(error)
+        }
     }
 
-    operator fun component1() = log
-    operator fun component2() = warn
-    operator fun component3() = error
+    fun info(
+        message: String,
+        error: Throwable? = null,
+    ) {
+        if (logLevel <= LogLevel.INFO) {
+            out.println("[INFO] $message")
+            printError(error)
+        }
+    }
+
+    fun warn(
+        message: String,
+        error: Throwable? = null,
+    ) {
+        if (logLevel <= LogLevel.WARN) {
+            out.println("[WARN] $message")
+            printError(error)
+        }
+    }
+
+    fun error(
+        message: String,
+        error: Throwable? = null,
+    ): Nothing {
+        out.println("[ERROR] $message")
+        printError(error)
+        exitProcess(1)
+    }
+
+    private fun printError(error: Throwable?) {
+        if (error == null) return
+        error.message?.let { println("  Cause: $it") }
+        if (stacktrace) error.printStackTrace(out)
+    }
+
+    operator fun component1() = ::info
+
+    operator fun component2() = ::warn
+
+    operator fun component3() = ::error
 }

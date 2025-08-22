@@ -1,44 +1,20 @@
 @file:Suppress("UnstableApiUsage")
 
-enableFeaturePreview("ONE_LOCKFILE_PER_PROJECT")
-
-pluginManagement {
-    val shadowVersion: String by settings
-    val stutterVersion: String by settings
-
-    resolutionStrategy {
-        eachPlugin {
-            when (requested.id.id) {
-                "com.github.johnrengelman.shadow" -> useVersion(shadowVersion)
-                "org.ajoberstar.stutter" -> useVersion(stutterVersion)
-            }
-            when (requested.id.namespace) {
-                "org.jetbrains.kotlin",
-                "org.jetbrains.kotlin.plugin" -> useVersion(embeddedKotlinVersion)
-            }
-        }
-    }
-}
-
-plugins {
-    kotlin("jvm") apply false
-    kotlin("kapt") apply false
-    id("com.github.johnrengelman.shadow") apply false
-    id("org.ajoberstar.stutter") apply false
-}
-
 dependencyResolutionManagement {
     repositories {
-        jcenter()
+        mavenCentral()
         maven { url = uri("https://repo.gradle.org/gradle/libs-releases") }
     }
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 }
 
-buildscript {
-    configurations.classpath {
-        resolutionStrategy.activateDependencyLocking()
-    }
-}
-
-include(":app", ":ivy", ":model", ":plugin")
+include(
+    ":app",
+    ":model",
+    ":plugin:base",
+    ":plugin:common",
+    ":plugin:gradle75",
+    ":plugin:gradle8",
+    ":plugin:gradle80",
+    ":plugin:gradle81",
+)

@@ -2,16 +2,13 @@ package org.nixos.gradle2nix
 
 import java.io.File
 
-fun resolveProjects(config: Config) = config.allProjects.run {
-    if (config.buildSrc) {
-        flatMap { listOfNotNull(it, it.findBuildSrc()) }
+tailrec fun getProjectRoot(path: File): File? {
+    return if (path.isProjectRoot()) {
+        path
     } else {
-        this
+        val parent = path.parentFile ?: return null
+        return getProjectRoot(parent)
     }
 }
 
-fun File.findBuildSrc(): File? =
-    resolve("buildSrc").takeIf { it.isDirectory }
-
-fun File.isProjectRoot(): Boolean =
-    isDirectory && (resolve("settings.gradle").isFile || resolve("settings.gradle.kts").isFile)
+fun File.isProjectRoot(): Boolean = isDirectory && (resolve("settings.gradle").isFile || resolve("settings.gradle.kts").isFile)
