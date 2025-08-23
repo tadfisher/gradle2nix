@@ -18,6 +18,7 @@ dependencies {
     runtimeOnly(libs.slf4j.simple)
 
     "share"(project(":plugin:base", configuration = "shadow"))
+    "share"(project(":plugin:gradle75", configuration = "shadow"))
     "share"(project(":plugin:gradle80", configuration = "shadow"))
     "share"(project(":plugin:gradle81", configuration = "shadow"))
 

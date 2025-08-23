@@ -285,6 +285,20 @@
       "hash": "sha256-OGHuMFGDS0aQTXOx4EpvAV2AXMTWnY/9/SEnNnMJKGY="
     }
   },
+  "dev.gradleplugins:gradle-api:7.5": {
+    "gradle-api-7.5.jar": {
+      "url": "https://repo.maven.apache.org/maven2/dev/gradleplugins/gradle-api/7.5/gradle-api-7.5.jar",
+      "hash": "sha256-wm5JdcUyu5s1DegalDuMbtVpb5keHhDUDBHVE7olVVg="
+    },
+    "gradle-api-7.5.module": {
+      "url": "https://repo.maven.apache.org/maven2/dev/gradleplugins/gradle-api/7.5/gradle-api-7.5.module",
+      "hash": "sha256-bmRVtMK+dOCpGqYm7hN2woPJt6gu2PSukMd8GUPrUx8="
+    },
+    "gradle-api-7.5.pom": {
+      "url": "https://repo.maven.apache.org/maven2/dev/gradleplugins/gradle-api/7.5/gradle-api-7.5.pom",
+      "hash": "sha256-6SxvU5El1yHW3Nv0GLe0Ro08FEQU5eqVo3eITWpdNFs="
+    }
+  },
   "dev.gradleplugins:gradle-api:6.9": {
     "gradle-api-6.9.jar": {
       "url": "https://repo.maven.apache.org/maven2/dev/gradleplugins/gradle-api/6.9/gradle-api-6.9.jar",
@@ -495,6 +509,16 @@
     "groovy-3.0.13.pom": {
       "url": "https://repo.maven.apache.org/maven2/org/codehaus/groovy/groovy/3.0.13/groovy-3.0.13.pom",
       "hash": "sha256-mhyxiooB/kLaUw9AWc7f0JSNbozzEA2uHuKXfB6lWsw="
+    }
+  },
+  "org.codehaus.groovy:groovy:3.0.10": {
+    "groovy-3.0.10.jar": {
+      "url": "https://repo.maven.apache.org/maven2/org/codehaus/groovy/groovy/3.0.10/groovy-3.0.10.jar",
+      "hash": "sha256-3/762oKUhlvlA1UVwDIPtnlEPShfSl+K2tzwDBEw6Ew="
+    },
+    "groovy-3.0.10.pom": {
+      "url": "https://repo.maven.apache.org/maven2/org/codehaus/groovy/groovy/3.0.10/groovy-3.0.10.pom",
+      "hash": "sha256-SYKt9KbGxQVnsL489JSCXmwqJ9izhx2eGIIqdCcreao="
     }
   },
   "org.codehaus.groovy:groovy:2.5.12": {
